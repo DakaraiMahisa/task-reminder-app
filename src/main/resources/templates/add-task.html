@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Task</title>
+</head>
+<body>
+<h2>Add New Task</h2>
+
+<form action="#" th:action="@{/api/tasks/add}" th:object="${task}" method="post">
+
+    Title: <input type="text" th:field="*{title}"><br><br>
+    Description: <input type="text" th:field="*{description}"><br><br>
+    Due Date: <input type="text" th:field="*{dueDate}" placeholder="YYYY-MM-DD"><br><br>
+    Status: <input type="text" th:field="*{status}"><br><br>
+    Priority: <input type="text" th:field="*{priority}"><br><br>
+
+    <button type="submit">Save Task</button>
+
+</form>
+</body>
+</html>
