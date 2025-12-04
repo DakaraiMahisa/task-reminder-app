@@ -4,9 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <title>Task Reminder App</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 22px;
+            background: #007bff;
+            color: #ffffff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+
 </head>
+
 <body>
-<h1 th:text="${message}"></h1>
-<p>Day 1: Your Spring Boot + Thymeleaf app is running</p>
+
+<div class="container">
+    <h1 th:text="${message}">Welcome to Task Reminder App</h1>
+    <p>Your Spring Boot + Thymeleaf application is running successfully.</p>
+
+    <a href="/api/tasks" class="btn">View Tasks</a>
+</div>
+
 </body>
 </html>

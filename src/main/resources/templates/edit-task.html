@@ -3,24 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Task</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            display: block;
+            color: #444;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <body>
 
-<h2>Edit Task</h2>
+<div class="container">
 
-<form action="#" th:action="@{/api/tasks/update}" th:object="${task}" method="post">
+    <h2>Edit Task</h2>
 
-    <input type="hidden" th:field="*{id}">
+    <form action="#" th:action="@{/api/tasks/update}" th:object="${task}" method="post">
 
-    Title: <input type="text" th:field="*{title}"><br><br>
-    Description: <input type="text" th:field="*{description}"><br><br>
-    Due Date: <input type="text" th:field="*{dueDate}"><br><br>
-    Status: <input type="text" th:field="*{status}"><br><br>
-    Priority: <input type="text" th:field="*{priority}"><br><br>
+        <input type="hidden" th:field="*{id}">
 
-    <button type="submit">Update Task</button>
+        <label>Title</label>
+        <input type="text" th:field="*{title}" required>
 
-</form>
+        <label>Description</label>
+        <input type="text" th:field="*{description}" required>
+
+        <label>Due Date</label>
+        <input type="text" th:field="*{dueDate}" placeholder="YYYY-MM-DD" required>
+
+        <label>Status</label>
+        <select th:field="*{status}" required>
+            <option value="">Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+
+        <label>Priority</label>
+        <select th:field="*{priority}" required>
+            <option value="">Select Priority</option>
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+        </select>
+
+        <button type="submit">Update Task</button>
+
+    </form>
+
+    <a href="/api/tasks" class="back-link">Back to Task List</a>
+
+</div>
 
 </body>
 </html>

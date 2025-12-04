@@ -10,10 +10,15 @@ import java.util.ArrayList;
 @Service
 public class TaskService {
     private final List<Task>tasks = new ArrayList<>();
-    private int nextId = 3;
+    private int nextId = 10;
     public TaskService(){
         tasks.add(new Task(1,"Learn Spring Boot","Basics of project","2025-12-25","pending","high",LocalDateTime.now()));
-        tasks.add(new Task(2,"Practice Java","Collection and OOP","2025-12-26","pending","medium", LocalDateTime.now()));
+        tasks.add(new Task(2,"Practice Java","Collection and OOP","2025-12-26","pending","medium",LocalDateTime.now()));
+        tasks.add(new Task(3,"Practice Python","TensorFlow","2025-12-27","pending","high",LocalDateTime.now()));
+        tasks.add(new Task(4,"Learn HTML","web page layout","2025-12-28","pending","medium",LocalDateTime.now()));
+        tasks.add(new Task(5,"Lean C","Embedded C programming","2025-12-29","pending","high",LocalDateTime.now()));
+        tasks.add(new Task(6,"Computer networks","TCP/UDP protocol","2025-12-26","pending","medium",LocalDateTime.now()));
+        tasks.add(new Task(7,"SDN","Multi-tenant Data centers","2025-12-30","pending","high",LocalDateTime.now()));
     }
     public List<Task> getAllTasks(){
         return tasks;

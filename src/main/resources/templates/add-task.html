@@ -1,22 +1,93 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h2>Add New Task</h2>
 
-<form action="#" th:action="@{/api/tasks/add}" th:object="${task}" method="post">
+<div class="container">
+    <h2>Add New Task</h2>
 
-    Title: <input type="text" th:field="*{title}"><br><br>
-    Description: <input type="text" th:field="*{description}"><br><br>
-    Due Date: <input type="text" th:field="*{dueDate}" placeholder="YYYY-MM-DD"><br><br>
-    Status: <input type="text" th:field="*{status}"><br><br>
-    Priority: <input type="text" th:field="*{priority}"><br><br>
+    <form action="#" th:action="@{/api/tasks/add}" th:object="${task}" method="post">
 
-    <button type="submit">Save Task</button>
+        <label for="title">Title (required)</label>
+        <input type="text" id="title" th:field="*{title}" required>
 
-</form>
+        <label for="description">Description (required)</label>
+        <input type="text" id="description" th:field="*{description}" required>
+
+        <label for="dueDate">Due Date (required)</label>
+        <input type="text" id="dueDate" th:field="*{dueDate}" placeholder="YYYY-MM-DD" required>
+
+        <label for="status">Status (required)</label>
+        <input type="text" id="status" th:field="*{status}" required>
+
+        <label for="priority">Priority (required)</label>
+        <select id="priority" th:field="*{priority}" required>
+            <option value="" disabled selected>Select priority</option>
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+        </select>
+
+        <button type="submit">Save Task</button>
+
+    </form>
+</div>
+
 </body>
 </html>
