@@ -1,11 +1,29 @@
 package com.taskreminder.app.entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
+
 public class Task {
+
     private Integer id;
+
+    @NotBlank(message = "Title is required")
+    @Size(min = 3, max = 50, message = "Title must be between 3 and 50 characters")
     private String title;
+
+    @NotBlank(message="Description is required")
     private String description;
+
+    @NotBlank(message = "Due date is required")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Due date must be in YYYY-MM-DD format")
     private String dueDate;
+
+    @NotBlank(message="Status is required")
     private String status;
+
+    @NotBlank(message="Priority is required")
     private String priority;
     private LocalDateTime createdAt;
 

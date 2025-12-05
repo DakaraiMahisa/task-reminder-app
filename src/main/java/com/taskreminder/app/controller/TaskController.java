@@ -1,11 +1,14 @@
 package com.taskreminder.app.controller;
 import com.taskreminder.app.entity.Task;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.taskreminder.app.service.TaskService;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+
 @Controller
 @RequestMapping("/api")
 public class TaskController {
@@ -29,7 +32,12 @@ public class TaskController {
 
      //Handle add submission
     @PostMapping("/tasks/add")
-    public String addTask(Task task){
+    public String addTask(@Valid @ModelAttribute("task")Task task,
+                          BindingResult result,
+                          Model model){
+        if(result.hasErrors()){
+            return "add-task";
+        }
         taskService.addTask(task);
         return "redirect:/api/tasks";
     }
@@ -43,7 +51,10 @@ public class TaskController {
 
      //Handling edit submission
     @PostMapping("/tasks/update")
-    public String updateTask(Task task){
+    public String updateTask(@Valid @ModelAttribute("task") Task task,BindingResult result,Model model){
+        if(result.hasErrors()){
+            return "edit-task";
+        }
         taskService.updateTask(task);
         return "redirect:/api/tasks";
     }
