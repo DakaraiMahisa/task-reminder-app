@@ -1,12 +1,18 @@
 package com.taskreminder.app.entity;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 
-public class Task {
 
+@Entity
+@Table(name="tasks")
+public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="task_id")
     private Integer id;
 
     @NotBlank(message = "Title is required")

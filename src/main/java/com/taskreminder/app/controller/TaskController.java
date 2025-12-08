@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import com.taskreminder.app.service.TaskService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -38,24 +40,35 @@ public class TaskController {
         if(result.hasErrors()){
             return "add-task";
         }
+        task.setCreatedAt(LocalDateTime.now());
         taskService.addTask(task);
         return "redirect:/api/tasks";
     }
 
     //Show edit form
-    @GetMapping("tasks/edit/{id}")
+    @GetMapping("tasks/update/{id}")
     public String editForm(@PathVariable int id, Model model){
-        model.addAttribute("task",taskService.getTaskById(id));
+        Task task = taskService.findById(id).orElse(null);
+        if(task == null){
+            return "redirect:/api/tasks";
+        }
+        model.addAttribute("task",task);
         return "edit-task";
     }
 
      //Handling edit submission
     @PostMapping("/tasks/update")
-    public String updateTask(@Valid @ModelAttribute("task") Task task,BindingResult result,Model model){
+    public String updateTask(@Valid @ModelAttribute("task") Task task,
+                             BindingResult result,Model model){
         if(result.hasErrors()){
             return "edit-task";
         }
+        Task existing = taskService.findById(task.getId()).orElse(null);
+        if(existing!=null){
+        task.setCreatedAt(existing.getCreatedAt());
         taskService.updateTask(task);
+
+        }
         return "redirect:/api/tasks";
     }
 
