@@ -108,6 +108,12 @@
                onclick="return confirm('Are you sure you want to delete this task?');">
                 Delete
             </a>
+
+            <a class="button"
+               style="background: #17a2b8;"
+               th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
+                Mark as Done
+            </a>
         </td>
     </tr>
     </tbody>
