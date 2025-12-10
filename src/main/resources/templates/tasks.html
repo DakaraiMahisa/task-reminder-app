@@ -111,6 +111,7 @@
 
             <a class="button"
                style="background: #17a2b8;"
+               th:if="${task.status != 'Completed'}"
                th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
                 Mark as Done
             </a>
