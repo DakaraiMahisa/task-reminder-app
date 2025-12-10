@@ -83,20 +83,6 @@ public class TaskController {
         return "redirect:/api/tasks";
     }
 
-
-    //Mark as done method
-    @GetMapping("/tasks/mark-done/{id}")
-    public String markTaskAsDone(@PathVariable Integer id) {
-
-        taskService.findById(id).ifPresent(task -> {
-            task.setStatus("Completed");
-            taskService.updateTask(task);
-        });
-
-        return "redirect:/api/tasks";
-    }
-
-
     //Delete Task
     @GetMapping("/tasks/delete/{id}")
     public String deleteTask(@PathVariable int id){
