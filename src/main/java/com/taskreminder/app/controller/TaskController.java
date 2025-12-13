@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import com.taskreminder.app.service.TaskService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -57,31 +58,27 @@ public class TaskController {
         }
 
         // Sorting
+        Comparator<Task> comparator;
         switch (sortBy) {
             case "priority":
-                tasks = tasks.stream()
-                        .sorted(Comparator.comparing(Task::getPriority))
-                        .toList();
+                comparator = Comparator.comparing(Task::getPriority);
                 break;
-
             case "title":
-                tasks = tasks.stream()
-                        .sorted(Comparator.comparing(Task::getTitle))
-                        .toList();
+                comparator = Comparator.comparing(Task::getTitle);
                 break;
-
             default:
-                // Default sort by due date
-                tasks = tasks.stream()
-                        .sorted(Comparator.comparing(Task::getDueDate))
-                        .toList();
+                comparator = Comparator.comparing(Task::getDueDate);
                 break;
         }
 
-        // Apply sort direction
         if ("desc".equalsIgnoreCase(sortDir)) {
-            Collections.reverse(tasks);
+            comparator = comparator.reversed();
         }
+
+        tasks = tasks.stream()
+                .sorted(comparator)
+                .toList();
+
 
         // Add to model for UI
         model.addAttribute("tasks", tasks);
@@ -95,7 +92,6 @@ public class TaskController {
     }
 
 
-
     //Show add form
     @GetMapping("/tasks/add")
     public String addForm(Model model){
@@ -107,12 +103,22 @@ public class TaskController {
     @PostMapping("/tasks/add")
     public String addTask(@Valid @ModelAttribute("task")Task task,
                           BindingResult result,
-                          Model model){
+                          RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             return "add-task";
         }
+        try{
         task.setCreatedAt(LocalDateTime.now());
         taskService.addTask(task);
+            redirectAttributes.addFlashAttribute(
+                    "successMessage", "Task added successfully!"
+            );
+
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute(
+                    "errorMessage", "Failed to add task. Please try again."
+            );
+        }
         return "redirect:/api/tasks";
     }
 
@@ -130,16 +136,26 @@ public class TaskController {
      //Handling edit submission
     @PostMapping("/tasks/update")
     public String updateTask(@Valid @ModelAttribute("task") Task task,
-                             BindingResult result,Model model){
+                             BindingResult result,RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             return "edit-task";
         }
-        Task existing = taskService.findById(task.getId()).orElse(null);
-        if(existing!=null){
-        task.setCreatedAt(existing.getCreatedAt());
-        taskService.updateTask(task);
-
+        try {
+            Task existing = taskService.findById(task.getId()).orElse(null);
+            if (existing != null) {
+                task.setCreatedAt(existing.getCreatedAt());
+                taskService.updateTask(task);
+                redirectAttributes.addFlashAttribute(
+                        "successMessage", "Task updated successfully!"
+                );
+            }
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute(
+                    "errorMessage", "Failed to update task. Please try again."
+            );
         }
+
+
         return "redirect:/api/tasks";
     }
 //Mark as done method
@@ -156,8 +172,16 @@ public class TaskController {
 
     //Delete Task
     @GetMapping("/tasks/delete/{id}")
-    public String deleteTask(@PathVariable int id){
+    public String deleteTask(@PathVariable int id, RedirectAttributes redirectAttributes){
+        try{
         taskService.deleteTask(id);
+        redirectAttributes.addFlashAttribute(
+                    "successMessage", "Task deleted successfully!");
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute(
+                    "errorMessage", "Failed to delete task."
+            );
+        }
         return "redirect:/api/tasks ";
     }
 

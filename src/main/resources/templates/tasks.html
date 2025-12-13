@@ -4,75 +4,19 @@
     <meta charset="UTF-8">
     <title>All Tasks</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        th {
-            background: #333;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: bold;
-        }
-
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tr:hover {
-            background: #f0f0f0;
-        }
-
-        a.button {
-            padding: 6px 12px;
-            background: #007bff;
-            color: white;
-            border-radius: 4px;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-
-        a.button.delete {
-            background: #dc3545;
-        }
-
-        .add-task {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 18px;
-            background: #28a745;
-            color: white;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/tasks.css}">
 
 </head>
 <body>
 
 <h2>Task List</h2>
+<!-- SUCCESS MESSAGE -->
+<div th:if="${successMessage}" class="success-message"
+     th:text="${successMessage}"></div>
 
+<!-- ERROR MESSAGE -->
+<div th:if="${errorMessage}" class="error-message"
+     th:text="${errorMessage}"></div>
 <!-- FILTER + SORT FORM -->
 <form method="get" action="/api/tasks"
       style="margin-bottom: 20px; background: white; padding: 15px;
@@ -194,5 +138,12 @@
 
 <a class="add-task" href="/api/tasks/add">+ Add New Task</a>
 
+<footer class="footer">
+    <div class="footer-content">
+        <span>Task Reminder App</span>
+        <span>&copy; 2025</span>
+        <span>Created by Dakarai Mahisa</span>
+    </div>
+</footer>
 </body>
 </html>
