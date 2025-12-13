@@ -73,6 +73,77 @@
 
 <h2>Task List</h2>
 
+<!-- FILTER + SORT FORM -->
+<form method="get" action="/api/tasks"
+      style="margin-bottom: 20px; background: white; padding: 15px;
+             border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+
+    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+
+        <!-- Status Filter -->
+        <div>
+            <label>Status:</label>
+            <select name="status">
+                <option value="">All</option>
+                <option value="Pending" th:selected="${status == 'Pending'}">Pending</option>
+                <option value="In Progress" th:selected="${status == 'In Progress'}">In Progress</option>
+                <option value="Completed" th:selected="${status == 'Completed'}">Completed</option>
+            </select>
+        </div>
+
+        <!-- Priority Filter -->
+        <div>
+            <label>Priority:</label>
+            <select name="priority">
+                <option value="">All</option>
+                <option value="Low" th:selected="${priority == 'Low'}">Low</option>
+                <option value="Medium" th:selected="${priority == 'Medium'}">Medium</option>
+                <option value="High" th:selected="${priority == 'High'}">High</option>
+            </select>
+        </div>
+
+        <!-- Search Title -->
+        <div>
+            <label>Title:</label>
+            <input type="text" name="title" th:value="${title}" placeholder="Search title">
+        </div>
+
+        <!-- Sort By -->
+        <div>
+            <label>Sort By:</label>
+            <select name="sortBy">
+                <option value="dueDate" th:selected="${sortBy == 'dueDate'}">Due Date</option>
+                <option value="priority" th:selected="${sortBy == 'priority'}">Priority</option>
+                <option value="title" th:selected="${sortBy == 'title'}">Title</option>
+            </select>
+        </div>
+
+        <!-- Sort Direction -->
+        <div>
+            <label>Order:</label>
+            <select name="sortDir">
+                <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
+                <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
+            </select>
+        </div>
+
+        <!-- Apply Filters -->
+        <button type="submit"
+                style="background: #007bff; color: white; padding: 8px 12px;
+                       border: none; border-radius: 5px; cursor: pointer;">
+            Apply Filters
+        </button>
+
+        <!-- Clear Filters -->
+        <a href="/api/tasks"
+           style="background: #6c757d; color: white; padding: 8px 12px;
+                  border-radius: 5px; text-decoration: none;">
+            Clear Filters
+        </a>
+
+    </div>
+</form>
+
 <table>
     <thead>
     <tr>

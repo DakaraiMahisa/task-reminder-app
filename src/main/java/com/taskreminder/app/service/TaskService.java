@@ -6,20 +6,22 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+
 @Service
 public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> getAllTasks(){
+   public List<Task> getAllTasks(){
         return taskRepository.findAll();
-    }
+   }
 
     public Task addTask(Task task){
         return taskRepository.save(task);
@@ -39,19 +41,21 @@ public class TaskService {
     }
 
 
+//Filters with pagination + sorting
+
     public Page<Task> findAll(Pageable pageable) {
         return taskRepository.findAll(pageable);
     }
 
-    public List<Task> findByStatus(String status){
+    public List <Task> filterByStatus(String status){
         return taskRepository.findByStatus(status);
     }
 
-    public List<Task> findByPriority(String priority){
+    public List<Task> filterByPriority(String priority){
         return taskRepository.findByPriority(priority);
 
-    }public List<Task> findByDueDate(String date){
-        return taskRepository.findByDueDate(date);
+    }public List<Task> filterByDueDate(String dueDate){
+        return taskRepository.findByDueDate(dueDate);
     }
 
     public  List<Task> searchByTitle(String keyword) {

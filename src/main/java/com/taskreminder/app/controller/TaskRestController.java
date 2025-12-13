@@ -72,12 +72,12 @@ public class TaskRestController {
 
     @GetMapping("status/{status}")
     public ResponseEntity<List<Task>> getByPriority(@PathVariable String status){
-        return ResponseEntity.ok(taskservice.findByStatus(status));
+        return ResponseEntity.ok(taskservice.filterByStatus(status));
     }
 
     @GetMapping("priority/{priority}")
     public ResponseEntity<List<Task>> getByStatus(@PathVariable String priority){
-        return ResponseEntity.ok(taskservice.findByPriority(priority));
+        return ResponseEntity.ok(taskservice.filterByPriority(priority));
     }
 
     @GetMapping("/search")
@@ -87,7 +87,7 @@ public class TaskRestController {
 
     @GetMapping("/due")
     public ResponseEntity<List<Task>> getByDueDate(@RequestParam("due") String date){
-        return ResponseEntity.ok(taskservice.findByDueDate(date));
+        return ResponseEntity.ok(taskservice.filterByDueDate(date));
     }
 
 

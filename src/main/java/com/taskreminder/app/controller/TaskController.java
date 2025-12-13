@@ -18,14 +18,85 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-     //Show all tasks
+    /*
+    //Show all tasks
     @GetMapping("/tasks")
     public String listTasks(Model model){
         model.addAttribute("tasks",taskService.getAllTasks());
         return "tasks";
+    }*/
+    @GetMapping("/tasks")
+    public String listTasks(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false, defaultValue = "dueDate") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            Model model) {
+
+        // Start with full list
+        List<Task> tasks = taskService.getAllTasks();
+
+        // Apply filters (combined)
+        if (status != null && !status.isEmpty()) {
+            tasks = tasks.stream()
+                    .filter(t -> t.getStatus().equalsIgnoreCase(status))
+                    .toList();
+        }
+
+        if (priority != null && !priority.isEmpty()) {
+            tasks = tasks.stream()
+                    .filter(t -> t.getPriority().equalsIgnoreCase(priority))
+                    .toList();
+        }
+
+        if (title != null && !title.isEmpty()) {
+            tasks = tasks.stream()
+                    .filter(t -> t.getTitle().toLowerCase().contains(title.toLowerCase()))
+                    .toList();
+        }
+
+        // Sorting
+        switch (sortBy) {
+            case "priority":
+                tasks = tasks.stream()
+                        .sorted(Comparator.comparing(Task::getPriority))
+                        .toList();
+                break;
+
+            case "title":
+                tasks = tasks.stream()
+                        .sorted(Comparator.comparing(Task::getTitle))
+                        .toList();
+                break;
+
+            default:
+                // Default sort by due date
+                tasks = tasks.stream()
+                        .sorted(Comparator.comparing(Task::getDueDate))
+                        .toList();
+                break;
+        }
+
+        // Apply sort direction
+        if ("desc".equalsIgnoreCase(sortDir)) {
+            Collections.reverse(tasks);
+        }
+
+        // Add to model for UI
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("status", status);
+        model.addAttribute("priority", priority);
+        model.addAttribute("title", title);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+
+        return "tasks";
     }
 
-      //Show add form
+
+
+    //Show add form
     @GetMapping("/tasks/add")
     public String addForm(Model model){
         model.addAttribute("task",new Task());
