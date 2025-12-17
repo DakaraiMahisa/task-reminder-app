@@ -1,5 +1,7 @@
 package com.taskreminder.app.controller;
 import com.taskreminder.app.entity.Task;
+import com.taskreminder.app.enums.TaskPriority;
+import com.taskreminder.app.enums.TaskStatus;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,9 +10,9 @@ import com.taskreminder.app.service.TaskService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("/api")
@@ -19,13 +21,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    /*
-    //Show all tasks
-    @GetMapping("/tasks")
-    public String listTasks(Model model){
-        model.addAttribute("tasks",taskService.getAllTasks());
-        return "tasks";
-    }*/
+
     @GetMapping("/tasks")
     public String listTasks(
             @RequestParam(required = false) String status,
@@ -40,14 +36,17 @@ public class TaskController {
 
         // Apply filters (combined)
         if (status != null && !status.isEmpty()) {
+            TaskStatus statusEnum = TaskStatus.valueOf(status.toUpperCase());
             tasks = tasks.stream()
-                    .filter(t -> t.getStatus().equalsIgnoreCase(status))
+                    .filter(t -> t.getStatus()==statusEnum)
                     .toList();
         }
 
         if (priority != null && !priority.isEmpty()) {
+            TaskPriority priorityEnum = TaskPriority.valueOf(priority.toUpperCase());
+
             tasks = tasks.stream()
-                    .filter(t -> t.getPriority().equalsIgnoreCase(priority))
+                    .filter(t -> t.getPriority()==priorityEnum)
                     .toList();
         }
 
@@ -103,9 +102,18 @@ public class TaskController {
     @PostMapping("/tasks/add")
     public String addTask(@Valid @ModelAttribute("task")Task task,
                           BindingResult result,
-                          RedirectAttributes redirectAttributes){
+                          RedirectAttributes redirectAttributes,Model model){
         if(result.hasErrors()){
             return "add-task";
+        }
+
+        if(task.getDueDate()==null||task.getDueDate().trim().isEmpty()){
+            model.addAttribute("errorMessage","Due date is required");
+            model.addAttribute("task",task);
+            return "add-task";
+        }
+        if(task.getStatus()==null){
+            task.setStatus(TaskStatus.PENDING);
         }
         try{
         task.setCreatedAt(LocalDateTime.now());
@@ -161,11 +169,12 @@ public class TaskController {
 //Mark as done method
     @GetMapping("/tasks/mark-done/{id}")
     public String markTaskAsDone(@PathVariable Integer id) {
-
-        taskService.findById(id).ifPresent(task -> {
-            task.setStatus("Completed");
+        Task task  = taskService.findById(id).orElse(null);
+        if(task!=null&&task.getStatus()!=TaskStatus.DONE){
+            task.setStatus(TaskStatus.DONE);
+            task.setCompletedAt(LocalDateTime.now());
             taskService.updateTask(task);
-        });
+        }
 
         return "redirect:/api/tasks";
     }
@@ -184,6 +193,17 @@ public class TaskController {
         }
         return "redirect:/api/tasks ";
     }
+//    View task api
+    @GetMapping("/view/{id}")
+    public String viewTask(@PathVariable Integer id,Model model, RedirectAttributes redirectAttributes){
 
+        Task task  = taskService.findById(id).orElse(null);
+        if(task == null){
+            redirectAttributes.addAttribute("errorMessage","Task not found");
+            return "redirect:/api/tasks";
+        }
+        model.addAttribute("task",task);
+        return "view-task";
+    }
 
 }

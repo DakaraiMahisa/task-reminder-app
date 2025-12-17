@@ -1,7 +1,9 @@
 package com.taskreminder.app.entity;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.taskreminder.app.enums.TaskPriority;
+import com.taskreminder.app.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -26,16 +28,21 @@ public class Task {
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Due date must be in YYYY-MM-DD format")
     private String dueDate;
 
-    @NotBlank(message="Status is required")
-    private String status;
+    @NotNull(message="Status is required")
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
-    @NotBlank(message="Priority is required")
-    private String priority;
+    @NotNull(message="Priority is required")
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
     private LocalDateTime createdAt;
+
+
+    private LocalDateTime completedAt;
 
     public Task(){}
 
-   public Task(Integer id,String title,String description,String dueDate,String status,String priority,LocalDateTime createdAt){
+   public Task(Integer id,String title,String description,String dueDate,TaskStatus status,TaskPriority priority,LocalDateTime createdAt,LocalDateTime completedAt){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -43,6 +50,7 @@ public class Task {
         this.status =  status;
         this.priority = priority;
         this.createdAt = createdAt;
+        this.completedAt = completedAt;
    }
 
     public Integer getId() {
@@ -77,19 +85,19 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
-    public String getPriority() {
+    public TaskPriority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(TaskPriority priority) {
         this.priority = priority;
     }
 
@@ -99,5 +107,12 @@ public class Task {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
     }
 }

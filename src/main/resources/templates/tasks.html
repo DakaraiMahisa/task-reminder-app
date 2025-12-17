@@ -29,9 +29,9 @@
             <label>Status:</label>
             <select name="status">
                 <option value="">All</option>
-                <option value="Pending" th:selected="${status == 'Pending'}">Pending</option>
-                <option value="In Progress" th:selected="${status == 'In Progress'}">In Progress</option>
-                <option value="Completed" th:selected="${status == 'Completed'}">Completed</option>
+                <option value="PENDING" th:selected="${status == 'PENDING'}">Pending</option>
+                <option value="IN_PROGRESS" th:selected="${status == 'IN_PROGRESS'}">In Progress</option>
+                <option value="DONE" th:selected="${status == 'DONE'}">Done</option>
             </select>
         </div>
 
@@ -40,9 +40,9 @@
             <label>Priority:</label>
             <select name="priority">
                 <option value="">All</option>
-                <option value="Low" th:selected="${priority == 'Low'}">Low</option>
-                <option value="Medium" th:selected="${priority == 'Medium'}">Medium</option>
-                <option value="High" th:selected="${priority == 'High'}">High</option>
+                <option value="LOW" th:selected="${priority == 'LOW'}">Low</option>
+                <option value="MEDIUM" th:selected="${priority == 'MEDIUM'}">Medium</option>
+                <option value="HIGH" th:selected="${priority == 'HIGH'}">High</option>
             </select>
         </div>
 
@@ -98,6 +98,7 @@
         <th>Status</th>
         <th>Priority</th>
         <th>Created At</th>
+        <th>Completed At</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -108,11 +109,19 @@
         <td th:text="${task.title}"></td>
         <td th:text="${task.description}"></td>
         <td th:text="${task.dueDate}"></td>
-        <td th:text="${task.status}"></td>
-        <td th:text="${task.priority}"></td>
-        <td th:text="${task.createdAt}"></td>
+        <td th:text="${task.status.label}"></td>
+        <td th:text="${task.priority.label}"></td>
+        <td th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd')}"></td>
+        <td th:text="${task.completedAt != null
+        ? #temporals.format(task.completedAt, 'yyyy-MM-dd')
+        : '-'}">
+        </td>
 
         <td>
+            <a class="button"
+               th:href="@{/api/view/{id}(id=${task.id})}">
+                View
+            </a>
             <a class="button"
                th:href="@{/api/tasks/update/{id}(id=${task.id})}">
                 Edit
@@ -126,9 +135,9 @@
 
             <a class="button"
                style="background: #17a2b8;"
-               th:if="${task.status != 'Completed'}"
+               th:if="${task.status!=T(com.taskreminder.app.enums.TaskStatus).DONE}"
                th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
-                Mark as Done
+                Mark Done
             </a>
 
         </td>
