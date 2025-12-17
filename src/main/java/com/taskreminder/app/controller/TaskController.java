@@ -24,8 +24,8 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public String listTasks(
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) TaskStatus status,
+            @RequestParam(required = false) TaskPriority priority,
             @RequestParam(required = false) String title,
             @RequestParam(required = false, defaultValue = "dueDate") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDir,
@@ -34,22 +34,18 @@ public class TaskController {
         // Start with full list
         List<Task> tasks = taskService.getAllTasks();
 
-        // Apply filters (combined)
-        if (status != null && !status.isEmpty()) {
-            TaskStatus statusEnum = TaskStatus.valueOf(status.toUpperCase());
+        // Apply filters
+        if (status != null) {
             tasks = tasks.stream()
-                    .filter(t -> t.getStatus()==statusEnum)
+                    .filter(t -> t.getStatus() == status)
                     .toList();
         }
 
-        if (priority != null && !priority.isEmpty()) {
-            TaskPriority priorityEnum = TaskPriority.valueOf(priority.toUpperCase());
-
+        if (priority != null) {
             tasks = tasks.stream()
-                    .filter(t -> t.getPriority()==priorityEnum)
+                    .filter(t -> t.getPriority() == priority)
                     .toList();
         }
-
         if (title != null && !title.isEmpty()) {
             tasks = tasks.stream()
                     .filter(t -> t.getTitle().toLowerCase().contains(title.toLowerCase()))
