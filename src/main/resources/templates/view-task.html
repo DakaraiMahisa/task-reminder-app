@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Task</title>
+    <link rel="stylesheet" th:href="@{/css/view-task.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Task Details</h2>
+
+    <div class="task-details">
+
+        <div class="field">
+            <label>Title</label>
+            <p th:text="${task.title}">Task Title</p>
+        </div>
+
+        <div class="field">
+            <label>Description</label>
+            <p th:text="${task.description}">Task Description</p>
+        </div>
+
+        <div class="field">
+            <label>Due Date</label>
+            <p th:text="${task.dueDate}">2025-01-01</p>
+        </div>
+
+        <div class="field">
+            <label>Status</label>
+            <p th:text="${task.status}">PENDING</p>
+        </div>
+
+        <div class="field">
+            <label>Priority</label>
+            <p th:text="${task.priority}">HIGH</p>
+        </div>
+
+    </div>
+
+    <div class="actions">
+        <a th:href="@{/api/tasks}" class="btn">Back to Task List</a>
+        <a th:href="@{/api/tasks/update/{id}(id=${task.id})}" class="btn btn-secondary">Edit Task</a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <span>Task Reminder App</span>
+        <span>&copy; 2025</span>
+        <span>Created by Dakarai Mahisa</span>
+    </div>
+</footer>
+
+</body>
+</html>

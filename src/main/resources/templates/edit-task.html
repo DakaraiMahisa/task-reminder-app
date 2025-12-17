@@ -28,17 +28,19 @@
         <label>Status</label>
         <select th:field="*{status}" required>
             <option value="">Select Status</option>
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
+            <option th:each="s : ${T(com.taskreminder.app.enums.TaskStatus).values()}"
+                    th:value="${s}"
+                    th:text="${s.label}">
+            </option>
         </select>
 
         <label>Priority</label>
         <select th:field="*{priority}" required>
             <option value="">Select Priority</option>
-            <option value="LOW">Low</option>
-            <option value="MEDIUM">Medium</option>
-            <option value="HIGH">High</option>
+            <option th:each="p : ${T(com.taskreminder.app.enums.TaskPriority).values()}"
+                    th:value="${p}"
+                    th:text ="${p.label}">
+            </option>
         </select>
 
         <button type="submit">Update Task</button>
