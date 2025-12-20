@@ -62,15 +62,6 @@
             </select>
         </div>
 
-        <!-- Sort Direction -->
-        <div>
-            <label>Order:</label>
-            <select name="sortDir">
-                <option value="asc" th:selected="${sortDir == 'asc'}">Ascending</option>
-                <option value="desc" th:selected="${sortDir == 'desc'}">Descending</option>
-            </select>
-        </div>
-
         <!-- Apply Filters -->
         <button type="submit"
                 style="background: #007bff; color: white; padding: 8px 12px;
@@ -144,9 +135,48 @@
     </tr>
     </tbody>
 </table>
+</table>
 
+<!--PAGINATION -->
+<div class="pagination" th:if="${totalPages > 1}"
+     style="margin-top: 20px; display: flex; gap: 15px; align-items: center; justify-content: center;">
+
+    <!-- Previous -->
+    <a class="button"
+       th:if="${currentPage > 0}"
+       th:href="@{/api/tasks(
+           page=${currentPage - 1},
+           size=${size},
+           status=${status},
+           priority=${priority},
+           title=${title},
+           sortBy=${sortBy},
+           sortDir=${sortDir}
+       )}">
+        Previous
+    </a>
+
+    <!-- Page Info -->
+    <span>
+        Page <strong th:text="${currentPage + 1}"></strong>
+        of <strong th:text="${totalPages}"></strong>
+    </span>
+
+    <!-- Next -->
+    <a class="button"
+       th:if="${currentPage < totalPages - 1}"
+       th:href="@{/api/tasks(
+           page=${currentPage + 1},
+           size=${size},
+           status=${status},
+           priority=${priority},
+           title=${title},
+           sortBy=${sortBy},
+       )}">
+        Next
+    </a>
+</div>
 <a class="add-task" href="/api/tasks/add">+ Add New Task</a>
-
 <footer class="footer">
     <div class="footer-content">
         <span>Task Reminder App</span>

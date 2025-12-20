@@ -4,6 +4,10 @@ import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.taskreminder.app.service.TaskService;
@@ -12,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Comparator;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/api")
@@ -24,65 +28,28 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public String listTasks(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "5")int size,
             @RequestParam(required = false) TaskStatus status,
             @RequestParam(required = false) TaskPriority priority,
             @RequestParam(required = false) String title,
-            @RequestParam(required = false, defaultValue = "dueDate") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "dueDate") String sortBy,
             Model model) {
 
-        // Start with full list
-        List<Task> tasks = taskService.getAllTasks();
+        Sort sort = Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Task>taskPage  =  taskService.getPagedTasks(pageable,status,priority,title);
+        model.addAttribute("taskPage",taskPage);
+        model.addAttribute("tasks",taskPage.getContent());
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPages",taskPage.getTotalPages());
+        model.addAttribute("size",size);
 
-        // Apply filters
-        if (status != null) {
-            tasks = tasks.stream()
-                    .filter(t -> t.getStatus() == status)
-                    .toList();
-        }
+        int totalPages = taskPage.getTotalPages();
+        List<Integer> pageNumbers = IntStream.range(0,totalPages).boxed().toList();
+        model.addAttribute("pageNumbers",pageNumbers);
 
-        if (priority != null) {
-            tasks = tasks.stream()
-                    .filter(t -> t.getPriority() == priority)
-                    .toList();
-        }
-        if (title != null && !title.isEmpty()) {
-            tasks = tasks.stream()
-                    .filter(t -> t.getTitle().toLowerCase().contains(title.toLowerCase()))
-                    .toList();
-        }
-
-        // Sorting
-        Comparator<Task> comparator;
-        switch (sortBy) {
-            case "priority":
-                comparator = Comparator.comparing(Task::getPriority);
-                break;
-            case "title":
-                comparator = Comparator.comparing(Task::getTitle);
-                break;
-            default:
-                comparator = Comparator.comparing(Task::getDueDate);
-                break;
-        }
-
-        if ("desc".equalsIgnoreCase(sortDir)) {
-            comparator = comparator.reversed();
-        }
-
-        tasks = tasks.stream()
-                .sorted(comparator)
-                .toList();
-
-
-        // Add to model for UI
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("status", status);
-        model.addAttribute("priority", priority);
-        model.addAttribute("title", title);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortDir", sortDir);
-
+        model.addAttribute("sortBy",sortBy);
         return "tasks";
     }
 
@@ -148,6 +115,9 @@ public class TaskController {
             Task existing = taskService.findById(task.getId()).orElse(null);
             if (existing != null) {
                 task.setCreatedAt(existing.getCreatedAt());
+                if(task.getStatus()==TaskStatus.DONE){
+                    task.setCompletedAt(LocalDateTime.now());
+                }
                 taskService.updateTask(task);
                 redirectAttributes.addFlashAttribute(
                         "successMessage", "Task updated successfully!"
