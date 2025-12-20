@@ -1,5 +1,7 @@
 package com.taskreminder.app.service;
 import com.taskreminder.app.entity.Task;
+import com.taskreminder.app.enums.TaskPriority;
+import com.taskreminder.app.enums.TaskStatus;
 import com.taskreminder.app.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,23 +41,18 @@ public class TaskService {
 
 
 //Filters with pagination + sorting
-
-    public Page<Task> findAll(Pageable pageable) {
+    public Page<Task> getPagedTasks(Pageable pageable, TaskStatus status, TaskPriority priority,String keyword){
+       if(status!=null){
+           return taskRepository.findByStatus(status,pageable);
+       }else if(priority!=null){
+           return taskRepository.findByPriority(priority,pageable);
+       }else if(keyword!=null){
+           return taskRepository.findByTitleContainingIgnoreCase(keyword,pageable);
+       }
         return taskRepository.findAll(pageable);
     }
 
-    public List <Task> filterByStatus(String status){
-        return taskRepository.findByStatus(status);
-    }
-
-    public List<Task> filterByPriority(String priority){
-        return taskRepository.findByPriority(priority);
-
-    }public List<Task> filterByDueDate(String dueDate){
-        return taskRepository.findByDueDate(dueDate);
-    }
-
-    public  List<Task> searchByTitle(String keyword) {
-        return taskRepository.findByTitleContainingIgnoreCase(keyword);
+    public Page<Task> findAll(Pageable pageable) {
+       return taskRepository.findAll(pageable);
     }
 }
