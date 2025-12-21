@@ -356,7 +356,6 @@ hover {
     border-radius: 999px;
     font-size: 12px;
     font-weight: 700;
-   /* text-transform: uppercase;*/
     letter-spacing: 0.3px;
     white-space: nowrap;
 }
@@ -427,7 +426,7 @@ hover {
     justify-content: center;
     align-items: center;
     gap: 12px;
-    font-size: 20px;
+    font-size: 13px;
     color: #666;
     text-align: center;
 
