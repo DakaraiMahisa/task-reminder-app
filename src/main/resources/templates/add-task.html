@@ -7,6 +7,21 @@
 </head>
 <body>
 <div class="container">
+    <!-- =====================================================
+    TOP NAVIGATION BAR
+    ===================================================== -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="app-title">Task Reminder App</span>
+        </div>
+
+        <div class="nav-right">
+            <a href="/api/tasks" class="nav-btn">
+                Back To Task List
+            </a>
+        </div>
+    </nav>
+
     <h2>Add New Task</h2>
 
     <form th:action="@{/api/tasks/add}" th:object="${task}" method="post">
