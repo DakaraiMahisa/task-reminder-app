@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping(value={"/","","/api"})
 public class TaskController {
 
     @Autowired
