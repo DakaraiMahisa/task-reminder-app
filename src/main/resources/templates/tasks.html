@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>All Tasks</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Page-specific stylesheet -->
     <link rel="stylesheet" th:href="@{/css/tasks.css}">
 </head>
 
@@ -17,7 +18,9 @@
     ===================================================== -->
     <nav class="top-nav">
         <div class="nav-left">
-            <span class="app-title">Task Reminder App</span>
+            <span class="app-title">
+                <i class="fa-solid fa-list-check app-icon"></i>
+                Task Reminder App</span>
         </div>
 
         <div class="nav-right">
@@ -178,27 +181,41 @@
                     </td>
 
                     <td class="action-buttons">
-                        <a class="btn"
-                           th:href="@{/api/view/{id}(id=${task.id})}">
-                            View
+                        <a class="btn btn-view"
+                           th:href="@{/api/view/{id}(id=${task.id})}"
+                           title="View Task">
+                            <i class="fa-solid fa-eye"></i> View
                         </a>
 
-                        <a class="btn"
-                           th:href="@{/api/tasks/update/{id}(id=${task.id})}">
-                            Edit
+                        <a class="btn btn-edit"
+                           th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
+                           th:href="@{/api/tasks/update/{id}(id=${task.id})}"
+                           title="Edit Task">
+                            <i class="fa-solid fa-pen"></i>Edit
                         </a>
+                        <span class="btn btn-edit btn-disabled"
+                              th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}"
+                              title="Completed tasks cannot be edited">
+                              <i class="fa-solid fa-pen"></i> Edit
+                        </span>
+
 
                         <a class="btn btn-danger"
                            th:href="@{/api/tasks/delete/{id}(id=${task.id})}"
+                           title="Delete Task"
                            onclick="return confirm('Are you sure you want to delete this task?');">
-                            Delete
+                            <i class="fa-solid fa-trash"></i>Delete
                         </a>
 
                         <a class="btn btn-info"
                            th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
                            th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
-                            Mark Done
+                            <i class="fa-solid fa-check"></i>Mark Done
                         </a>
+                        <span class="completed-label"
+                              th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}">
+                              <i class="fa-solid fa-circle-check"></i> Done
+                        </span>
                     </td>
                 </tr>
                 </tbody>

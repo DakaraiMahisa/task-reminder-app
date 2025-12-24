@@ -85,7 +85,10 @@ body {
     background-color: #16a34a;
     transform: translateY(-1px);
 }
-
+.app-icon {
+    font-size: 20px;
+    color: #22c55e;
+}
 
 /* =====================================================
    NOTIFICATIONS
@@ -245,6 +248,46 @@ body {
 .btn-info:hover {
     background-color: #138496;
 }
+
+
+.btn i {
+    margin-right: 4px;
+}
+.task-table .action-buttons .btn i {
+    font-size: 14px;
+    opacity: 1;
+}
+
+.task-table .action-buttons .btn-view i { color: #1a73e8; }
+.task-table .action-buttons .btn-edit i { color: #f29900; }
+.task-table .action-buttons .btn-delete i { color: #d93025; }
+.task-table .action-buttons .btn-info i { color: #188038; }
+.task-table .action-buttons .completed-label i { color: #0f9d58; }
+
+
+.completed-label {
+    color: #188038;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.action-buttons .btn:hover i {
+    transform: scale(1.15);
+    transition: transform 0.15s ease-in-out;
+}
+.btn-disabled {
+    background-color: #e5e7eb !important;
+    color: #9ca3af !important;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-disabled i {
+    color: #9ca3af !important;
+}
+
 /* =====================================================
    TABLE ACTION BUTTON OVERRIDES
    ===================================================== */
@@ -431,7 +474,6 @@ hover {
     text-align: center;
 
 }
-
 
 /* =====================================================
    RESPONSIVE ADJUSTMENTS
