@@ -4,10 +4,13 @@ import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
 import com.taskreminder.app.repository.TaskRepository;
 import jakarta.transaction.Transactional;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,5 +57,32 @@ public class TaskService {
 
     public Page<Task> findAll(Pageable pageable) {
        return taskRepository.findAll(pageable);
+    }
+
+    public List<Task> getTaskDueToday() {
+       LocalDate today = LocalDate.now();
+        return taskRepository.findByDueDate(today.toString())
+                .stream()
+                .filter(task -> task.getStatus() != TaskStatus.DONE)
+                .toList();
+    }
+
+    public List<Task> getUpcomingTasks(int days) {
+       LocalDate today = LocalDate.now();
+       LocalDate endDate = today.plusDays(days);
+        return taskRepository.findByDueDateBetween(
+                        today.plusDays(1).toString(),
+                        endDate.toString()
+                ).stream()
+                .filter(task -> task.getStatus() == TaskStatus.PENDING)
+                .toList();
+    }
+
+    public List<Task> getOverdueTasks() {
+       LocalDate today = LocalDate.now();
+        return taskRepository.findByDueDateBefore(today.toString())
+                .stream()
+                .filter(task -> task.getStatus() != TaskStatus.DONE)
+                .toList();
     }
 }
