@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/tasks")
@@ -64,6 +65,24 @@ public class TaskRestController {
         if(taskService.findById(id).isEmpty()) return ResponseEntity.notFound().build();
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/due-today")
+    public ResponseEntity<List<Task>>getTaskDueToday(){
+        return ResponseEntity.ok(taskService.getTaskDueToday());
+    }
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<Task>>getUpcomingTasks(@RequestParam(defaultValue = "3")int days){
+
+        if (days <= 0) {
+            throw new IllegalArgumentException("Days must be greater than zero");
+        }
+
+        return ResponseEntity.ok(taskService.getUpcomingTasks(days));
+    }
+
+    @GetMapping("/overdue")
+    public ResponseEntity<List<Task>>getOverdueTasks(){
+        return ResponseEntity.ok(taskService.getOverdueTasks());
     }
 
 }
