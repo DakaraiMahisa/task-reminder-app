@@ -36,6 +36,7 @@ body {
     font-size: 26px;
     font-weight: 600;
     color: #222;
+
 }
 /* =====================================================
    TOP NAVIGATION BAR
@@ -127,7 +128,8 @@ body {
    FILTERS / SEARCH / SORT
    ===================================================== */
 .task-controls {
-    background: linear-gradient(135deg, #f8fafc, #eef2f7);
+    /*background: linear-gradient(135deg, #f8fafc, #eef2f7);*/
+    background-color: oklch(98.4% 0.014 180.72);
     padding: 22px 24px;
     border-radius: 14px;
     margin-bottom: 30px;
@@ -409,11 +411,14 @@ hover {
     border-collapse: separate;
     border-spacing: 0;
     font-size: 14px;
-    background-color:#ffffff;
+    /*background-color:#ffffff;*/
+    background-color:oklch(98.4% 0.014 180.72);
+
 }
 
 .task-table thead {
-     background-color: #f1f5f9;
+     /*background-color: #f1f5f9;*/
+     background-color: oklch(91% 0.096 180.426);
 }
 .task-table th {
     padding: 14px 12px;
@@ -666,6 +671,22 @@ hover {
 }
 
 /* =====================================================
+   CALENDER VIEW
+   ===================================================== */
+   .calendar-view {
+       margin-top: 20px;
+      /* background: #ffffff;*/
+       background: oklch(98.4% 0.014 180.72);
+       padding: 16px;
+       border-radius: 12px;
+       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+   }
+
+   #taskCalendar {
+       max-width: 100%;
+   }
+
+   /* =====================================================
    PAGINATION
    ===================================================== */
 .pagination-container {
