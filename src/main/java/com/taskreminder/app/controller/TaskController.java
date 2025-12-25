@@ -34,6 +34,7 @@ public class TaskController {
             @RequestParam(required = false) TaskPriority priority,
             @RequestParam(required = false) String title,
             @RequestParam(defaultValue = "dueDate") String sortBy,
+            @RequestParam(defaultValue = "table") String view,
             Model model) {
 
         Sort sort = Sort.by(sortBy).ascending();
@@ -50,6 +51,7 @@ public class TaskController {
         model.addAttribute("pageNumbers",pageNumbers);
 
         model.addAttribute("sortBy",sortBy);
+        model.addAttribute("view", view);
         return "tasks";
     }
 
