@@ -15,7 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 @Controller
@@ -173,5 +175,29 @@ public class TaskController {
         model.addAttribute("task",task);
         return "view-task";
     }
+
+    @GetMapping("/tasks/calendar")
+    @ResponseBody
+    public List<Map<String, Object>> getTasksForCalendar() {
+
+        List<Task> tasks = taskService.getAllTasks();
+
+        return tasks.stream().map(task -> {
+            Map<String, Object> event = new HashMap<>();
+            event.put("id", task.getId());
+            event.put("title", task.getTitle());
+            event.put("start", task.getDueDate().toString());
+
+            // Color by status
+            switch (task.getStatus()) {
+                case DONE -> event.put("color", "#22c55e");       // green
+                case IN_PROGRESS -> event.put("color", "#3b82f6"); // blue
+                default -> event.put("color", "#f97316");          // orange
+            }
+
+            return event;
+        }).toList();
+    }
+
 
 }

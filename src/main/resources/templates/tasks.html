@@ -6,6 +6,8 @@
     <title>All Tasks</title>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
     <link rel="stylesheet" th:href="@{/css/tasks.css}">
 </head>
@@ -343,6 +345,15 @@
 
         </section>
 
+        <!-- ===============================================
+     CALENDAR VIEW
+     =============================================== -->
+        <section class="calendar-view"
+                 th:if="${view == 'calendar'}">
+
+            <div id="taskCalendar"></div>
+
+        </section>
 
         <!-- ===============================================
              PAGINATION
@@ -401,5 +412,30 @@
 
 </div>
 
+<script th:if="${view == 'calendar'}">
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const calendarEl = document.getElementById('taskCalendar');
+        if (!calendarEl) {
+            return;
+        }
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 650,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: '/api/tasks/calendar',
+            eventClick: function(info) {
+                window.location.href = '/api/view/' + info.event.id;
+            }
+        });
+
+        calendar.render();
+    });
+</script>
 </body>
 </html>
