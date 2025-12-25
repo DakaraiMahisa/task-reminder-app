@@ -63,6 +63,12 @@ body {
             background-color: #16a34a;
             transform: translateY(-1px);
         }
+        .btn i,
+        .nav-btn i {
+            margin-right: 6px;
+            font-size: 13px;
+        }
+
         .app-icon {
              font-size: 20px;
              color: #22c55e;

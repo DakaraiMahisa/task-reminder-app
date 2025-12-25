@@ -25,10 +25,10 @@
 
         <div class="nav-right">
             <a href="/api/tasks/add" class="nav-btn">
-                 Add Task
+                <i class="fa-solid fa-plus"></i>Add Task
             </a>
             <a href="/" class="nav-btn">
-                Home
+                <i class="fa-solid fa-house"></i>Home
             </a>
         </div>
 
@@ -96,10 +96,17 @@
                 <!-- Title Search -->
                 <div class="filter-item">
                     <label>Title</label>
-                    <input type="text"
+                    <!--<input type="text"
                            name="title"
                            th:value="${title}"
-                           placeholder="Search title">
+                           placeholder="Search title"> -->
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text"
+                               name="title"
+                               th:value="${title}"
+                               placeholder="Search title">
+                    </div>
                 </div>
 
                 <!-- Sort By -->
@@ -115,10 +122,12 @@
                 <!-- Actions -->
                 <div class="filter-actions">
                     <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-filter"></i>
                         Apply Filters
                     </button>
 
                     <a href="/api/tasks" class="btn btn-secondary">
+                        <i class="fa-solid fa-xmark"></i>
                         Clear Filters
                     </a>
                 </div>

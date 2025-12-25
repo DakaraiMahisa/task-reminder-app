@@ -85,6 +85,12 @@ body {
     background-color: #16a34a;
     transform: translateY(-1px);
 }
+.btn i,
+.nav-btn i {
+    margin-right: 6px;
+    font-size: 13px;
+}
+
 .app-icon {
     font-size: 20px;
     color: #22c55e;
@@ -189,6 +195,23 @@ body {
 
 .filter-actions .btn-secondary {
     box-shadow: 0 4px 8px rgba(100, 116, 139, 0.25);
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 14px;
+}
+
+.input-with-icon input {
+    padding-left: 36px;
 }
 
 
