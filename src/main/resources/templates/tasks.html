@@ -96,10 +96,6 @@
                 <!-- Title Search -->
                 <div class="filter-item">
                     <label>Title</label>
-                    <!--<input type="text"
-                           name="title"
-                           th:value="${title}"
-                           placeholder="Search title"> -->
                     <div class="input-with-icon">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text"
@@ -146,7 +142,31 @@
         <!-- ===============================================
              TASK TABLE
              =============================================== -->
-        <section class="task-list">
+
+        <div class="view-switcher">
+            <a th:href="@{/api/tasks(view='table')}"
+               class="view-btn"
+                th:classappend="${view == 'table'} ? ' active'">
+                <i class="fa-solid fa-table"></i>
+                Table View
+            </a>
+
+            <a th:href="@{/api/tasks(view='card')}"
+               class="view-btn"
+                th:classappend="${view == 'card'} ? ' active'">
+                <i class="fa-solid fa-grip"></i>
+                Card View
+            </a>
+
+            <a th:href="@{/api/tasks(view='calendar')}"
+               class="view-btn"
+                th:classappend="${view == 'calendar'} ? ' active'">
+                <i class="fa-solid fa-calendar-days"></i>
+                Calendar View
+            </a>
+        </div>
+
+        <section class="task-list" th:if="${view == 'table'}">
 
             <table class="task-table">
                 <thead>
@@ -231,6 +251,97 @@
             </table>
 
         </section>
+        <!-- ===============================================
+    CARD VIEW
+    =============================================== -->
+        <section class="card-view"
+                 th:if="${view == 'card'}">
+
+            <div class="task-card-grid">
+
+                <div class="task-card"
+                     th:each="task : ${tasks}"
+                     th:classappend="
+                ${task.priority.name() == 'HIGH'} ? ' priority-high' :
+                (${task.priority.name() == 'MEDIUM'} ? ' priority-medium' : ' priority-low')
+             ">
+
+                    <!-- Card Header -->
+                    <div class="task-card-header">
+                        <h3 th:text="${task.title}"></h3>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="task-card-body">
+                        <p class="description"
+                           th:text="${task.description}"></p>
+
+                        <p class="meta">
+                            <strong>Due Date:</strong>
+                            <span th:text="${task.dueDate}"></span>
+                        </p>
+
+                        <p class="meta task-priority">
+                            <strong>Priority:</strong>
+                            <span th:text="${task.priority.label}"></span>
+                        </p>
+
+                        <p class="meta">
+                            <strong>Status:</strong>
+                            <span class="badge status"
+                                  th:text="${task.status.label}"
+                                  th:classappend="' status-' + ${task.status}">
+                    </span>
+                        </p>
+                    </div>
+
+                    <!-- Card Actions -->
+                    <div class="task-card-actions">
+
+                        <a class="btn btn-view"
+                           th:href="@{/api/view/{id}(id=${task.id})}">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+
+                        <a class="btn btn-edit"
+                           th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
+                           th:href="@{/api/tasks/update/{id}(id=${task.id})}">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+
+                        <span class="btn btn-edit btn-disabled"
+                              th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}">
+                    <i class="fa-solid fa-pen"></i> Edit
+                </span>
+
+                        <a class="btn btn-danger"
+                           th:href="@{/api/tasks/delete/{id}(id=${task.id})}"
+                           onclick="return confirm('Delete this task?');">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </a>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="task-card-footer">
+
+                        <a class="btn btn-info"
+                           th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
+                           th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
+                            <i class="fa-solid fa-check"></i> Mark Done
+                        </a>
+
+                        <span class="completed-label"
+                              th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}">
+                    <i class="fa-solid fa-circle-check"></i> Done
+                </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
         <!-- ===============================================
@@ -248,7 +359,7 @@
                    priority=${priority},
                    title=${title},
                    sortBy=${sortBy},
-                   sortDir=${sortDir}
+                   view=${view}
                )}">
                 Previous
             </a>
@@ -266,7 +377,8 @@
                    status=${status},
                    priority=${priority},
                    title=${title},
-                   sortBy=${sortBy}
+                   sortBy=${sortBy},
+                   view=${view}
                )}">
                 Next
             </a>
