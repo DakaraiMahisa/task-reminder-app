@@ -4,7 +4,6 @@ import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
 import com.taskreminder.app.repository.TaskRepository;
 import jakarta.transaction.Transactional;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -85,4 +84,41 @@ public class TaskService {
                 .filter(task -> task.getStatus() != TaskStatus.DONE)
                 .toList();
     }
+
+    public long countAllTasks() {
+        return taskRepository.count();
+    }
+
+    public long countFilteredTasks(TaskStatus status,
+                                   TaskPriority priority,
+                                   String keyword) {
+
+        if (status != null) {
+            return taskRepository.countByStatus(status);
+        } else if (priority != null) {
+            return taskRepository.countByPriority(priority);
+        } else if (keyword != null && !keyword.isBlank()) {
+            return taskRepository.countByTitleContainingIgnoreCase(keyword);
+        }
+        return taskRepository.count();
+    }
+
+    public long countCompletedTasks(TaskStatus status,
+                                    TaskPriority priority,
+                                    String keyword) {
+
+        if (status != null) {
+            return status == TaskStatus.DONE
+                    ? taskRepository.countByStatus(TaskStatus.DONE)
+                    : 0;
+        } else if (priority != null) {
+            return taskRepository.countByStatus(TaskStatus.DONE);
+        } else if (keyword != null && !keyword.isBlank()) {
+            return taskRepository.countByStatusAndTitleContainingIgnoreCase(
+                    TaskStatus.DONE, keyword
+            );
+        }
+        return taskRepository.countByStatus(TaskStatus.DONE);
+    }
+
 }
