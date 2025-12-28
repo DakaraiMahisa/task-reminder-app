@@ -123,6 +123,131 @@ body {
     border: 1px solid #f5c6cb;
 }
 
+/* =========================================================
+   TASK SUMMARY STRIP
+========================================================= */
+.task-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.summary-card {
+     background: #ffffff;
+     border-radius: 12px;
+     padding: 18px 20px;
+     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+     display: flex;
+     align-items: center;
+     gap: 16px;
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+ }
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.summary-value {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #1f2933;
+}
+
+.summary-label {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* Status accents */
+.summary-card.pending {
+    border-left: 5px solid #f59e0b;
+}
+
+.summary-card.completed {
+    border-left: 5px solid #10b981;
+}
+
+.summary-card.progress {
+    border-left: 5px solid #3b82f6;
+}
+/* =========================================================
+   SUMMARY ICONS
+========================================================= */
+
+.summary-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.summary-icon.total {
+    background: #6366f1;
+}
+
+.summary-icon.pending {
+    background: #f59e0b;
+}
+
+.summary-icon.completed {
+    background: #10b981;
+}
+
+.summary-content {
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   PROGRESS RING
+========================================================= */
+
+.summary-card.progress {
+
+}
+
+.progress-ring {
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+.progress-ring svg {
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #e5e7eb;
+    stroke-width: 6;
+}
+
+.ring-progress {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 175;
+    transition: stroke-dashoffset 0.4s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2933;
+}
 
 /* =====================================================
    FILTERS / SEARCH / SORT

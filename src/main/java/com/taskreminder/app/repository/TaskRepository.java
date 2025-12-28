@@ -38,4 +38,13 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     List<Task> findByDueDateBetween( String start, String end);
     List<Task> findByDueDateBefore(String date);
+    long countByStatus(TaskStatus status);
+
+    long countByPriority(TaskPriority priority);
+
+    long countByTitleContainingIgnoreCase(String keyword);
+
+    long countByStatusAndTitleContainingIgnoreCase(
+            TaskStatus status, String keyword
+    );
 }

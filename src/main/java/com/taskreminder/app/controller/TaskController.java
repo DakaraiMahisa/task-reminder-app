@@ -48,6 +48,23 @@ public class TaskController {
         model.addAttribute("totalPages",taskPage.getTotalPages());
         model.addAttribute("size",size);
 
+        long totalTasks =
+                taskService.countFilteredTasks(status, priority, title);
+
+        long completedTasks =
+                taskService.countCompletedTasks(status, priority, title);
+
+        long pendingTasks = totalTasks - completedTasks;
+
+        int progressPercent = totalTasks == 0
+                ? 0
+                : (int) ((completedTasks * 100) / totalTasks);
+
+        model.addAttribute("totalTasks", totalTasks);
+        model.addAttribute("completedTasks", completedTasks);
+        model.addAttribute("pendingTasks", pendingTasks);
+        model.addAttribute("progressPercent", progressPercent);
+
         int totalPages = taskPage.getTotalPages();
         List<Integer> pageNumbers = IntStream.range(0,totalPages).boxed().toList();
         model.addAttribute("pageNumbers",pageNumbers);
