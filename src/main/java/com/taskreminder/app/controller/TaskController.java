@@ -32,6 +32,7 @@ public class TaskController {
     public String listTasks(
             @RequestParam(defaultValue = "0")int page,
             @RequestParam(defaultValue = "5")int size,
+            @RequestParam(required = false) List<String> filters,
             @RequestParam(required = false) TaskStatus status,
             @RequestParam(required = false) TaskPriority priority,
             @RequestParam(required = false) String title,
@@ -39,8 +40,43 @@ public class TaskController {
             @RequestParam(defaultValue = "table") String view,
             Model model) {
 
-        Sort sort = Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
+        List<String> activeFilters = (filters == null) ? List.of() : filters;
+
+        boolean filterRequest = !activeFilters.isEmpty();
+
+        model.addAttribute("filters", activeFilters);
+        model.addAttribute("status", status);
+        model.addAttribute("priority", priority);
+        model.addAttribute("title", title);
+        model.addAttribute("view", view);
+        model.addAttribute("sortBy", sortBy);
+
+        if (filterRequest) {
+
+            if (activeFilters.contains("status") && status == null) {
+                model.addAttribute("error", "Please select a status");
+                return "tasks";
+            }
+
+            if (activeFilters.contains("priority") && priority == null) {
+                model.addAttribute("error", "Please select a priority");
+                return "tasks";
+            }
+
+            if (activeFilters.contains("title")
+                    && (title == null || title.isBlank())) {
+                model.addAttribute("error", "Please enter a title");
+                return "tasks";
+            }
+        }
+
+        TaskStatus effectiveStatus = activeFilters.contains("status") ? status : null;
+
+        TaskPriority effectivePriority = activeFilters.contains("priority") ? priority : null;
+
+        String effectiveTitle = activeFilters.contains("title") ? title : null;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         Page<Task>taskPage  =  taskService.getPagedTasks(pageable,status,priority,title);
         model.addAttribute("taskPage",taskPage);
         model.addAttribute("tasks",taskPage.getContent());
@@ -68,9 +104,6 @@ public class TaskController {
         int totalPages = taskPage.getTotalPages();
         List<Integer> pageNumbers = IntStream.range(0,totalPages).boxed().toList();
         model.addAttribute("pageNumbers",pageNumbers);
-
-        model.addAttribute("sortBy",sortBy);
-        model.addAttribute("view", view);
         return "tasks";
     }
 
