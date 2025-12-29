@@ -128,6 +128,10 @@
          ===================================================== -->
     <section class="task-controls">
 
+        <div class="error-banner" th:if="${error}">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span th:text="${error}"></span>
+        </div>
         <form method="get" action="/api/tasks" class="filter-form">
 
             <div class="filter-group">
@@ -166,16 +170,37 @@
                     </div>
                 </div>
 
-                <!-- Sort By -->
+                <!-- Filter By (Select active filters) -->
                 <div class="filter-item">
-                    <label>Sort By</label>
-                    <select name="sortBy">
-                        <option value="dueDate" th:selected="${sortBy == 'dueDate'}">Due Date</option>
-                        <option value="priority" th:selected="${sortBy == 'priority'}">Priority</option>
-                        <option value="title" th:selected="${sortBy == 'status'}">Status</option>
-                        <option value="title" th:selected="${sortBy == 'title'}">Title</option>
-                    </select>
+                    <label>Filter By</label>
+
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox"
+                                   name="filters"
+                                   value="status"
+                                   th:checked="${#lists.contains(filters, 'status')}">
+                            Status
+                        </label>
+
+                        <label>
+                            <input type="checkbox"
+                                   name="filters"
+                                   value="priority"
+                                   th:checked="${#lists.contains(filters, 'priority')}">
+                            Priority
+                        </label>
+
+                        <label>
+                            <input type="checkbox"
+                                   name="filters"
+                                   value="title"
+                                   th:checked="${#lists.contains(filters, 'title')}">
+                            Title
+                        </label>
+                    </div>
                 </div>
+
 
                 <!-- Actions -->
                 <div class="filter-actions">
@@ -474,7 +499,6 @@
 
 <script th:if="${view == 'calendar'}">
     document.addEventListener('DOMContentLoaded', function () {
-
         const calendarEl = document.getElementById('taskCalendar');
         if (!calendarEl) {
             return;
@@ -497,5 +521,6 @@
         calendar.render();
     });
 </script>
+<script th:src="@{/js/filterButton.js}"></script>
 </body>
 </html>

@@ -43,16 +43,14 @@ public class TaskService {
 
 
 //Filters with pagination + sorting
-    public Page<Task> getPagedTasks(Pageable pageable, TaskStatus status, TaskPriority priority,String keyword){
-       if(status!=null){
-           return taskRepository.findByStatus(status,pageable);
-       }else if(priority!=null){
-           return taskRepository.findByPriority(priority,pageable);
-       }else if(keyword!=null){
-           return taskRepository.findByTitleContainingIgnoreCase(keyword,pageable);
-       }
-        return taskRepository.findAll(pageable);
-    }
+public Page<Task> getPagedTasks(
+        Pageable pageable,
+        TaskStatus status,
+        TaskPriority priority,
+        String title
+) {
+    return taskRepository.findTasks(status, priority, title, pageable);
+}
 
     public Page<Task> findAll(Pageable pageable) {
        return taskRepository.findAll(pageable);
@@ -89,36 +87,25 @@ public class TaskService {
         return taskRepository.count();
     }
 
-    public long countFilteredTasks(TaskStatus status,
-                                   TaskPriority priority,
-                                   String keyword) {
-
-        if (status != null) {
-            return taskRepository.countByStatus(status);
-        } else if (priority != null) {
-            return taskRepository.countByPriority(priority);
-        } else if (keyword != null && !keyword.isBlank()) {
-            return taskRepository.countByTitleContainingIgnoreCase(keyword);
-        }
-        return taskRepository.count();
+    public long countFilteredTasks(
+            TaskStatus status,
+            TaskPriority priority,
+            String title
+    ) {
+        return taskRepository.countTasks(status, priority, title);
     }
 
-    public long countCompletedTasks(TaskStatus status,
-                                    TaskPriority priority,
-                                    String keyword) {
-
-        if (status != null) {
-            return status == TaskStatus.DONE
-                    ? taskRepository.countByStatus(TaskStatus.DONE)
-                    : 0;
-        } else if (priority != null) {
-            return taskRepository.countByStatus(TaskStatus.DONE);
-        } else if (keyword != null && !keyword.isBlank()) {
-            return taskRepository.countByStatusAndTitleContainingIgnoreCase(
-                    TaskStatus.DONE, keyword
-            );
+    public long countCompletedTasks(
+            TaskStatus status,
+            TaskPriority priority,
+            String title
+    ) {
+        // If status filter is active and not DONE → no completed tasks
+        if (status != null && status != TaskStatus.DONE) {
+            return 0;
         }
-        return taskRepository.countByStatus(TaskStatus.DONE);
+
+        return taskRepository.countCompletedTasks(priority, title);
     }
 
 }

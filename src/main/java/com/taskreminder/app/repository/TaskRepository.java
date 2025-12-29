@@ -47,4 +47,29 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     long countByStatusAndTitleContainingIgnoreCase(
             TaskStatus status, String keyword
     );
+
+    @Query("""
+ SELECT COUNT(t) FROM Task t
+ WHERE (:status IS NULL OR t.status = :status)
+   AND (:priority IS NULL OR t.priority = :priority)
+   AND (:title IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')))
+""")
+    long countTasks(
+            @Param("status") TaskStatus status,
+            @Param("priority") TaskPriority priority,
+            @Param("title") String title
+    );
+
+    @Query("""
+ SELECT COUNT(t) FROM Task t
+ WHERE t.status = 'DONE'
+   AND (:priority IS NULL OR t.priority = :priority)
+   AND (:title IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')))
+""")
+    long countCompletedTasks(
+            @Param("priority") TaskPriority priority,
+            @Param("title") String title
+    );
+
+
 }

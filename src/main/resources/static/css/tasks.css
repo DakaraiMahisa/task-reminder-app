@@ -123,6 +123,20 @@ body {
     border: 1px solid #f5c6cb;
 }
 
+.error-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fdecea;
+    color: #b42318;
+    border: 1px solid #f5c2c7;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+
 /* =========================================================
    TASK SUMMARY STRIP
 ========================================================= */
