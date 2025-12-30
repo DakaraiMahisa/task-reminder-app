@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #4b6fe2, #3f5bd8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* container */
+.otp-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* card */
+.otp-card {
+    background: #ffffff;
+    padding: 32px 36px;
+    width: 380px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* heading */
+.otp-card h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    color: #111;
+}
+
+/* sub text */
+.otp-subtext {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 24px;
+    line-height: 1.4;
+}
+
+/* otp boxes */
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.otp-inputs input {
+    width: 44px;
+    height: 44px;
+    border: 2px solid #2f55ff;
+    border-radius: 6px;
+    font-size: 18px;
+    text-align: center;
+    outline: none;
+}
+
+.otp-inputs input:focus {
+    border-color: #1d3cff;
+    box-shadow: 0 0 0 2px rgba(47, 85, 255, 0.25);
+}
+
+/* verify button */
+.verify-btn {
+    width: 100%;
+    height: 44px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #2f55ff, #1d3cff);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.verify-btn:hover {
+    background: linear-gradient(180deg, #1d3cff, #1530cc);
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" th:href="@{/css/otp.css}">
+</head>
+<body>
+
+<div class="otp-container">
+    <div class="otp-card">
+        <h2>Enter OTP</h2>
+
+        <p class="otp-subtext">
+            Please enter the 6-digit one time password (OTP) that we sent to your registered email id.
+        </p>
+
+        <form th:action="@{/verify-otp}" method="post">
+            <input type="hidden" name="email" th:value="${email}" />
+
+            <div class="otp-inputs">
+                <input maxlength="1" />
+                <input maxlength="1" />
+                <input maxlength="1" />
+                <input maxlength="1" />
+                <input maxlength="1" />
+                <input maxlength="1" />
+            </div>
+
+            <input type="hidden" name="otp" id="otpHidden" />
+
+            <button type="submit" class="verify-btn">Verify</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const inputs = document.querySelectorAll('.otp-inputs input');
+    const hidden = document.getElementById('otpHidden');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            hidden.value = [...inputs].map(i => i.value).join('');
+        });
+    });
+</script>
+
+</body>
+</html>
