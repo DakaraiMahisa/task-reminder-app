@@ -1,0 +1,247 @@
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(180deg, #0b8fd9, #00a86b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-wrapper {
+    width: 900px;
+    text-align: center;
+}
+
+.auth-header {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.auth-header .line {
+    display: block;
+    height: 2px;
+    background: #fff;
+    width: 100%;
+}
+
+.user-icon {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-icon i {
+    font-size: 26px;
+    color: #0b8fd9;
+}
+
+.auth-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 40px;
+    border-radius: 12px;
+}
+
+.auth-panel {
+    width: 360px;
+    background: #e6f5f7;
+    padding: 40px 30px;
+    border-radius: 6px;
+    position: relative;
+    z-index: 1;
+}
+.or-circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 42px;
+    height: 42px;
+
+    background: #0f7c7c;
+    color: #fff;
+
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 3;
+
+    box-shadow: 0 0 0 6px #e6f5f7;
+}
+
+.or-circle {
+    box-shadow:
+        0 0 0 6px #e6f5f7,
+        0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.or-circle::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+h3 {
+    margin-bottom: 5px;
+}
+
+.action-text {
+    color: #007f8b;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.input-group {
+    position: relative;
+    margin: 12px 0;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #d7f1ef;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 10px 10px 36px; /* space for icon */
+    border: none;
+    border-radius: 4px;
+    background: #0c7c7b;
+    color: #fff;
+}
+.input-group input:focus {
+    outline: none;
+    background: #0f8c8b;
+}
+
+.input-group input:focus + i,
+.input-group input:focus ~ i {
+    color: #ffffff;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    background: #0c7c7b;
+    color: white;
+}
+
+input::placeholder {
+    color: #d7f1ef;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;               /* brings text closer */
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* hide native checkbox */
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* custom box */
+.checkbox .checkmark {
+    width: 16px;
+    height: 16px;
+    background: #0c7c7b; /* dark blue */
+    border-radius: 3px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* orange check */
+.checkbox .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid #f7931e;  /* orange */
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+/* show checkmark when checked */
+.checkbox input:checked + .checkmark::after {
+    opacity: 1;
+}
+
+/* icon styling */
+.checkbox i {
+    font-size: 13px;
+    color: #0c7c7b;
+    margin-left: 4px;
+}
+
+/* text */
+.checkbox-text {
+    color: #333;
+}
+
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    margin-top: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn.primary {
+    background: #f7931e;
+    color: #fff;
+}
+
+.btn.secondary {
+    background: #f7931e;
+    color: #fff;
+}
+
+.link {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #333;
+    text-decoration: none;
+}
+
+
