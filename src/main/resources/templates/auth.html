@@ -10,13 +10,28 @@
 
 <div class="auth-wrapper">
 
+    <!-- GLOBAL SUCCESS / ERROR MESSAGES -->
+    <div th:if="${param.logout}" class="alert success">
+        <i class="fa-solid fa-circle-check"></i>
+        You have been logged out successfully.
+    </div>
+
+    <div th:if="${success}" class="alert success">
+        <i class="fa-solid fa-circle-check"></i>
+        <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span th:text="${error}"></span>
+    </div>
+
     <div class="auth-header">
         <div class="user-icon">
         <i class="fa-solid fa-user"></i>
         </div>
         <span class="line"></span>
     </div>
-
     <div class="auth-box">
         <!-- LOGIN -->
         <div class="auth-panel">
@@ -26,8 +41,8 @@
 
             <form th:action="@{/login}" method="post">
                 <div class="input-group">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" name="username" placeholder="Username" required />
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="text" name="email" placeholder="Email" required />
                 </div>
 
                 <div class="input-group">
@@ -43,6 +58,9 @@
 
 
                 <button type="submit" class="btn primary">LOG IN</button>
+                <div th:if="${param.error=='true'}" class="alert error">
+                    Invalid username or password
+                </div>
                 <a href="#" class="link">Forgot your password?</a>
             </form>
         </div>
@@ -73,14 +91,30 @@
 
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+                    <input type="password"id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required />
                 </div>
 
                 <button type="submit" class="btn secondary">REGISTER</button>
+                <p id="passwordError" style="color:red; display:none;">Passwords do not match!</p>
             </form>
         </div>
     </div>
 </div>
 
+<script>
+    const form = document.getElementById('registerForm');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const passwordError = document.getElementById('passwordError');
+
+    form.addEventListener('submit', function(event) {
+        if (password.value !== confirmPassword.value) {
+            event.preventDefault(); // stop form submission
+            passwordError.style.display = 'block';
+        } else {
+            passwordError.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>

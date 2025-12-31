@@ -85,6 +85,20 @@ body {
     background-color: #16a34a;
     transform: translateY(-1px);
 }
+
+.logout-form {
+    display: inline;
+}
+
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.logout-btn:hover {
+    background: #c0392b;
+}
+
 .btn i,
 .nav-btn i {
     margin-right: 6px;

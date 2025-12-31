@@ -36,6 +36,65 @@ body {
     font-size: 22px;
     color: #111;
 }
+/* Resend OTP section */
+.resend-section {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280; /* neutral gray */
+}
+
+/* Resend button */
+#resendBtn {
+    background: none;
+    border: none;
+    color: #2563eb; /* primary blue */
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+    text-decoration: underline;
+}
+
+#resendBtn:hover {
+    color: #1d4ed8;
+}
+
+#resendBtn:disabled {
+    color: #9ca3af;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+/* Timer text */
+#timerText {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+#timer span {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Error and success feedback (important) */
+.error-text {
+    color: #dc2626;
+    background: #fee2e2;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.success-text {
+    color: #16a34a;
+    background: #dcfce7;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
 
 /* sub text */
 .otp-subtext {

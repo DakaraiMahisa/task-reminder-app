@@ -32,6 +32,11 @@
             <a href="/" class="nav-btn">
                 <i class="fa-solid fa-house"></i>Home
             </a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-btn logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </form>
         </div>
 
     </nav>
@@ -279,14 +284,14 @@
                     <td>
     <span class="badge status"
           th:text="${task.status.label}"
-          th:classappend="' status-' + ${task.status}">
+          th:classappend="' status-' + task.status">
     </span>
                     </td>
 
                     <td>
     <span class="badge priority"
           th:text="${task.priority.label}"
-          th:classappend="' priority-' + ${task.priority}">
+          th:classappend="' priority-' + task.priority">
     </span>
                     </td>
 
@@ -377,7 +382,7 @@
                             <strong>Status:</strong>
                             <span class="badge status"
                                   th:text="${task.status.label}"
-                                  th:classappend="' status-' + ${task.status}">
+                                  th:classappend="' status-' + task.status">
                     </span>
                         </p>
                     </div>
