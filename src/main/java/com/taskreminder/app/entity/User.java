@@ -19,19 +19,25 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private boolean verified = false;
+
     private String otp;
+
+    @Column(nullable = false)
+    boolean enabled =false;
     private LocalDateTime otpExpiry;
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public User(){}
 
-    public User(String name,String email, String password,boolean verified,String otp,LocalDateTime otpExpiry,LocalDateTime createdAt){
+    public User(String name,String email, String password,boolean verified,String otp,boolean enabled,LocalDateTime otpExpiry,LocalDateTime createdAt){
         this.name = name;
         this.email = email;
         this.password = password;
         this.verified = verified;
         this.otp = otp;
+        this.enabled = enabled;
         this.otpExpiry =otpExpiry;
         this.createdAt = createdAt;
     }
@@ -83,6 +89,14 @@ public class User {
 
     public void setOtp(String otp) {
         this.otp = otp;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public LocalDateTime getOtpExpiry() {
