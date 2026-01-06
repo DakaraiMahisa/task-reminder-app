@@ -267,4 +267,13 @@ input::placeholder {
     text-decoration: none;
 }
 
+.alert.warning {
+    background-color: #fff7ed;
+    color: #9a3412;
+    border-left: 5px solid #f97316;
+}
+
+.alert.warning i {
+    color: #f97316;
+}
 
