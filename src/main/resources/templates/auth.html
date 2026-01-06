@@ -15,6 +15,15 @@
         <i class="fa-solid fa-circle-check"></i>
         You have been logged out successfully.
     </div>
+    <!-- LOGIN ERROR (Spring Security) -->
+    <div th:if="${param.error}" class="alert error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Invalid email or password
+    </div>
+    <div th:if="${param.expired}" class="alert warning">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Session expired. Please log in again.
+    </div>
 
     <div th:if="${success}" class="alert success">
         <i class="fa-solid fa-circle-check"></i>
@@ -53,7 +62,7 @@
                     <input type="checkbox" />
                     <span class="checkmark"></span>
                     <i class="fa-solid fa-clock"></i>
-                    <span class="checkbox-text">Keep me logged in</span>
+                    <span class="checkbox-text" name="remember-me">Keep me logged in</span>
                 </label>
 
 
@@ -101,20 +110,7 @@
     </div>
 </div>
 
-<script>
-    const form = document.getElementById('registerForm');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirmPassword');
-    const passwordError = document.getElementById('passwordError');
-
-    form.addEventListener('submit', function(event) {
-        if (password.value !== confirmPassword.value) {
-            event.preventDefault(); // stop form submission
-            passwordError.style.display = 'block';
-        } else {
-            passwordError.style.display = 'none';
-        }
-    });
-</script>
+<script th:src="@{/js/confirmPassword.js}"></script>
+<script th:src="@{/js/alerts.js}"></script>
 </body>
 </html>
