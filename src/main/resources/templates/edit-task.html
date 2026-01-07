@@ -3,79 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Task</title>
+
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/edit-task.css}">
 
+    <link rel="stylesheet" th:href="@{/css/edit-task.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
 
-<div class="container">
-    <!-- =====================================================
-TOP NAVIGATION BAR
-===================================================== -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <a th:href="@{/api/tasks}" class="app-title">
-                <i class="fa-solid fa-list-check app-icon"></i>
-                Task Reminder App
-            </a>
+<div th:replace="~{fragments/header :: header('dashboard')}"></div>
+
+<main class="page-wrapper">
+
+    <div class="task-card">
+
+        <div class="task-card-header edit">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <h2>Edit Task</h2>
         </div>
 
-        <div class="nav-right">
-            <a href="/" class="nav-btn">
-                <i class="fa-solid fa-house"></i>Home
-            </a>
-        </div>
-    </nav>
+        <form th:action="@{/api/tasks/update}"
+              th:object="${task}"
+              method="post"
+              class="task-form">
 
-    <h2>Edit Task</h2>
+            <input type="hidden" th:field="*{id}">
 
-    <form action="#" th:action="@{/api/tasks/update}" th:object="${task}" method="post">
+            <!-- Title -->
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-heading"></i> Title
+                </label>
+                <input type="text" th:field="*{title}" required>
+            </div>
 
-        <input type="hidden" th:field="*{id}">
+            <!-- Description -->
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-align-left"></i> Description
+                </label>
+                <input type="text" th:field="*{description}" required>
+            </div>
 
-        <label>Title</label>
-        <input type="text" th:field="*{title}" required>
+            <!-- Due Date -->
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-calendar-days"></i> Due Date
+                </label>
+                <input type="date" th:field="*{dueDate}" required>
+            </div>
 
-        <label>Description</label>
-        <input type="text" th:field="*{description}" required>
+            <!-- Status -->
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-list-check"></i> Status
+                </label>
+                <select th:field="*{status}" required>
+                    <option value="">Select Status</option>
+                    <option th:each="s : ${T(com.taskreminder.app.enums.TaskStatus).values()}"
+                            th:value="${s}"
+                            th:text="${s.label}">
+                    </option>
+                </select>
+            </div>
 
-        <label>Due Date</label>
-        <input type="text" th:field="*{dueDate}" placeholder="YYYY-MM-DD" required>
+            <!-- Priority -->
+            <div class="form-group">
+                <label>
+                    <i class="fa-solid fa-flag"></i> Priority
+                </label>
+                <select th:field="*{priority}" required>
+                    <option value="">Select Priority</option>
+                    <option th:each="p : ${T(com.taskreminder.app.enums.TaskPriority).values()}"
+                            th:value="${p}"
+                            th:text="${p.label}">
+                    </option>
+                </select>
+            </div>
 
-        <label>Status</label>
-        <select th:field="*{status}" required>
-            <option value="">Select Status</option>
-            <option th:each="s : ${T(com.taskreminder.app.enums.TaskStatus).values()}"
-                    th:value="${s}"
-                    th:text="${s.label}">
-            </option>
-        </select>
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-primary warning">
+                    <i class="fa-solid fa-floppy-disk"></i> Update Task
+                </button>
 
-        <label>Priority</label>
-        <select th:field="*{priority}" required>
-            <option value="">Select Priority</option>
-            <option th:each="p : ${T(com.taskreminder.app.enums.TaskPriority).values()}"
-                    th:value="${p}"
-                    th:text ="${p.label}">
-            </option>
-        </select>
+                <a href="/api/tasks" class="btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </div>
 
-        <button type="submit">Update Task</button>
+        </form>
 
-    </form>
-
-    <a href="/api/tasks" class="back-link">Back to Task List</a>
-
-</div>
-<footer class="footer">
-    <div class="footer-content">
-        <span>Task Reminder App</span>
-        <span>&copy; 2025</span>
-        <span>Created by Dakarai Mahisa</span>
     </div>
-</footer>
 
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="/js/live-time.js"></script>
 </body>
 </html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" >
+</head>
+<body>
+
+<nav class="navbar top-nav" th:fragment="header(context)">
+
+    <!-- LEFT: APP BRAND -->
+    <div class="nav-left">
+        <i class="fa-solid fa-list-check app-icon"></i>
+        <span class="app-name">Task Reminder App</span>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="nav-right">
+
+        <!-- LIVE TIME -->
+        <div class="nav-clock">
+            <i class="fa-solid fa-clock"></i>
+            <span id="liveTime">--:--:--</span>
+        </div>
+
+        <!-- NOT AUTHENTICATED -->
+        <div class="nav-group" sec:authorize="isAnonymous()">
+            <a href="/auth" class="nav-link">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+            <a href="/auth" class="nav-link primary">
+                <i class="fa-solid fa-user-plus"></i> Register
+            </a>
+        </div>
+
+        <!-- AUTHENTICATED – HOME -->
+        <div class="nav-group"
+             sec:authorize="isAuthenticated()"
+             th:if="${context == 'home'}">
+
+            <span class="nav-welcome">
+                <i class="fa-solid fa-user"></i>
+                <strong sec:authentication="name"></strong>
+            </span>
+
+            <form th:action="@{/logout}" method="post">
+                <button class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- AUTHENTICATED – DASHBOARD -->
+        <div class="nav-group"
+             sec:authorize="isAuthenticated()"
+             th:if="${context == 'dashboard'}">
+
+            <a href="/api/tasks" class="nav-link">
+                <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
+
+            <a href="/" class="nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+
+            <a href="/api/tasks/add" class="nav-link primary">
+                <i class="fa-solid fa-plus"></i> Add Task
+            </a>
+
+            <span class="nav-welcome">
+                <i class="fa-solid fa-user"></i>
+                <strong sec:authentication="name"></strong>
+            </span>
+
+            <form th:action="@{/logout}" method="post">
+                <button class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- THEME TOGGLE -->
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+    </div>
+</nav>
+</body>

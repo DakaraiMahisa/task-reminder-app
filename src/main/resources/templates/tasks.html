@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -10,36 +12,15 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
     <link rel="stylesheet" th:href="@{/css/tasks.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+
 </head>
 
 <body>
 
+    <div th:replace="~{fragments/header :: header('dashboard')}"></div>
 <div class="page-container">
-    <!-- =====================================================
-    TOP NAVIGATION BAR
-    ===================================================== -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <span class="app-title">
-                <i class="fa-solid fa-list-check app-icon"></i>
-                Task Reminder App</span>
-        </div>
-
-        <div class="nav-right">
-            <a href="/api/tasks/add" class="nav-btn">
-                <i class="fa-solid fa-plus"></i>Add Task
-            </a>
-            <a href="/" class="nav-btn">
-                <i class="fa-solid fa-house"></i>Home
-            </a>
-            <form th:action="@{/logout}" method="post" class="logout-form">
-                <button type="submit" class="nav-btn logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
-            </form>
-        </div>
-
-    </nav>
 
     <!-- =====================================================
          HEADER / PAGE INTRO
@@ -488,19 +469,8 @@
 
     </main>
 
-
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-    <footer class="footer">
-        <div class="footer-content">
-            <span>Task Reminder App</span>
-            <span>&copy; 2025</span>
-            <span>Created by Dakarai Mahisa</span>
-        </div>
-    </footer>
-
 </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script th:if="${view == 'calendar'}">
     document.addEventListener('DOMContentLoaded', function () {
@@ -528,5 +498,6 @@
 </script>
 <script th:src="@{/js/filterButton.js}"></script>
 <script th:src="@{/js/notifications.js}"></script>
+<script src="/js/live-time.js"></script>
 </body>
 </html>
