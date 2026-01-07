@@ -6,27 +6,14 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/view-task.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+
 </head>
 <body>
 
-    <!-- =====================================================
-    TOP NAVIGATION BAR
-    ===================================================== -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <a th:href="@{/api/tasks}" class="app-title">
-                <i class="fa-solid fa-list-check app-icon"></i>
-                Task Reminder App
-            </a>
-        </div>
+<div th:replace="~{fragments/header :: header('dashboard')}"></div>
 
-
-        <div class="nav-right">
-            <a href="/" class="nav-btn">
-                <i class="fa-solid fa-house"></i>Home
-            </a>
-        </div>
-    </nav>
 <div class="container">
 
     <h2>Task Details</h2>
@@ -66,13 +53,8 @@
     </div>
 </div>
 
-<footer class="footer">
-    <div class="footer-content">
-        <span>Task Reminder App</span>
-        <span>&copy; 2025</span>
-        <span>Created by Dakarai Mahisa</span>
-    </div>
-</footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
+<script src="/js/live-time.js"></script>
 </body>
 </html>

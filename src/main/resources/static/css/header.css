@@ -1,0 +1,121 @@
+/* ===== HEADER BASE ===== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: #fff;
+}
+
+/* ===== LEFT ===== */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.app-icon {
+    font-size: 1.3rem;
+}
+
+/* ===== RIGHT ===== */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* GROUPING */
+.nav-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* LINKS & BUTTONS */
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    padding: 0.45rem 0.8rem;
+    border-radius: 6px;
+
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: #fff;
+
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* PRIMARY ACTION */
+.nav-link.primary {
+    background: #22c55e;
+    border-color: #22c55e;
+    color: #0f172a;
+}
+
+.nav-link.primary:hover {
+    background: #16a34a;
+}
+
+/* LOGOUT */
+.nav-link.logout {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+
+.nav-link.logout:hover {
+    background: #dc2626;
+}
+
+/* WELCOME */
+.nav-welcome {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* CLOCK */
+.nav-clock {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.15);
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* FORM RESET */
+.logout-form {
+    margin: 0;
+}

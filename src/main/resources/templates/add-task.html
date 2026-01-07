@@ -6,75 +6,99 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/add-task.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+
 </head>
 <body>
-<div class="container">
-    <!-- =====================================================
-    TOP NAVIGATION BAR
-    ===================================================== -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <a th:href="@{/api/tasks}" class="app-title">
-                <i class="fa-solid fa-list-check app-icon"></i>
-                Task Reminder App
-            </a>
+
+<div th:replace="~{fragments/header :: header('dashboard')}"></div>
+
+<main class="page-wrapper">
+
+    <div class="task-card">
+
+        <div class="task-card-header">
+            <i class="fa-solid fa-plus"></i>
+            <h2>Add New Task</h2>
         </div>
 
-        <div class="nav-right">
-            <a href="/api/tasks" class="nav-btn">
-                Back To Task List
-            </a>
-        </div>
-    </nav>
+        <form th:action="@{/api/tasks/add}" th:object="${task}" method="post" class="task-form">
 
-    <h2>Add New Task</h2>
+            <!-- Title -->
+            <div class="form-group">
+                <label for="title">
+                    <i class="fa-solid fa-heading"></i> Title
+                </label>
+                <input type="text" id="title" th:field="*{title}">
+                <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            </div>
 
-    <form th:action="@{/api/tasks/add}" th:object="${task}" method="post">
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">
+                    <i class="fa-solid fa-align-left"></i> Description
+                </label>
+                <input type="text" id="description" th:field="*{description}">
+                <div class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            </div>
 
-        <label for="title">Title</label>
-        <input type="text" id="title" th:field="*{title}">
-        <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            <!-- Due Date -->
+            <div class="form-group">
+                <label for="dueDate">
+                    <i class="fa-solid fa-calendar-days"></i> Due Date
+                </label>
+                <input type="date" id="dueDate" th:field="*{dueDate}">
+                <div class="error" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
+            </div>
 
-        <label for="description">Description</label>
-        <input type="text" id="description" th:field="*{description}">
-        <div class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">
+                    <i class="fa-solid fa-list-check"></i> Status
+                </label>
+                <select id="status" th:field="*{status}">
+                    <option value="">-- Select --</option>
+                    <option th:each="s : ${T(com.taskreminder.app.enums.TaskStatus).values()}"
+                            th:value="${s}"
+                            th:text="${s.label}">
+                    </option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+            </div>
 
-        <label for="dueDate">Due Date</label>
-        <input type="date" id="dueDate" th:field="*{dueDate}">
-        <div class="error" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
+            <!-- Priority -->
+            <div class="form-group">
+                <label for="priority">
+                    <i class="fa-solid fa-flag"></i> Priority
+                </label>
+                <select id="priority" th:field="*{priority}">
+                    <option value="">-- Select --</option>
+                    <option th:each="p : ${T(com.taskreminder.app.enums.TaskPriority).values()}"
+                            th:value="${p}"
+                            th:text="${p.label}">
+                    </option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></div>
+            </div>
 
-        <label for="status">Status</label>
-        <select id="status" th:field="*{status}">
-            <option value="">-- Select --</option>
-            <option th:each="s : ${T(com.taskreminder.app.enums.TaskStatus).values()}"
-                    th:value="${s}"
-                    th:text="${s.label}">
-            </option>
-        </select>
-        <div class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Task
+                </button>
 
-        <label for="priority">Priority</label>
-        <select id="priority" th:field="*{priority}">
-            <option value="">-- Select --</option>
-            <option th:each="p : ${T(com.taskreminder.app.enums.TaskPriority).values()}"
-                     th:value="${p}"
-                     th:text ="${p.label}">
-            </option>
+                <a href="/api/tasks" class="btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Cancel
+                </a>
+            </div>
 
-        </select>
-        <div class="error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></div>
-
-        <button type="submit">Save Task</button>
-
-    </form>
-</div>
-<footer class="footer">
-    <div class="footer-content">
-        <span>Task Reminder App</span>
-        <span>&copy; 2025</span>
-        <span>Created by Dakarai Mahisa</span>
+        </form>
     </div>
-</footer>
 
+</main>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="/js/live-time.js"></script>
 </body>
 </html>
