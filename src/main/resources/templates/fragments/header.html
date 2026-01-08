@@ -40,8 +40,7 @@
              th:if="${context == 'home'}">
 
             <span class="nav-welcome">
-                <i class="fa-solid fa-user"></i>
-                <strong sec:authentication="name"></strong>
+                Welcome, <strong sec:authentication="name"></strong>!
             </span>
 
             <form th:action="@{/logout}" method="post">

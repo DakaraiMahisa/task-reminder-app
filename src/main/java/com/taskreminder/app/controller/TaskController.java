@@ -77,7 +77,7 @@ public class TaskController {
         String effectiveTitle = activeFilters.contains("title") ? title : null;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        Page<Task>taskPage  =  taskService.getPagedTasks(pageable,status,priority,title);
+        Page<Task> taskPage = taskService.getPagedTasks(pageable, effectiveStatus, effectivePriority, effectiveTitle);
         model.addAttribute("taskPage",taskPage);
         model.addAttribute("tasks",taskPage.getContent());
         model.addAttribute("currentPage",page);
@@ -85,10 +85,19 @@ public class TaskController {
         model.addAttribute("size",size);
 
         long totalTasks =
-                taskService.countFilteredTasks(status, priority, title);
+                taskService.countFilteredTasks(
+                        effectiveStatus,
+                        effectivePriority,
+                        effectiveTitle
+                );
 
         long completedTasks =
-                taskService.countCompletedTasks(status, priority, title);
+                taskService.countCompletedTasks(
+                        effectiveStatus,
+                        effectivePriority,
+                        effectiveTitle
+                );
+
 
         long pendingTasks = totalTasks - completedTasks;
 
@@ -107,15 +116,13 @@ public class TaskController {
         return "tasks";
     }
 
-
-    //Show add form
     @GetMapping("/tasks/add")
     public String addForm(Model model){
         model.addAttribute("task",new Task());
         return "add-task";
     }
 
-     //Handle add submission
+
     @PostMapping("/tasks/add")
     public String addTask(@Valid @ModelAttribute("task")Task task,
                           BindingResult result,
@@ -147,18 +154,17 @@ public class TaskController {
         return "redirect:/api/tasks";
     }
 
-    //Show edit form
+
     @GetMapping("tasks/update/{id}")
     public String editForm(@PathVariable int id, Model model){
-        Task task = taskService.findById(id).orElse(null);
-        if(task == null){
-            return "redirect:/api/tasks";
-        }
+        Task task = taskService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
         model.addAttribute("task",task);
         return "edit-task";
     }
 
-     //Handling edit submission
+
     @PostMapping("/tasks/update")
     public String updateTask(@Valid @ModelAttribute("task") Task task,
                              BindingResult result,RedirectAttributes redirectAttributes){
@@ -166,9 +172,10 @@ public class TaskController {
             return "edit-task";
         }
         try {
-            Task existing = taskService.findById(task.getId()).orElse(null);
-            if (existing != null) {
-                task.setCreatedAt(existing.getCreatedAt());
+            Task existing = taskService.findById(task.getId())
+                    .orElseThrow(() -> new RuntimeException("Task not found"));
+
+            task.setCreatedAt(existing.getCreatedAt());
                 if(task.getStatus()==TaskStatus.DONE){
                     task.setCompletedAt(LocalDateTime.now());
                 }
@@ -176,7 +183,7 @@ public class TaskController {
                 redirectAttributes.addFlashAttribute(
                         "successMessage", "Task updated successfully!"
                 );
-            }
+
         }catch(Exception e){
             redirectAttributes.addFlashAttribute(
                     "errorMessage", "Failed to update task. Please try again."
@@ -186,7 +193,7 @@ public class TaskController {
 
         return "redirect:/api/tasks";
     }
-//Mark as done method
+
     @GetMapping("/tasks/mark-done/{id}")
     public String markTaskAsDone(@PathVariable Integer id) {
         Task task  = taskService.findById(id).orElse(null);
@@ -199,7 +206,7 @@ public class TaskController {
         return "redirect:/api/tasks";
     }
 
-    //Delete Task
+
     @GetMapping("/tasks/delete/{id}")
     public String deleteTask(@PathVariable int id, RedirectAttributes redirectAttributes){
         try{
@@ -211,9 +218,9 @@ public class TaskController {
                     "errorMessage", "Failed to delete task."
             );
         }
-        return "redirect:/api/tasks ";
+        return "redirect:/api/tasks";
     }
-//    View task api
+
     @GetMapping("/view/{id}")
     public String viewTask(@PathVariable Integer id,Model model, RedirectAttributes redirectAttributes){
 
@@ -230,7 +237,7 @@ public class TaskController {
     @ResponseBody
     public List<Map<String, Object>> getTasksForCalendar() {
 
-        List<Task> tasks = taskService.getAllTasks();
+        List<Task> tasks = taskService.findAllForCurrentUser();
 
         return tasks.stream().map(task -> {
             Map<String, Object> event = new HashMap<>();
@@ -238,11 +245,10 @@ public class TaskController {
             event.put("title", task.getTitle());
             event.put("start", task.getDueDate().toString());
 
-            // Color by status
             switch (task.getStatus()) {
-                case DONE -> event.put("color", "#22c55e");       // green
-                case IN_PROGRESS -> event.put("color", "#3b82f6"); // blue
-                default -> event.put("color", "#f97316");          // orange
+                case DONE -> event.put("color", "#22c55e");
+                case IN_PROGRESS -> event.put("color", "#3b82f6");
+                default -> event.put("color", "#f97316");
             }
 
             return event;
