@@ -40,6 +40,9 @@ public class Task {
 
     private LocalDateTime completedAt;
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
     public Task(){}
 
    public Task(Integer id,String title,String description,String dueDate,TaskStatus status,TaskPriority priority,LocalDateTime createdAt,LocalDateTime completedAt){
@@ -114,5 +117,13 @@ public class Task {
 
     public void setCompletedAt(LocalDateTime completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
