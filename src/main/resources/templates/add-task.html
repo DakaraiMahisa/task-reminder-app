@@ -39,10 +39,9 @@
                 <label for="description">
                     <i class="fa-solid fa-align-left"></i> Description
                 </label>
-                <input type="text" id="description" th:field="*{description}">
+                <textarea id="description" th:field="*{description}" placeholder="What needs to be done?"></textarea>
                 <div class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
             </div>
-
             <!-- Due Date -->
             <div class="form-group">
                 <label for="dueDate">

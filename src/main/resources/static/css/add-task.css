@@ -1,141 +1,159 @@
+/* 1. Page Constraints - Prevents Scrolling */
 html, body {
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    width: 100%;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #f8faff 0%, #eef2f7 100%);
+    font-family: 'Inter', -apple-system, sans-serif;
 }
-/* Page wrapper */
+
 .page-wrapper {
-    min-height: calc(100vh - 120px);
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 32px 16px;
-    background: #f8fafc;
+    padding: 15px;
 }
 
-/* Card */
+/* 2. The Task Card */
 .task-card {
-    width: 100%;
-    max-width: 520px;
     background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 51, 102, 0.1);
+    overflow: hidden;
+    animation: slideUp 0.4s ease-out;
 }
 
-/* Header */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Header - Success Green to Blue Gradient for "New" tasks */
 .task-card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
+    background: linear-gradient(135deg, #28a745, #007bff);
+    padding: 18px;
+    text-align: center;
+    color: white;
 }
 
 .task-card-header i {
-    font-size: 22px;
-    color: #2563eb;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
 }
 
 .task-card-header h2 {
-    font-size: 22px;
+    margin: 0;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #0f172a;
 }
 
-/* Form */
+/* 4. Form Layout */
 .task-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    padding: 20px 35px;
 }
 
-/* Fields */
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    margin-bottom: 12px;
+    position: relative;
 }
 
 .form-group label {
-    font-size: 14px;
-    font-weight: 500;
-    color: #334155;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #5a6a85;
+    margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
-.form-group input,
-.form-group select {
+.form-group label i {
+    color: #007bff;
+    margin-right: 4px;
+}
+
+/* 5. Inputs, Selects, and Textarea */
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
     padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #cbd5f5;
-    font-size: 14px;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    background-color: #fcfdfe;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+/* Focus State - The Blue Glow */
+input:focus, select:focus, textarea:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.12);
 }
 
-/* Errors */
+textarea {
+    resize: none;
+    height: 65px; /* Compact height to save vertical space */
+    font-family: inherit;
+}
+
+/* 6. Error Messages */
 .error {
-    font-size: 13px;
-    color: #dc2626;
-}
-
-/* Actions */
-.form-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.btn-primary,
-.btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 14px;
+    color: #dc3545;
+    font-size: 0.7rem;
+    margin-top: 3px;
     font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
 }
 
-/* Primary */
-.btn-primary {
-    background: #2563eb;
-    color: #ffffff;
+/* 7. Action Buttons - Same Level */
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-primary, .btn-secondary {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
     border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #003366; /* Match Navy Footer */
+    color: white;
 }
 
 .btn-primary:hover {
-    background: #1e40af;
+    background: #00254a;
+    transform: translateY(-1px);
 }
 
-/* Secondary */
 .btn-secondary {
-    background: #e5e7eb;
-    color: #334155;
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
 }
 
 .btn-secondary:hover {
-    background: #cbd5e1;
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    .task-card {
-        padding: 24px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
+    background: #e2e8f0;
+    color: #003366;
 }

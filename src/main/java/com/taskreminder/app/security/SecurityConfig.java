@@ -1,4 +1,4 @@
-package com.taskreminder.app.config;
+package com.taskreminder.app.security;
 import com.taskreminder.app.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
