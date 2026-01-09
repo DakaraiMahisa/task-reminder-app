@@ -1,140 +1,152 @@
 html, body {
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    width: 100%;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #f0f7ff 0%, #e6eef8 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
-/* Page wrapper */
 .page-wrapper {
-    min-height: calc(100vh - 120px);
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 32px 16px;
-    background: #f8fafc;
+    padding: 10px;
 }
 
-/* Card */
 .task-card {
-    width: 100%;
-    max-width: 520px;
     background: #ffffff;
+    width: 100%;
+    max-width: 500px;
+    padding: 0;
     border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    padding: 32px;
+    box-shadow: 0 15px 35px rgba(0, 51, 102, 0.12);
+    overflow: hidden;
 }
 
-/* Header */
+
 .task-card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
+    background: linear-gradient(135deg, #007bff, #003366);
+    padding: 20px;
+    text-align: center;
+    color: white;
 }
 
 .task-card-header i {
-    font-size: 22px;
-}
-
-/* Edit-specific accent */
-.task-card-header.edit i {
-    color: #d97706; /* amber */
+    font-size: 1.5rem;
+    margin-bottom: 8px;
 }
 
 .task-card-header h2 {
-    font-size: 22px;
+    margin: 0;
+    font-size: 1.3rem;
     font-weight: 600;
-    color: #0f172a;
+    letter-spacing: 0.5px;
 }
 
-/* Form */
+/* 5. Form Layout */
 .task-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+    padding: 25px 35px;
 }
 
-/* Fields */
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
-    font-size: 14px;
-    font-weight: 500;
-    color: #334155;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
-.form-group input,
-.form-group select {
+.form-group label i {
+    color: #007bff; /* Bright blue for icons */
+    margin-right: 5px;
+    width: 18px;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    padding: 10px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: inherit;
+}
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
     padding: 10px 12px;
+    border: 1.5px solid #e2e8f0;
     border-radius: 8px;
-    border: 1px solid #cbd5f5;
-    font-size: 14px;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.95rem;
+    color: #2d3748;
+    transition: all 0.2s ease;
+    box-sizing: border-box; /* Crucial for width */
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15) !important; /* Soft blue glow */
 }
 
-/* Actions */
+
 .form-actions {
+    margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     gap: 12px;
-    margin-top: 16px;
+    width: 100%;
 }
 
-/* Buttons */
-.btn-primary,
-.btn-secondary {
-    display: inline-flex;
+.btn-primary, .btn-secondary {
+    flex: 1;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 10px 16px;
+    padding: 12px;
     border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
-    text-decoration: none;
-}
-
-/* Update (warning accent) */
-.btn-primary.warning {
-    background: #d97706;
-    color: #ffffff;
     border: none;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.btn-primary.warning:hover {
-    background: #b45309;
+.btn-primary {
+    background: #003366;
+    color: white;
 }
 
-/* Secondary */
+.btn-primary {
+    background: #003366; /* Navy Footer Match */
+    color: white;
+}
+
 .btn-secondary {
-    background: #e5e7eb;
-    color: #334155;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-primary:hover {
+    background: #001a33;
+    transform: translateY(-1px);
 }
 
 .btn-secondary:hover {
-    background: #cbd5e1;
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    .task-card {
-        padding: 24px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
+    background: #e2e8f0;
+    color: #003366;
 }

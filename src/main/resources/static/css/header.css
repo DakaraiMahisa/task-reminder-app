@@ -61,7 +61,15 @@
 .nav-link:hover {
     background: rgba(255,255,255,0.15);
 }
+.nav-right i {
+    color: rgba(255, 255, 255, 0.8); /* Softened white */
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
 
+.nav-link:hover i {
+    color: #ffffff;
+}
 /* PRIMARY ACTION */
 .nav-link.primary {
     background: #22c55e;
@@ -85,10 +93,17 @@
 
 /* WELCOME */
 .nav-welcome {
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.9rem;
-    opacity: 0.9;
+    padding: 0 15px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    margin-left: 10px;
 }
-
+nav-welcome strong {
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: capitalize;
+}
 /* CLOCK */
 .nav-clock {
     display: flex;
@@ -99,21 +114,11 @@
     border-radius: 6px;
     background: rgba(255,255,255,0.15);
 }
-
-/* THEME TOGGLE */
-.theme-toggle {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: #fff;
-    border-radius: 6px;
-    padding: 0.4rem 0.6rem;
-    cursor: pointer;
+.nav-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
-
-.theme-toggle:hover {
-    background: rgba(255,255,255,0.15);
-}
-
 /* FORM RESET */
 .logout-form {
     margin: 0;

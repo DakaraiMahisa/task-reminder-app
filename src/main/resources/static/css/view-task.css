@@ -1,353 +1,127 @@
-/* =========================
-   GLOBAL PAGE BASE
-   ========================= */
+/* 1. Layout Constraints */
 html, body {
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    background: #f8fafc;
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
-    color: #0f172a;
-}
-
-/* =========================
-   PAGE CONTAINER
-   ========================= */
-.container {
-    max-width: 900px;
-    margin: 48px auto;
-    padding: 0 20px;
-}
-
-/* =========================
-   TITLE
-   ========================= */
-.container h2 {
-    font-size: 26px;
-    font-weight: 600;
-    color: #1e3a8a;
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.container h2::before {
-    content: "\f15c";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    color: #2563eb;
-    font-size: 22px;
-}
-
-/* =========================
-   TIMELINE CARD
-   ========================= */
-.task-details {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 32px 32px 32px 48px;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
-    position: relative;
+    overflow: hidden; /* Strict no-scroll constraint */
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    max-width: 840px;
-    width: 100%;
-    padding: 36px 48px;
+    /* Subtle gradient from Header Blue to Footer Navy */
+    background: linear-gradient(180deg, #f0f7ff 0%, #e6eef8 100%);
+    font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* Timeline vertical line */
+/* 2. Main Content Area */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 3. The Task Card */
+.task-details {
+    background: #ffffff;
+    width: 100%;
+    max-width: 550px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 51, 102, 0.08); /* Navy-tinted shadow */
+    position: relative;
+}
+
+/* Decorative accent bar */
 .task-details::before {
     content: "";
     position: absolute;
-    left: 26px;
-    top: 32px;
-    bottom: 32px;
-    width: 2px;
-    background: linear-gradient(to bottom, #2563eb, #1e40af);
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #007bff, #003366);
+    border-radius: 20px 20px 0 0;
 }
 
-/* =========================
-   FIELD (TIMELINE ITEM)
-   ========================= */
+h2 {
+    margin-top: 0;
+    color: #003366;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* 4. Field Styling */
 .field {
-    position: relative;
-    padding-left: 28px;
-}
-
-/* Timeline dot */
-.field::before {
-    content: "";
-    position: absolute;
-    left: -22px;
-    top: 10px;
-    width: 10px;
-    height: 10px;
-    background: #2563eb;
-    border-radius: 50%;
-}
-
-/* =========================
-   LABEL + ICONS
-   ========================= */
-.field label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Icons per label */
-.field:nth-child(1) label::before {
-    content: "\f02d";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    color: #2563eb;
-}
-
-.field:nth-child(2) label::before {
-    content: "\f036";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    color: #2563eb;
-}
-
-.field:nth-child(3) label::before {
-    content: "\f073";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    color: #2563eb;
-}
-
-.field:nth-child(4) label::before {
-    content: "\f058";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    color: #2563eb;
-}
-
-.field:nth-child(5) label::before {
-    content: "\f024";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    color: #2563eb;
-}
-
-/* =========================
-   FIELD VALUE
-   ========================= */
-.field p {
-    margin-top: 6px;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 10px 14px;
-    border-radius: 999px;
-    display: inline-block;
-    background: #f1f5f9;
-    color: #0f172a;
-}
-
-/* =========================
-   STATUS BADGES
-   ========================= */
-.field:nth-child(4) p {
-    background: #fff7ed;
-    color: #9a3412;
-}
-
-.field:nth-child(4) p:contains("Completed"),
-.field:nth-child(4) p:contains("COMPLETED") {
-    background: #ecfdf5;
-    color: #166534;
-}
-
-/* =========================
-   PRIORITY BADGES
-   ========================= */
-.field:nth-child(5) p {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-/* =========================
-   ACTIONS
-   ========================= */
-.actions {
-    margin-top: 32px;
     display: flex;
     justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.actions .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 14px;
+.field:last-of-type {
+    border-bottom: none;
+}
+
+.field label {
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    width: 30%;
+}
+
+.field p {
+    margin: 0;
+    color: #2d3436;
     font-weight: 500;
+    width: 65%;
+    text-align: right;
+}
+
+/* 5. Status & Priority Badges */
+/* Targets specific fields to make them look like buttons/badges */
+.field:nth-child(4) p, .field:nth-child(5) p {
+    background: #eef2f7;
+    padding: 4px 12px;
+    border-radius: 50px;
+    display: inline-block;
+    width: auto;
+    font-size: 0.8rem;
+    color: #003366;
+}
+
+/* 6. Action Buttons */
+.actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 28px;
+    border-radius: 10px;
     text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
     transition: all 0.2s ease;
 }
 
-/* Primary */
-.actions .btn {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: #ffffff;
+.btn:first-child {
+    color: #003366;
+    background: #fff;
+    border: 1px solid #d1d9e6;
 }
 
-.actions .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+.btn-secondary {
+    background: #003366; /* Match Navy Footer */
+    color: white;
 }
 
-/* Secondary */
-.actions .btn-secondary {
-    background: #e5e7eb;
-    color: #0f172a;
-}
-
-.actions .btn-secondary:hover {
-    background: #cbd5e1;
-}
-
-/* =========================
-   MOBILE
-   ========================= */
-@media (max-width: 640px) {
-    .task-details {
-        padding: 24px 24px 24px 40px;
-    }
-
-    .actions {
-        flex-direction: column;
-    }
-}
-/* =========================
-   SOFT PAGE ENTRANCE
-   ========================= */
-.container {
-    animation: pageFadeIn 0.45s ease-out both;
-}
-
-@keyframes pageFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* =========================
-   TASK CARD EMPHASIS
-   ========================= */
-.task-details {
-    border-left: 1px solid rgba(37, 99, 235, 0.15);
-    animation: timelineDraw 0.6s ease-out both;
-}
-
-@keyframes timelineDraw {
-    from {
-        clip-path: inset(0 0 100% 0);
-    }
-    to {
-        clip-path: inset(0 0 0 0);
-    }
-}
-
-/* =========================
-   FIELD ANIMATION (STAGGERED)
-   ========================= */
-.field {
-    opacity: 0;
-    transform: translateY(6px);
-    animation: fieldReveal 0.4s ease forwards;
-}
-
-.field:nth-child(1) { animation-delay: 0.05s; }
-.field:nth-child(2) { animation-delay: 0.10s; }
-.field:nth-child(3) { animation-delay: 0.15s; }
-.field:nth-child(4) { animation-delay: 0.20s; }
-.field:nth-child(5) { animation-delay: 0.25s; }
-
-@keyframes fieldReveal {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* =========================
-   FIELD HOVER FEEDBACK
-   ========================= */
-.field:hover p {
-    background: #e0e7ff;
-}
-
-/* =========================
-   TITLE DOMINANCE
-   ========================= */
-.field:nth-child(1) p {
-    font-size: 18px;
-    font-weight: 600;
-    background: #eff6ff;
-    color: #1e3a8a;
-}
-
-/* =========================
-   DESCRIPTION READABILITY
-   ========================= */
-.field:nth-child(2) p {
-    border-radius: 12px;
-    line-height: 1.6;
-    max-width: 100%;
-}
-
-/* =========================
-   STATUS — SYSTEM BADGES
-   ========================= */
-.field:nth-child(4) p {
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
-    font-weight: 600;
-}
-
-/* =========================
-   PRIORITY — SEVERITY SCALE
-   ========================= */
-.field:nth-child(5) p {
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-/* =========================
-   ACTION BAR ELEVATION
-   ========================= */
-.actions {
-    padding-top: 12px;
-    border-top: 1px solid #e2e8f0;
-}
-
-.actions .btn {
-    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-}
-
-.actions .btn:hover {
+.btn:hover {
     transform: translateY(-2px);
-}
-
-/* =========================
-   FOOTER SPACING FIX
-   ========================= */
-.container {
-    padding-bottom: 40px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
