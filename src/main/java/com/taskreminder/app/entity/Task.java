@@ -4,8 +4,9 @@ import com.taskreminder.app.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 
@@ -24,9 +25,9 @@ public class Task {
     @NotBlank(message="Description is required")
     private String description;
 
-    @NotBlank(message = "Due date is required")
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Due date must be in YYYY-MM-DD format")
-    private String dueDate;
+    @NotNull(message = "Due date is required")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime dueDate;
 
     @NotNull(message="Status is required")
     @Enumerated(EnumType.STRING)
@@ -37,15 +38,16 @@ public class Task {
     private TaskPriority priority;
     private LocalDateTime createdAt;
 
-
     private LocalDateTime completedAt;
 
+    @Column(name = "reminder_sent",nullable = false)
+    private Boolean reminderSent = false;
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
     public Task(){}
 
-   public Task(Integer id,String title,String description,String dueDate,TaskStatus status,TaskPriority priority,LocalDateTime createdAt,LocalDateTime completedAt){
+   public Task(Integer id,String title,String description,LocalDateTime dueDate,TaskStatus status,TaskPriority priority,LocalDateTime createdAt,LocalDateTime completedAt){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -80,11 +82,11 @@ public class Task {
         this.description = description;
     }
 
-    public String getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -125,5 +127,13 @@ public class Task {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isReminderSent() {
+        return reminderSent;
+    }
+
+    public void setReminderSent(boolean reminderSent) {
+        this.reminderSent = reminderSent;
     }
 }

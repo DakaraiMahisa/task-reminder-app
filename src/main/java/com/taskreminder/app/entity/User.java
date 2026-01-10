@@ -20,12 +20,12 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private boolean verified = false;
+    private Boolean verified = false;
 
     private String otp;
 
     @Column(nullable = false)
-    boolean enabled =false;
+    private Boolean enabled =false;
     private LocalDateTime otpExpiry;
     private LocalDateTime createdAt = LocalDateTime.now();
 

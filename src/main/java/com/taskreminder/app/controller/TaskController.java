@@ -131,7 +131,7 @@ public class TaskController {
             return "add-task";
         }
 
-        if(task.getDueDate()==null||task.getDueDate().trim().isEmpty()){
+        if(task.getDueDate()==null){
             model.addAttribute("errorMessage","Due date is required");
             model.addAttribute("task",task);
             return "add-task";
