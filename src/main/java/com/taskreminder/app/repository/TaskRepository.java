@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -34,12 +35,12 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     Page<Task> findByUserAndPriority(User user,TaskPriority priority, Pageable pageable);
 
-    List<Task> findByUserAndDueDate(User user,String dueDate);
+    List<Task> findByUserAndStatusNotAndDueDate(User user,TaskStatus status,LocalDateTime dueDate);
 
     Page<Task> findByUserAndTitleContainingIgnoreCase(User user,String keyword,Pageable pageable);
 
-    List<Task> findByUserAndDueDateBetween( User user,String start, String end);
-    List<Task> findByUserAndDueDateBefore(User user,String date);
+    List<Task> findByUserAndStatusAndDueDateBetween(User user,TaskStatus status, LocalDateTime start, LocalDateTime end);
+    List<Task> findByUserAndStatusNotAndDueDateBefore(User user,TaskStatus status,LocalDateTime date);
     Page<Task> findByUser(User user, Pageable pageable);
     List<Task> findByUser(User user);
     long countByUserAndStatus(User user,TaskStatus status);
@@ -79,6 +80,8 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
             @Param("title") String title
     );
 
-
     long countByUser(User user);
+
+    List<Task> findByStatusAndReminderSentFalseAndDueDateBefore(TaskStatus status, LocalDateTime now);
+    List<Task> findByStatusAndReminderSentFalseAndDueDateBetween(TaskStatus status, LocalDateTime now, LocalDateTime halfHourFromNow);
 }

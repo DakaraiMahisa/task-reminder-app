@@ -46,8 +46,8 @@ public class UserService {
 
     @Transactional
     public void  verifyOtp(String email, String otp) {
-
-        User user = userRepository.findByEmail(email)
+        String cleanEmail = email.trim().toLowerCase();
+        User user = userRepository.findByEmail(cleanEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (user.isEnabled()) {
@@ -67,8 +67,8 @@ public class UserService {
         }
 
         // SUCCESS
-        user.setEnabled(true);
-        user.setVerified(true);
+        user.setEnabled(Boolean.TRUE);
+        user.setVerified(Boolean.TRUE);
         user.setOtp(null);
         user.setOtpExpiry(null);
 

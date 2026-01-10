@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(
                 user.getEmail(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")), // or your logic
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
                 user.getName()
         );
     }

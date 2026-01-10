@@ -49,7 +49,9 @@
 
     <div class="actions">
         <a th:href="@{/api/tasks}" class="btn">Back to Task List</a>
-        <a th:href="@{/api/tasks/update/{id}(id=${task.id})}" class="btn btn-secondary">Edit Task</a>
+        <a th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
+           th:href="@{/api/tasks/update/{id}(id=${task.id})}" class="btn btn-secondary"
+        >Edit Task</a>
     </div>
 </div>
 

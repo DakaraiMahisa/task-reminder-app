@@ -49,10 +49,14 @@
 
             <!-- Due Date -->
             <div class="form-group">
-                <label>
-                    <i class="fa-solid fa-calendar-days"></i> Due Date
+                <label for="dueDate">
+                    <i class="fa-solid fa-calendar-days"></i> Due Date & Time
                 </label>
-                <input type="date" th:field="*{dueDate}" required>
+                <input type="datetime-local"
+                       id="dueDate"
+                       th:field="*{dueDate}"
+                       class="form-control">
+                <div class="error" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
             </div>
 
             <!-- Status -->

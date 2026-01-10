@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,36 +87,31 @@ public Page<Task> getPagedTasks(
 
     public List<Task> getTaskDueToday() {
         User user = userService.getCurrentUser();
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
 
-        return taskRepository.findByUserAndDueDate(user, today.toString())
-                .stream()
-                .filter(task -> task.getStatus() != TaskStatus.DONE)
-                .toList();
+        return taskRepository.findByUserAndStatusNotAndDueDate(user, TaskStatus.DONE, today);
     }
 
     public List<Task> getUpcomingTasks(int days) {
         User user = userService.getCurrentUser();
-        LocalDate today = LocalDate.now();
-        LocalDate endDate = today.plusDays(days);
-
-        return taskRepository.findByUserAndDueDateBetween(
-                        user,
-                        today.plusDays(1).toString(),
-                        endDate.toString()
-                ).stream()
-                .filter(task -> task.getStatus() == TaskStatus.PENDING)
-                .toList();
+        LocalDateTime today = LocalDate.now().plusDays(1).atStartOfDay();
+        LocalDateTime endDate = LocalDate.now().plusDays(days).atTime(LocalTime.MAX);
+        return taskRepository.findByUserAndStatusAndDueDateBetween(
+                user,
+                TaskStatus.PENDING,
+                today,
+                endDate
+        );
     }
-
     public List<Task> getOverdueTasks() {
         User user = userService.getCurrentUser();
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
+        return taskRepository.findByUserAndStatusNotAndDueDateBefore(
+                user,
+                TaskStatus.DONE,
+                today
+        );
 
-        return taskRepository.findByUserAndDueDateBefore(user, today.toString())
-                .stream()
-                .filter(task -> task.getStatus() != TaskStatus.DONE)
-                .toList();
     }
 
     public long countAllTasks() {
