@@ -33,7 +33,6 @@ html, body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 3. Header - Success Green to Blue Gradient for "New" tasks */
 .task-card-header {
     background: linear-gradient(135deg, #28a745, #007bff);
     padding: 18px;
@@ -57,31 +56,12 @@ html, body {
     padding: 20px 35px;
 }
 
-/*.form-group {
-    margin-bottom: 12px;
-    position: relative;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #5a6a85;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
-.form-group label i {
-    color: #007bff;
-    margin-right: 4px;
-}
-*/
 .form-group {
     margin-bottom: 18px;
 }
 
 .form-group label {
-    display: flex; /* Changed from block to flex to align icon + text */
+    display: flex;
     align-items: center;
     font-size: 0.8rem;
     font-weight: 700;
@@ -93,7 +73,7 @@ html, body {
 
 .form-group label i {
     color: #007bff;
-    margin-right: 8px; /* Slightly increased for better breathing room */
+    margin-right: 8px;
     width: 18px;
     text-align: center;
 }
@@ -108,7 +88,7 @@ html, body {
     color: #2d3748;
     background-color: #fff;
     transition: all 0.2s ease;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
 }
 
 /* Focus state matching your theme */
@@ -120,11 +100,11 @@ html, body {
 
 /* Validation Error Styling */
 .error {
-    color: #e53e3e; /* A slightly darker red to match the 4a5568 palette */
+    color: #e53e3e;
     font-size: 0.75rem;
     font-weight: 600;
     margin-top: 5px;
-    text-transform: none; /* Keep errors readable, not uppercase */
+    text-transform: none;
 }
 /* 5. Inputs, Selects, and Textarea */
 input[type="text"],
@@ -152,7 +132,7 @@ input:focus, select:focus, textarea:focus {
 
 textarea {
     resize: none;
-    height: 65px; /* Compact height to save vertical space */
+    height: 65px;
     font-family: inherit;
 }
 
@@ -188,7 +168,7 @@ textarea {
 }
 
 .btn-primary {
-    background: #003366; /* Match Navy Footer */
+    background: #003366;
     color: white;
 }
 
