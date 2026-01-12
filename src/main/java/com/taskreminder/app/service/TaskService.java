@@ -26,7 +26,7 @@ public class TaskService {
     @Autowired
     private UserService userService;
 
-   public List<Task> getAllTasks(){
+    public List<Task> getAllTasks(){
         return taskRepository.findAll();
    }
 

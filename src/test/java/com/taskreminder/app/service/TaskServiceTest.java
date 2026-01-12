@@ -1,6 +1,7 @@
 package com.taskreminder.app.service;
 
 import com.taskreminder.app.entity.Task;
+import com.taskreminder.app.entity.User;
 import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
 import com.taskreminder.app.repository.TaskRepository;
@@ -15,7 +16,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,9 @@ public class TaskServiceTest {
 
     @Mock
     private TaskRepository taskRepository;
+
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private TaskService service;
@@ -45,10 +50,7 @@ public class TaskServiceTest {
 
         when(taskRepository.findAll()).thenReturn(mockTasks);
 
-        // Act
         List<Task> result = service.getAllTasks();
-
-        // Assert
         assertEquals(2, result.size());
         verify(taskRepository,times(1)).findAll();
     }
@@ -65,191 +67,255 @@ public class TaskServiceTest {
         verify(taskRepository,times(1)).save(task);
     }
     @Test
-    void TestUpdateTask() {
-        Task task = new Task();
+    void TestUpdateTask_ShouldSave_WhenUserIsOwner() {
+        User user = new User();
+        Task existingTask = new Task();
+        existingTask.setId(1);
+        existingTask.setUser(user);
 
-        when(taskRepository.save(task)).thenReturn(task);
+        Task updatedDetails = new Task();
+        updatedDetails.setId(1);
+        updatedDetails.setTitle("Updated Title");
 
-        Task result = service.addTask(task);
+        when(userService.getCurrentUser()).thenReturn(user);
+        when(taskRepository.findById(1)).thenReturn(Optional.of(existingTask));
+        when(taskRepository.save(any(Task.class))).thenAnswer(i -> i.getArgument(0));
 
-        assertEquals(task,result);
-        verify(taskRepository,times(1)).save(task);
+        Task result = service.updateTask(updatedDetails);
+
+        assertNotNull(result);
+        assertEquals("Updated Title", result.getTitle());
+        assertEquals(user, result.getUser());
+        verify(taskRepository).save(updatedDetails);
+    }
+    @Test
+    void TestUpdateTask_ShouldThrowUnauthorized_WhenUserIsNotOwner() {
+        User currentUser = new User();
+        User otherUser = new User();
+
+        Task existingTask = new Task();
+        existingTask.setId(1);
+        existingTask.setUser(otherUser);
+
+        Task taskToUpdate = new Task();
+        taskToUpdate.setId(1);
+
+        when(userService.getCurrentUser()).thenReturn(currentUser);
+        when(taskRepository.findById(1)).thenReturn(Optional.of(existingTask));
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> service.updateTask(taskToUpdate));
+
+        assertEquals("Unauthorized", ex.getMessage());
+        verify(taskRepository, never()).save(any());
+    }
+    @Test
+    void TestUpdateTask_ShouldThrowNotFound_WhenTaskDoesNotExit() {
+        Task taskToUpdate = new Task();
+        taskToUpdate.setId(99);
+
+        when(userService.getCurrentUser()).thenReturn(new User());
+        when(taskRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> service.updateTask(taskToUpdate));
+        verify(taskRepository, never()).save(any());
     }
 
     @Test
-    void TestDeleteTask() {
+    void TestDeleteTask_WhenUserIsOwner() {
         Integer taskId = 1;
+        User user = new User();
+        Task task = new Task();
+        task.setUser(user);
 
-        service.deleteTask(taskId);
+        when(userService.getCurrentUser()).thenReturn(user);
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+
+        assertDoesNotThrow(() -> service.deleteTask(taskId));
 
         verify(taskRepository).deleteById(taskId);
     }
 
     @Test
-    void TestFindById() {
+    void TestDeleteTask_WhenUserIsNotOwner(){
+        Integer taskId = 1;
+        User currentUser = new User();
+        User otherUser = new User();
+
         Task task = new Task();
-        Optional<Task> optionalTask = Optional.of(task);
+        task.setUser(otherUser);
 
-        when(taskRepository.findById(1)).thenReturn(optionalTask);
+        when(userService.getCurrentUser()).thenReturn(currentUser);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
 
-        Optional<Task> result = service.findById(1);
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteTask(taskId));
+        assertEquals("Unauthorized", ex.getMessage());
+        verify(taskRepository, never()).deleteById(any());
+    }
+    @Test
+    void TestFindById_WhenUserIsOwner() {
+        Integer taskId = 1;
+        User user = new User();
+        Task task = new Task();
+        task.setUser(user);
+
+        when(userService.getCurrentUser()).thenReturn(user);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+
+        Optional<Task> result = service.findById(taskId);
 
         assertTrue(result.isPresent());
-        verify(taskRepository).findById(1);
+        assertEquals(task, result.get());
     }
-
     @Test
-    void TestGetPagedTasksFilterByStatus(){
-        Page<Task> page = new PageImpl<>(List.of(new Task()));
-        when(taskRepository.findByStatus(TaskStatus.PENDING,pageable)).thenReturn(page);
+    void TestFindById_WhenUserIsNotOwner() {
+        Integer taskId = 1;
+        User currentUser = new User();
+        User otherUser = new User();
+        Task task = new Task();
+        task.setUser(otherUser);
 
-        Page<Task> result = service.getPagedTasks(pageable,TaskStatus.PENDING,null,null);
-
-        assertEquals(1,result.getTotalElements());
-        verify(taskRepository).findByStatus(TaskStatus.PENDING,pageable);
-        verifyNoMoreInteractions(taskRepository);
+        when(userService.getCurrentUser()).thenReturn(currentUser);
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+        Optional<Task> result = service.findById(taskId);
+        assertTrue(result.isEmpty());
     }
-
     @Test
-    void TestGetPagedTasksFilterByPriority(){
-        Page<Task> page = new PageImpl<>(List.of(new Task()));
-        when(taskRepository.findByPriority(TaskPriority.HIGH,pageable)).thenReturn(page);
+    void TestGetPagedTasks(){
+        User mockUser = new User();
+        Pageable pageable = PageRequest.of(0, 10);
+        TaskStatus status = TaskStatus.DONE;
+        TaskPriority priority = TaskPriority.HIGH;
+        String title = "Report";
 
-        Page<Task> result = service.getPagedTasks(pageable,null,TaskPriority.HIGH,null);
+        Page<Task> expectedPage = new PageImpl<>(Collections.emptyList());
 
-        assertEquals(1,result.getTotalElements());
-        verify(taskRepository).findByPriority(TaskPriority.HIGH,pageable);
-    }
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.findTasks(mockUser, status, priority, title, pageable))
+                .thenReturn(expectedPage);
 
-    @Test
-    void TestGetPagedTasksFilterByKeyword(){
-        Page<Task> page = new PageImpl<>(List.of(new Task()));
-        when(taskRepository.findByTitleContainingIgnoreCase("test",pageable)).thenReturn(page);
+        Page<Task> result = service.getPagedTasks(pageable, status, priority, title);
 
-        Page<Task> result = service.getPagedTasks(pageable,null,null,"test");
+        assertNotNull(result);
+        assertEquals(expectedPage, result);
 
-        assertEquals(1,result.getTotalElements());
-        verify(taskRepository).findByTitleContainingIgnoreCase("test",pageable);
-    }
-
-    @Test
-    void TestGetPagedTasksNoFilterProvided(){
-        Page<Task> page = new PageImpl<>(List.of(new Task()));
-        when(taskRepository.findAll(pageable)).thenReturn(page);
-
-        Page<Task> result = service.getPagedTasks(pageable,null,null,null);
-
-        assertEquals(1,result.getTotalElements());
-        verify(taskRepository).findAll(pageable);
+        verify(userService, times(1)).getCurrentUser();
+        verify(taskRepository, times(1)).findTasks(mockUser, status, priority, title, pageable);
     }
 
     @Test
     void TestFindAll(){
-        Page<Task> page = new PageImpl<>(List.of(new Task()));
-        when(taskRepository.findAll(pageable)).thenReturn(page);
+        User mockUser = new User();
+        mockUser.setId(1);
+        mockUser.setName("testUser");
 
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Task> taskList = List.of(new Task(), new Task());
+        Page<Task> expectedPage = new PageImpl<>(taskList);
+
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.findByUser(mockUser, pageable)).thenReturn(expectedPage);
         Page<Task> result = service.findAll(pageable);
 
-        assertEquals(1,result.getTotalElements());
-        verify(taskRepository).findAll(pageable);
+        assertNotNull(result);
+        assertEquals(2, result.getContent().size());
+
+        verify(userService, times(1)).getCurrentUser();
+        verify(taskRepository, times(1)).findByUser(mockUser, pageable);
+        verify(taskRepository, never()).findAll(any(Pageable.class));
 
     }
 
-    @Test
-    void TestGetTaskDueToday(){
-        Task done = new Task();
-        done.setStatus(TaskStatus.DONE);
-        Task pending = new Task();
-        pending.setStatus(TaskStatus.PENDING);
-
-        String today = LocalDate.now().toString();
-        when(taskRepository.findByDueDate(today)).thenReturn(List.of(done,pending));
-
-
-        List<Task> result = service.getTaskDueToday();
-
-        assertEquals(1,result.size());
-        assertEquals(TaskStatus.PENDING,result.get(0).getStatus());
-
-    }
-
-    @Test
-    void TestGetUpcomingTasks(){
-        Task pending = new Task();
-        pending.setStatus(TaskStatus.PENDING);
-
-
-        Task done = new Task();
-        done.setStatus(TaskStatus.DONE);
-
-        when(taskRepository.findByDueDateBetween(anyString(),anyString())).thenReturn(List.of(pending,done));
-
-
-        List<Task> result = service.getUpcomingTasks(5);
-
-        assertEquals(1,result.size());
-        assertEquals(TaskStatus.PENDING,result.get(0).getStatus());
-
-    }
-    @Test
-    void TestGetOverdueTasks(){
-        Task pending = new Task();
-        pending.setStatus(TaskStatus.PENDING);
-
-
-        Task done = new Task();
-        done.setStatus(TaskStatus.DONE);
-
-        when(taskRepository.findByDueDateBefore(anyString())).thenReturn(List.of(pending,done));
-
-
-        List<Task> result = service.getOverdueTasks();
-
-        assertEquals(1,result.size());
-        assertEquals(TaskStatus.PENDING,result.get(0).getStatus());
-    }
 
     @Test
     void TestCountAllTasks(){
-        when(taskRepository.count()).thenReturn(10L);
+        User mockUser = new User();
+        mockUser.setId(101);
+        long expectedCount = 5L;
 
-        long count = service.countAllTasks();
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.countByUser(mockUser)).thenReturn(expectedCount);
 
-        assertEquals(10L,count);
-        verify(taskRepository).count();
+        long result = service.countAllTasks();
+
+        assertEquals(expectedCount, result);
+
+        verify(userService, times(1)).getCurrentUser();
+        verify(taskRepository, times(1)).countByUser(mockUser);
+
+        verify(taskRepository, never()).count();
     }
 
     @Test
     void TestCountFilteredTasks(){
-        when(taskRepository.countByTitleContainingIgnoreCase("task")).thenReturn(2L);
+        User mockUser = new User();
+        TaskStatus status = TaskStatus.IN_PROGRESS;
+        TaskPriority priority = TaskPriority.MEDIUM;
+        String title = "Refactor";
+        long expectedCount = 3L;
 
-        long count = service.countFilteredTasks(null,null,"task");
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.countTasks(mockUser, status, priority, title))
+                .thenReturn(expectedCount);
+        long result = service.countFilteredTasks(status, priority, title);
+        assertEquals(expectedCount, result);
 
-        assertEquals(2L,count);
+        verify(userService).getCurrentUser();
+        verify(taskRepository).countTasks(mockUser, status, priority, title);
     }
     @Test
     void TestCountCompletedTasksWhenStatusNotDone(){
-        long count = service.countCompletedTasks(TaskStatus.PENDING,null,null);
-
-        assertEquals(0L,count);
+        TaskStatus status = TaskStatus.IN_PROGRESS;
+        long result = service.countCompletedTasks(status, TaskPriority.HIGH, "Title");
+        assertEquals(0, result);
+        verifyNoInteractions(userService);
         verifyNoInteractions(taskRepository);
     }
 
     @Test
     void TestCountCompletedTasksWhenStatusDone(){
-        when(taskRepository.countByStatus(TaskStatus.DONE)).thenReturn(5L);
+        User mockUser = new User();
+        TaskStatus status = TaskStatus.DONE;
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.countCompletedTasks(mockUser, TaskPriority.LOW, "Fix"))
+                .thenReturn(10L);
 
-        long count = service.countCompletedTasks(TaskStatus.DONE,null,null);
+        long result = service.countCompletedTasks(status, TaskPriority.LOW, "Fix");
 
-        assertEquals(5L,count);
+        assertEquals(10, result);
+        verify(taskRepository).countCompletedTasks(mockUser, TaskPriority.LOW, "Fix");
     }
     @Test
     void TestCountCompletedTasksWhenDoneByKeyword(){
-        when(taskRepository.countByStatusAndTitleContainingIgnoreCase(TaskStatus.DONE,"report")).thenReturn(2L);
+        User mockUser = new User();
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.countCompletedTasks(mockUser, null, null))
+                .thenReturn(5L);
 
-        long count = service.countCompletedTasks(null,null,"report");
+        long result = service.countCompletedTasks(null, null, null);
+        assertEquals(5, result);
+        verify(userService).getCurrentUser();
+    }
 
-        assertEquals(2L,count);
+    @Test
+    void TestFindAllForCurrentUser() {
+        User mockUser = new User();
+        mockUser.setId(1);
+
+        List<Task> mockTasks = Arrays.asList(new Task(), new Task());
+
+        when(userService.getCurrentUser()).thenReturn(mockUser);
+        when(taskRepository.findByUser(mockUser)).thenReturn(mockTasks);
+
+        List<Task> result = service.findAllForCurrentUser();
+
+
+        assertNotNull(result);
+        assertEquals(2, result.size(), "Should return the exact list of tasks from repository");
+
+        verify(userService, times(1)).getCurrentUser();
+        verify(taskRepository, times(1)).findByUser(mockUser);
     }
 
 }
