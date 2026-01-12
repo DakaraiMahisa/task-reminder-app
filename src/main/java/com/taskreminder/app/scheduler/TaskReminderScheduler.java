@@ -24,7 +24,7 @@ public class TaskReminderScheduler {
      * This method runs every 15 minutes.
      * It looks for PENDING tasks due in the next 30 minutes that haven't been notified.
      */
-    @Scheduled(cron = "0 0/15 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void sendUpcomingTaskReminders() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime halfHourFromNow = now.plusMinutes(30);
