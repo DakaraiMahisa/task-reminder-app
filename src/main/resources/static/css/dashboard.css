@@ -1,0 +1,118 @@
+/* Variables for consistency */
+:root {
+    --primary-blue: #007bff;
+    --navy-footer: #001f3f;
+    --bg-workspace: #f8f9fa;
+    --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+.dashboard-wrapper {
+    flex: 1 0 auto;
+    background-color: var(--bg-workspace);
+    min-height: calc(100vh - 160px);
+    padding: 2rem 0;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    border-bottom: 4px solid transparent;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific Accents */
+.card-total { border-bottom-color: var(--primary-blue); }
+.card-completed { border-bottom-color: #28a745; }
+.card-pending { border-bottom-color: #ffc107; }
+.card-overdue { border-bottom-color: #dc3545; }
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--navy-footer);
+    display: block;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.chart-container {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    margin-top: 2rem;
+}
+.stat-icon-bg {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+/* Recent Activity Table Styling */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05); /* Very light blue highlight */
+    cursor: default;
+}
+
+.table thead th {
+    border-top: none;
+    color: var(--navy-footer);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.bg-success-subtle { background-color: #d1e7dd; color: #0f5132; }
+.bg-warning-subtle { background-color: #fff3cd; color: #664d03; }
+.card.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: #001f3f;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
