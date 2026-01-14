@@ -54,4 +54,36 @@ public class EmailService {
 
         sendEmail(to, subject, body);
     }
+    public void sendResetPasswordEmail(String toEmail, String resetLink) {
+
+        String subject = "Reset Your Password - Task Reminder App";
+        String body = buildResetPasswordEmailBody(resetLink);
+
+        sendEmail(toEmail, subject, body);
+    }
+    private String buildResetPasswordEmailBody(String resetLink) {
+        return """
+        <html>
+        <body style="font-family: Arial, sans-serif;">
+            <h2>Password Reset Request</h2>
+            <p>You requested to reset your password.</p>
+            <p>
+                <a href="%s"
+                   style="padding:10px 16px;
+                          background:#2563eb;
+                          color:white;
+                          text-decoration:none;
+                          border-radius:4px;">
+                   Reset Password
+                </a>
+            </p>
+            <p>This link will expire in <b>30 minutes</b>.</p>
+            <p>If you did not request this, please ignore this email.</p>
+            <br/>
+            <p>Regards,<br/>Task Reminder Team</p>
+        </body>
+        </html>
+        """.formatted(resetLink);
+    }
+
 }
