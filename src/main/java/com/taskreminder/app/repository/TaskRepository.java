@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -80,8 +81,23 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
             @Param("title") String title
     );
 
-    long countByUser(User user);
-
     List<Task> findByStatusAndReminderSentFalseAndDueDateBefore(TaskStatus status, LocalDateTime now);
     List<Task> findByStatusAndReminderSentFalseAndDueDateBetween(TaskStatus status, LocalDateTime now, LocalDateTime halfHourFromNow);
+
+    long countByUser(User user);
+
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.status = 'DONE'")
+    long countCompletedByUser(@Param("user") User user);
+
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.status = 'PENDING'")
+    long countPendingByUser(@Param("user") User user);
+
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.dueDate < CURRENT_DATE AND t.status != 'DONE'")
+    long countOverdueByUser(@Param("user") User user);
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user " +
+            "AND t.status = 'COMPLETED' " +
+            "AND CAST(t.dueDate AS date) = :date")
+    long countCompletedByDate(@Param("user") User user, @Param("date") LocalDate date);
+
+    List<Task> findFirst5ByUserOrderByDueDateDesc(User user);
 }

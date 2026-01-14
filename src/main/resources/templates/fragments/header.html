@@ -50,13 +50,17 @@
             </form>
         </div>
 
-        <!-- AUTHENTICATED – DASHBOARD -->
+        <!-- AUTHENTICATED – TASK MANAGER -->
         <div class="nav-group"
              sec:authorize="isAuthenticated()"
-             th:if="${context == 'dashboard'}">
+             th:if="${context == 'tasks'}">
 
-            <a href="/api/tasks" class="nav-link">
-                <i class="fa-solid fa-gauge"></i> Dashboard
+            <a href="/api/dashboard" class="nav-link">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+
+            <a href="/api/tasks" class="nav-link" th:if="${context != 'tasks'}">
+                <i class="fa-solid fa-list-check"></i> Task Manager
             </a>
 
             <a href="/" class="nav-link">
@@ -64,6 +68,70 @@
             </a>
 
             <a href="/api/tasks/add" class="nav-link primary">
+                <i class="fa-solid fa-plus"></i> Add Task
+            </a>
+
+            <span class="nav-welcome">
+                Welcome, <strong sec:authentication="principal.displayName"></strong>!
+            </span>
+
+            <form th:action="@{/logout}" method="post">
+                <button class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- AUTHENTICATED – DASHBOARD -->
+        <div class="nav-group"
+             sec:authorize="isAuthenticated()"
+             th:if="${context == 'dashboard'}">
+
+            <a href="/api/dashboard" class="nav-link" th:if="${context != 'dashboard'}">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+
+            <a href="/api/tasks" class="nav-link">
+                <i class="fa-solid fa-list-check"></i> Task Manager
+            </a>
+
+            <a href="/" class="nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+
+            <a href="/api/tasks/add" class="nav-link primary">
+                <i class="fa-solid fa-plus"></i> Add Task
+            </a>
+
+            <span class="nav-welcome">
+                Welcome, <strong sec:authentication="principal.displayName"></strong>!
+            </span>
+
+            <form th:action="@{/logout}" method="post">
+                <button class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- AUTHENTICATED – ADD TASK -->
+        <div class="nav-group"
+             sec:authorize="isAuthenticated()"
+             th:if="${context == 'add-task'}">
+
+            <a href="/api/dashboard" class="nav-link">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+
+            <a href="/api/tasks" class="nav-link">
+                <i class="fa-solid fa-list-check"></i> Task Manager
+            </a>
+
+            <a href="/" class="nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+
+            <a href="/api/tasks/add" class="nav-link primary" th:if="${context != 'add-task'}">
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping(value={"/api"})
+@RequestMapping("/api")
 public class TaskController {
 
     @Autowired
@@ -113,6 +113,7 @@ public class TaskController {
         int totalPages = taskPage.getTotalPages();
         List<Integer> pageNumbers = IntStream.range(0,totalPages).boxed().toList();
         model.addAttribute("pageNumbers",pageNumbers);
+        model.addAttribute("pageContext", "tasks");
         return "tasks";
     }
 

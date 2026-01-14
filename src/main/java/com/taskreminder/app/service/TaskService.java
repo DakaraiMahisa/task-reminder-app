@@ -1,4 +1,5 @@
 package com.taskreminder.app.service;
+import com.taskreminder.app.dto.DashboardStatsDTO;
 import com.taskreminder.app.entity.Task;
 import com.taskreminder.app.entity.User;
 import com.taskreminder.app.enums.TaskPriority;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.TextStyle;
+import java.util.*;
 
 @Service
 @Transactional
@@ -144,4 +145,36 @@ public Page<Task> getPagedTasks(
         return taskRepository.findByUser(user);
     }
 
+    public DashboardStatsDTO getDashboardStats(User user) {
+        long total = taskRepository.countByUser(user);
+        long completed = taskRepository.countCompletedByUser(user);
+        long pending = taskRepository.countPendingByUser(user);
+        long overdue = taskRepository.countOverdueByUser(user);
+
+        double rate = (total > 0) ? ((double) completed / total) * 100 : 0;
+
+        return DashboardStatsDTO.builder()
+                .totalTasks(total)
+                .completedTasks(completed)
+                .pendingTasks(pending)
+                .overdueTasks(overdue)
+                .completionRate(Math.round(rate * 10.0) / 10.0)
+                .build();
+    }
+
+    public Map<String, Long> getDailyStats(User user) {
+        Map<String, Long> data = new LinkedHashMap<>();
+        LocalDate today = LocalDate.now();
+
+        // Loop to get the last 7 days
+        for (int i = 6; i >= 0; i--) {
+            LocalDate date = today.minusDays(i);
+            long count = taskRepository.countCompletedByDate(user, date);
+
+            // Format: "Mon", "Tue", etc. for a clean professional look
+            String label = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+            data.put(label, count);
+        }
+        return data;
+    }
 }
