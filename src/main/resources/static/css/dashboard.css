@@ -11,13 +11,24 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-.dashboard-wrapper {
-    flex: 1 0 auto;
-    background-color: var(--bg-workspace);
-    min-height: calc(100vh - 160px);
-    padding: 2rem 0;
+/* THE WRAPPER */
+.app-layout {
+    display: flex;
+    margin-top: 70px;
+    margin-bottom: 50px;
+    align-items: stretch;
+    width: 100%;
 }
-
+.dashboard-wrapper {
+    flex: 1;
+    background-color: var(--bg-workspace);
+    min-height: calc(100vh - 120px);
+    padding: 2rem 0;
+    transition: margin-left 0.3s ease;
+}
+.sidebar.collapsed + .dashboard-wrapper {
+    margin-left: 80px;
+}
 .stat-card {
     background: #ffffff;
     border: none;
@@ -116,3 +127,5 @@ body {
     background-color: #007bff;
     color: white;
 }
+
+

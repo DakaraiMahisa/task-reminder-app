@@ -1,4 +1,7 @@
 /* 1. Page Constraints - Prevents Scrolling */
+* {
+    box-sizing: border-box;
+}
 html, body {
     height: 100vh;
     margin: 0;

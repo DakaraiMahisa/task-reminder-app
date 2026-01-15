@@ -1,10 +1,14 @@
 package com.taskreminder.app.entity;
 
 import jakarta.persistence.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
+@Table(name = "user")
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,6 +30,9 @@ public class User {
 
     @Column(nullable = false)
     private Boolean enabled =false;
+
+    private String mobileNumber;
+    private String profilePicturePath;
     private LocalDateTime otpExpiry;
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -46,34 +53,17 @@ public class User {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 
     public boolean isVerified() {
         return verified;
@@ -85,10 +75,6 @@ public class User {
 
     public String getOtp() {
         return otp;
-    }
-
-    public void setOtp(String otp) {
-        this.otp = otp;
     }
 
     public boolean isEnabled() {
@@ -103,15 +89,32 @@ public class User {
         return otpExpiry;
     }
 
-    public void setOtpExpiry(LocalDateTime otpExpiry) {
-        this.otpExpiry = otpExpiry;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public Boolean getVerified() {
+        return verified;
     }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public String getProfilePicturePath() {
+        return profilePicturePath;
+    }
+
 }
