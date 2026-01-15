@@ -1,0 +1,168 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.page-container {
+    margin-top: 70px;
+    max-width: 1440px;
+    margin-left: 260px;
+    padding: 32px 36px 80px;
+    min-height: calc(100vh - 120px);
+    width: calc(100% - 260px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+
+}
+.sidebar.collapsed + .page-container {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+.profile-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 3rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Avatar Section */
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid #eee;
+    padding-right: 2rem;
+}
+
+.profile-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin: 1rem 0;
+}
+
+.upload-controls label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0 1rem;
+}
+
+.input-with-icon .icon {
+    color: #2563eb;
+    margin-right: 0.75rem;
+}
+
+.input-with-icon input {
+    border: none;
+    background: transparent;
+    padding: 0.8rem 0;
+    width: 100%;
+    outline: none;
+}
+
+.input-with-icon.disabled {
+    background: #e9ecef;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #eee;
+    color: #333;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Custom Toasts */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.custom-toast {
+    display: none; /* Controlled by profile.js */
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.custom-toast.success { background: #28a745; }
+.custom-toast.error { background: #dc3545; }

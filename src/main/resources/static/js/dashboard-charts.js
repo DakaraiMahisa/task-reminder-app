@@ -46,4 +46,27 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    const sidebar = document.getElementById('sidebar');
+        const btn = document.getElementById('sidebarCollapse');
+        const icon = btn.querySelector('i');
+
+        // 1. Check local storage for preference
+        if (localStorage.getItem('sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+            icon.classList.replace('fa-angles-left', 'fa-angles-right');
+        }
+
+        // 2. Toggle Event
+        btn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+
+            // Update Icon
+            if(sidebar.classList.contains('collapsed')) {
+                icon.classList.replace('fa-angles-left', 'fa-angles-right');
+                localStorage.setItem('sidebar-collapsed', 'true');
+            } else {
+                icon.classList.replace('fa-angles-right', 'fa-angles-left');
+                localStorage.setItem('sidebar-collapsed', 'false');
+            }
+        });
 });

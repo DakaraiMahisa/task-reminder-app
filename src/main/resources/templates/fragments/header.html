@@ -8,7 +8,7 @@
 <body>
 
 <nav class="navbar top-nav" th:fragment="header(context)">
-
+    <div class="navbar-content">
     <!-- LEFT: APP BRAND -->
     <div class="nav-left">
         <i class="fa-solid fa-list-check app-icon"></i>
@@ -39,10 +39,17 @@
              sec:authorize="isAuthenticated()"
              th:if="${context == 'home'}">
 
-            <span class="nav-welcome">
-                Welcome, <strong sec:authentication="principal.displayName"></strong>!
+           <span class="nav-welcome d-flex align-items-center">
+            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
+                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
+                 class="rounded-circle me-2"
+                 style="width: 32px; height: 32px; object-fit: cover;">
+             <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                  class="letter-avatar nav-avatar-sm me-2">
+                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+             </div>
+             Welcome, <strong sec:authentication="principal.user.name"></strong>!
             </span>
-
             <form th:action="@{/logout}" method="post">
                 <button class="nav-link logout">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -71,8 +78,16 @@
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 
-            <span class="nav-welcome">
-                Welcome, <strong sec:authentication="principal.displayName"></strong>!
+            <span class="nav-welcome d-flex align-items-center">
+            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
+                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
+                 class="rounded-circle me-2"
+                 style="width: 32px; height: 32px; object-fit: cover;">
+             <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                  class="letter-avatar nav-avatar-sm me-2">
+                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+             </div>
+             Welcome, <strong sec:authentication="principal.user.name"></strong>!
             </span>
 
             <form th:action="@{/logout}" method="post">
@@ -103,8 +118,16 @@
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 
-            <span class="nav-welcome">
-                Welcome, <strong sec:authentication="principal.displayName"></strong>!
+            <span class="nav-welcome d-flex align-items-center">
+            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
+                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
+             class="rounded-circle me-2"
+             style="width: 32px; height: 32px; object-fit: cover;">
+             <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                  class="letter-avatar nav-avatar-sm me-2">
+                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+             </div>
+             Welcome, <strong sec:authentication="principal.user.name"></strong>!
             </span>
 
             <form th:action="@{/logout}" method="post">
@@ -135,8 +158,52 @@
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 
-            <span class="nav-welcome">
-                Welcome, <strong sec:authentication="principal.displayName"></strong>!
+            <span class="nav-welcome d-flex align-items-center">
+            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
+                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
+                 class="rounded-circle me-2"
+                 style="width: 32px; height: 32px; object-fit: cover;">
+                <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                     class="letter-avatar nav-avatar-sm me-2">
+                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+                </div>
+             Welcome, <strong sec:authentication="principal.user.name">User</strong>!
+            </span>
+
+            <form th:action="@{/logout}" method="post">
+                <button class="nav-link logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- AUTHENTICATED – PROFILE -->
+        <div class="nav-group"
+             sec:authorize="isAuthenticated()"
+             th:if="${context == 'profile'}">
+
+            <a href="/api/dashboard" class="nav-link">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+
+            <a href="/api/tasks" class="nav-link">
+                <i class="fa-solid fa-list-check"></i> Task Manager
+            </a>
+
+            <a href="/" class="nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+
+            <a href="/api/tasks/add" class="nav-link primary">
+                <i class="fa-solid fa-plus"></i> Add Task
+            </a>
+
+            <span class="nav-welcome d-flex align-items-center">
+            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
+                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
+                 class="rounded-circle me-2"
+                 style="width: 32px; height: 32px; object-fit: cover;">
+             Welcome, <strong sec:authentication="principal.user.name">User</strong>!
             </span>
 
             <form th:action="@{/logout}" method="post">
@@ -150,6 +217,6 @@
     <button class="nav-toggle" aria-label="Toggle menu">
         <i class="fa-solid fa-bars"></i>
     </button>
-
+    </div>
 </nav>
 </body>

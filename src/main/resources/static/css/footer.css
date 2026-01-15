@@ -11,7 +11,11 @@ main {
     flex: 1;
 }
 .footer {
+    position: fixed;
     width: 100%;
+    bottom: 0;
+    height: 50px;
+    z-index: 1001;
     background-color: var(--footer-bg, #0f172a);
     color: #cbd5e1;
     margin-top: auto;

@@ -1,15 +1,16 @@
 /* 1. Layout Constraints */
+* {
+    box-sizing: border-box;
+}
 html, body {
     height: 100vh;
     margin: 0;
-    overflow: hidden; /* Strict no-scroll constraint */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    /* Subtle gradient from Header Blue to Footer Navy */
     background: linear-gradient(180deg, #f0f7ff 0%, #e6eef8 100%);
     font-family: 'Inter', -apple-system, sans-serif;
 }
-
 /* 2. Main Content Area */
 .container {
     flex: 1;

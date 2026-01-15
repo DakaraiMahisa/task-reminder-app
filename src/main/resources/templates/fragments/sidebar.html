@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<aside th:fragment="sidebar(context)" id="sidebar" class="sidebar">
+    <div class="sidebar-content d-flex flex-column h-100">
+        <div class="sidebar-profile-section">
+            <div class="avatar-container">
+                <img th:if="${#authentication.principal.user.profilePicturePath != null}"
+                     th:src="${#authentication.principal.user.profilePicturePath}"
+                     class="sidebar-avatar-img"
+                     alt="Profile">
+
+                <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                     class="sidebar-letter-avatar">
+            <span th:text="${#authentication.principal.user.name != null && !#authentication.principal.user.name.isEmpty() ?
+                           #strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase() : '?'}">U</span>
+                </div>
+            </div>
+
+            <h6 class="sidebar-user-name"
+                th:text="${#authentication.principal.user.name ?: 'User'}">User Name</h6>
+        </div>
+        <hr class="border-secondary mx-3">
+
+        <ul class="nav flex-column mb-auto">
+            <li class="nav-item">
+                <a th:href="@{/api/dashboard}" class="nav-link"
+                   th:classappend="${context == 'dashboard' ? 'active' : ''}">
+                    <i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/api/tasks}" class="nav-link"
+                   th:classappend="${context == 'tasks' ? 'active' : ''}">
+                    <i class="fa-solid fa-list-check"></i> <span>Task Manager</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/api/profile}" class="nav-link"
+                   th:classappend="${context == 'profile' ? 'active' : ''}">
+                    <i class="fa-solid fa-user"></i> <span>My Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
+            </li>
+        </ul>
+
+        <button id="sidebarCollapse" class="btn-toggle-sidebar mt-auto">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+    </div>
+</aside>
+</body>
+</html>
