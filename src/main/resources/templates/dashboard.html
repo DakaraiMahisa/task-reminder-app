@@ -142,7 +142,8 @@
                                         <span th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy, HH:mm')}">14 Jan 2026</span>
                                     </td>
                                     <td class="text-end pe-3">
-                                        <a th:href="@{/api/tasks/update/{id}(id=${task.id})}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <a  th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
+                                            th:href="@{/api/tasks/update/{id}(id=${task.id})}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                             Edit
                                         </a>
                                     </td>
