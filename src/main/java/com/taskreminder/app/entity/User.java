@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Setter
-@Table(name = "user")
+@Table(name = "`user`")
 @AllArgsConstructor
 public class User {
     @Id
