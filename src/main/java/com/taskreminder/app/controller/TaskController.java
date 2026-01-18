@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.taskreminder.app.service.TaskService;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,6 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
 
     @GetMapping("/tasks")
     public String listTasks(
@@ -114,6 +115,12 @@ public class TaskController {
         List<Integer> pageNumbers = IntStream.range(0,totalPages).boxed().toList();
         model.addAttribute("pageNumbers",pageNumbers);
         model.addAttribute("pageContext", "tasks");
+
+        List<Task> dueTodayTasks = taskService.getTasksDueToday();
+
+        model.addAttribute("dueTodayTasks", dueTodayTasks);
+        model.addAttribute("dueTodayCount", dueTodayTasks.size());
+
         return "tasks";
     }
 
@@ -141,6 +148,10 @@ public class TaskController {
             task.setStatus(TaskStatus.PENDING);
         }
         try{
+            LocalDateTime today = LocalDateTime.now();
+            if (task.getDueDate().isBefore(today)) {
+                throw new IllegalArgumentException("The due date cannot be earlier than today (" + today + ").");
+            }
         task.setCreatedAt(LocalDateTime.now());
         taskService.addTask(task);
             redirectAttributes.addFlashAttribute(
@@ -195,19 +206,6 @@ public class TaskController {
         return "redirect:/api/tasks";
     }
 
-    @GetMapping("/tasks/mark-done/{id}")
-    public String markTaskAsDone(@PathVariable Integer id) {
-        Task task  = taskService.findById(id).orElse(null);
-        if(task!=null&&task.getStatus()!=TaskStatus.DONE){
-            task.setStatus(TaskStatus.DONE);
-            task.setCompletedAt(LocalDateTime.now());
-            taskService.updateTask(task);
-        }
-
-        return "redirect:/api/tasks";
-    }
-
-
     @GetMapping("/tasks/delete/{id}")
     public String deleteTask(@PathVariable int id, RedirectAttributes redirectAttributes){
         try{
@@ -245,6 +243,7 @@ public class TaskController {
             event.put("id", task.getId());
             event.put("title", task.getTitle());
             event.put("start", task.getDueDate().toString());
+            event.put("status", task.getStatus().name());
 
             switch (task.getStatus()) {
                 case DONE -> event.put("color", "#22c55e");
@@ -255,6 +254,36 @@ public class TaskController {
             return event;
         }).toList();
     }
+    @PatchMapping("/tasks/{id}/status")
+    @ResponseBody
+    public ResponseEntity<Void> updateTaskStatus(
+            @PathVariable Integer id,
+            @RequestParam TaskStatus status
+    ) {
+        taskService.updateStatus(id, status);
+        return ResponseEntity.ok().build();
+    }
 
+    @PatchMapping("/tasks/{id}/due-date")
+    @ResponseBody
+    public ResponseEntity<Void> updateTaskDueDate(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> payload
+    ) {
+        String dueDateStr = payload.get("dueDate");
+
+        if (dueDateStr == null || dueDateStr.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        LocalDateTime dueDate;
+        try {
+            dueDate = LocalDateTime.parse(dueDateStr);
+        } catch (DateTimeParseException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+        taskService.updateDueDateForCurrentUser(id, dueDate);
+        return ResponseEntity.ok().build();
+    }
 
 }

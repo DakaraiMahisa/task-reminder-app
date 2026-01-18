@@ -68,7 +68,7 @@ public class TaskRestController {
     }
     @GetMapping("/due-today")
     public ResponseEntity<List<Task>>getTaskDueToday(){
-        return ResponseEntity.ok(taskService.getTaskDueToday());
+        return ResponseEntity.ok(taskService.getTasksDueToday());
     }
     @GetMapping("/upcoming")
     public ResponseEntity<List<Task>>getUpcomingTasks(@RequestParam(defaultValue = "3")int days){

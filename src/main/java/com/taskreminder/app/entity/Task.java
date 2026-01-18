@@ -136,4 +136,11 @@ public class Task {
     public void setReminderSent(boolean reminderSent) {
         this.reminderSent = reminderSent;
     }
+    @Transient
+    public boolean isOverdue() {
+        return dueDate != null
+                && status != TaskStatus.DONE
+                && LocalDateTime.now().isAfter(dueDate);
+    }
+
 }

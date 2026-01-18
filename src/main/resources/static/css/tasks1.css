@@ -238,13 +238,13 @@ body {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-muted);
-    margin-top: 0;
+    margin-top: 0; /* Reset the margin-top if using row layout */
     white-space: nowrap;
 }
 .summary-card.progress {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: center; /* Vertically aligns the ring and the label */
     justify-content: flex-start;
     gap: 16px;
     padding: 18px 22px;
@@ -538,6 +538,7 @@ body {
     font-weight: 700;
     /*text-transform: uppercase;*/
     letter-spacing: 0.03em;
+
 }
 
 /* STATUS */
@@ -927,6 +928,130 @@ body {
     color: #475569;
     cursor: not-allowed;
 }
+/* =====================================================
+   TODAYS CHANGES
+===================================================== */
+.status-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: #334155;
+}
+
+.status-checkbox {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #2563eb;
+}
+
+.status-checkbox:hover {
+    transform: scale(1.15);
+}
+
+.status-checkbox:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.overdue-row {
+    background-color: #fff1f2;
+    border-left: 4px solid #dc2626;
+}
+
+.overdue-row td {
+    font-weight: 500;
+}
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    margin: 32px 0;
+}
+
+.empty-state i {
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #94a3b8;
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    color: #64748b;
+}
+.task-card h3,
+.task-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.task-card h3 i,
+.task-title i {
+    color: #2563eb;
+    font-size: 16px;
+}
+.due-today-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    background: #eff6ff;
+    border-left: 5px solid #2563eb;
+
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+    color: #1e293b;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.due-today-banner i {
+    color: #2563eb;
+    font-size: 1.2rem;
+    margin-top: 2px;
+}
+
+.due-today-banner strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.due-today-banner ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.due-today-banner li {
+    margin-bottom: 4px;
+}
+
+.due-today-banner a {
+    color: #1d4ed8;               /* slightly darker blue */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.due-today-banner a:hover {
+    text-decoration: underline;
+}
+
 
 /* =====================================================
    MOBILE RESPONSIVE STYLES

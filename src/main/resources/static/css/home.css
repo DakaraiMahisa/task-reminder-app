@@ -44,13 +44,13 @@ body {
 .hero-content h1 {
     font-size: 3.5rem;
     line-height: 1.1;
-    color: var(--navy-blue);
+    color: #003366;
     margin-bottom: 20px;
 }
 
 .hero-content p {
     font-size: 1.2rem;
-    color: var(--text-light);
+    color: #636e72;
     margin-bottom: 35px;
     max-width: 500px;
 }
@@ -84,7 +84,7 @@ section {
 .section-title {
     text-align: center;
     font-size: 2.5rem;
-    color: var(--navy-blue);
+    color: #003366;
     margin-bottom: 10px;
 
 }
@@ -100,13 +100,13 @@ section {
 
 .section-subtitle {
     text-align: center;
-    color: var(--text-light);
+    color: #636e72;
     margin-bottom: 60px;
 }
 
 /* 5. How It Works (Steps) */
 .how-it-works {
-    background-color: var(--bg-light);
+    background-color: #f8fbff;;
 }
 
 .steps-grid {
@@ -157,7 +157,7 @@ section {
 
 /* 7. Testimonials */
 .testimonials {
-    background-color: var(--navy-blue);
+   background-color:#003366;
     color: white;
     text-align: center;
 }
@@ -183,7 +183,7 @@ section {
 
 .testimonial-card span {
     font-weight: bold;
-    color: var(--primary-blue);
+    color: #007bff;
 }
 
 /* 8. Buttons */
@@ -199,13 +199,13 @@ section {
 }
 
 .btn.primary {
-    background: var(--primary-blue);
+    background:  #007bff;
     color: white;
 }
 
 .btn.secondary {
     background: white;
-    color: var(--navy-blue);
+    color: #003366;
     border: 1px solid #d1d9e6;
 }
 

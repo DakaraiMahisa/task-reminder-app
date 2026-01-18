@@ -5,6 +5,9 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:if="${_csrf != null}" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:if="${_csrf != null}" th:content="${_csrf.headerName}">
+
     <title>All Tasks</title>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -15,7 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/tasks.css}">
+    <link rel="stylesheet" th:href="@{/css/dark-mode.css}">
+    <link rel="stylesheet" th:href="@{/css/tasks1.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
@@ -34,6 +38,18 @@
         <h2>Task List</h2>
     </header>
 
+    <section th:if="${dueTodayCount > 0}" class="due-today-banner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <strong th:text="'Due Today (' + ${dueTodayCount} + ')'"></strong>
+
+        <ul>
+            <li th:each="task : ${dueTodayTasks}">
+                <a th:href="@{/api/view/{id}(id=${task.id})}"
+                   th:text="${task.title}"></a>
+            </li>
+        </ul>
+    </section>
 
     <!-- =====================================================
          FEEDBACK / NOTIFICATIONS
@@ -262,22 +278,37 @@
                 </thead>
 
                 <tbody>
-                <tr th:each="task : ${tasks}">
+                <tr th:if="${tasks.isEmpty()}">
+                    <td colspan="9" class="empty-state">
+                        <i class="fa-solid fa-inbox"></i>
+                        <p>No tasks found. Try adjusting filters or add a new task.</p>
+                    </td>
+                </tr>
+
+                <tr th:each="task : ${tasks}"
+                    th:classappend="${task.overdue} ? 'overdue-row'">
                 <td th:text="${task.id}"></td>
                     <td th:text="${task.title}"></td>
                     <td th:text="${task.description}"></td>
                     <td th:text="${task.dueDate}"></td>
-                    <td>
-    <span class="badge status"
-          th:text="${task.status.label}"
-          th:classappend="' status-' + task.status">
-    </span>
+                    <td class="status-cell">
+                        <input type="checkbox"
+                               class="status-checkbox"
+                               th:checked="${task.status.name() == 'DONE'}"
+                               th:data-id="${task.id}"
+                               th:disabled="${task.status.name() == 'DONE'}"/>
+
+                        <span class="badge status"
+                              th:text="${task.status.label}"
+                              th:classappend="${'status-' + task.status.name()}">
+                        </span>
                     </td>
+
 
                     <td>
     <span class="badge priority"
           th:text="${task.priority.label}"
-          th:classappend="' priority-' + task.priority">
+          th:classappend="${'priority-' + task.priority.name()}">
     </span>
                     </td>
 
@@ -314,11 +345,12 @@
                             <i class="fa-solid fa-trash"></i>Delete
                         </a>
 
-                        <a class="btn btn-info"
-                           th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
-                           th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
-                            <i class="fa-solid fa-check"></i>Mark Done
-                        </a>
+                        <button class="btn btn-info mark-done-btn"
+                                th:data-id="${task.id}"
+                                th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}">
+                            <i class="fa-solid fa-check"></i> Mark Done
+                        </button>
+
                         <span class="completed-label"
                               th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}">
                               <i class="fa-solid fa-circle-check"></i> Done
@@ -346,7 +378,11 @@
 
                     <!-- Card Header -->
                     <div class="task-card-header">
-                        <h3 th:text="${task.title}"></h3>
+                        <h3>
+                            <i class="fa-solid fa-flag"></i>
+                            <span th:text="${task.title}"></span>
+                        </h3>
+
                     </div>
 
                     <!-- Card Body -->
@@ -402,11 +438,12 @@
                     <!-- Footer -->
                     <div class="task-card-footer">
 
-                        <a class="btn btn-info"
-                           th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}"
-                           th:href="@{/api/tasks/mark-done/{id}(id=${task.id})}">
+                        <button class="btn btn-info mark-done-btn"
+                                th:data-id="${task.id}"
+                                th:if="${task.status != T(com.taskreminder.app.enums.TaskStatus).DONE}">
                             <i class="fa-solid fa-check"></i> Mark Done
-                        </a>
+                        </button>
+
 
                         <span class="completed-label"
                               th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}">
@@ -477,34 +514,15 @@
 </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
 
-<script th:if="${view == 'calendar'}">
-    document.addEventListener('DOMContentLoaded', function () {
-        const calendarEl = document.getElementById('taskCalendar');
-        if (!calendarEl) {
-            return;
-        }
+<script th:if="${view == 'calendar'}"
+        src="/js/calendar.js"></script>
 
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            height: 650,
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            events: '/api/tasks/calendar',
-            eventClick: function(info) {
-                window.location.href = '/api/view/' + info.event.id;
-            }
-        });
-
-        calendar.render();
-    });
-</script>
 <script th:src="@{/js/filterButton.js}"></script>
 <script th:src="@{/js/notifications.js}"></script>
 <script src="/js/live-time.js"></script>
 <script src="/js/header.js"></script>
 <script th:src="@{/js/dashboard-charts.js}"></script>
+<script src="/js/task-status.js"></script>
+<script src="/js/theme.js"></script>
 </body>
 </html>

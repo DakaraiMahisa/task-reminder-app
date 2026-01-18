@@ -47,6 +47,12 @@ public class TaskService {
             throw new RuntimeException("Unauthorized");
         }
 
+        if (task.getDueDate() != null) {
+            LocalDateTime today = LocalDateTime.now();
+            if (task.getDueDate().isBefore(today)) {
+                throw new IllegalArgumentException("The due date cannot be earlier than today (" + today + ").");
+            }
+        }
         task.setUser(currentUser);
        return taskRepository.save(task);
     }
@@ -86,11 +92,12 @@ public Page<Task> getPagedTasks(
         return taskRepository.findByUser(user, pageable);
     }
 
-    public List<Task> getTaskDueToday() {
+    public List<Task> getTasksDueToday() {
         User user = userService.getCurrentUser();
-        LocalDateTime today = LocalDateTime.now();
-
-        return taskRepository.findByUserAndStatusNotAndDueDate(user, TaskStatus.DONE, today);
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(23, 59, 59);
+        return taskRepository.findByUserAndStatusNotAndDueDateBetween(user, TaskStatus.DONE,startOfDay,endOfDay);
     }
 
     public List<Task> getUpcomingTasks(int days) {
@@ -177,4 +184,52 @@ public Page<Task> getPagedTasks(
         }
         return data;
     }
+    @Transactional
+    public void updateStatus(Integer taskId, TaskStatus status) {
+
+        User user = userService.getCurrentUser();
+
+        Task task = taskRepository
+                .findByIdAndUser(taskId, user)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (task.getStatus() == TaskStatus.DONE && status == TaskStatus.DONE) {
+            return;
+        }
+
+        task.setStatus(status);
+
+        if (status == TaskStatus.DONE) {
+            task.setCompletedAt(LocalDateTime.now());
+        } else {
+            task.setCompletedAt(null);
+        }
+
+        taskRepository.save(task);
+    }
+
+
+
+    public Task getTaskForCurrentUser(Integer taskId) {
+
+        User currentUser = userService.getCurrentUser();
+
+        return taskRepository.findById(taskId)
+                .filter(task -> task.getUser().getId().equals(currentUser.getId()))
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Task not found or access denied")
+                );
+    }
+    @Transactional
+    public void updateDueDateForCurrentUser(Integer taskId, LocalDateTime dueDate) {
+        Task task = getTaskForCurrentUser(taskId);
+        if (task.getStatus() == TaskStatus.DONE) {
+            throw new IllegalStateException("Completed tasks cannot be moved");
+        }
+        task.setDueDate(dueDate);
+
+        taskRepository.save(task);
+    }
+
+
 }
