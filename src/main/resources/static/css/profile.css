@@ -156,7 +156,7 @@ body {
 }
 
 .custom-toast {
-    display: none; /* Controlled by profile.js */
+    display: none;
     padding: 1rem 1.5rem;
     border-radius: 8px;
     color: white;
@@ -166,3 +166,97 @@ body {
 
 .custom-toast.success { background: #28a745; }
 .custom-toast.error { background: #dc3545; }
+
+/* =========================
+   PROFILE – TABLET
+========================= */
+@media (max-width: 992px) {
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .avatar-section {
+        text-align: center;
+    }
+
+    .avatar-wrapper {
+        margin: 0 auto;
+    }
+
+    .details-section {
+        padding: 0 10px;
+    }
+}
+
+/* =========================
+   PROFILE – MOBILE
+========================= */
+@media (max-width: 768px) {
+
+    .page-header {
+        text-align: center;
+        padding: 20px 10px;
+    }
+
+    .page-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .page-header p {
+        font-size: 0.95rem;
+    }
+
+    .profile-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .input-with-icon input {
+        font-size: 0.95rem;
+        padding: 12px 14px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
+/* =========================
+   PROFILE – SMALL DEVICES
+========================= */
+@media (max-width: 480px) {
+
+    .profile-img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .upload-controls label {
+        font-size: 0.85rem;
+    }
+
+    .btn-remove {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    .input-with-icon .icon {
+        font-size: 0.9rem;
+    }
+}

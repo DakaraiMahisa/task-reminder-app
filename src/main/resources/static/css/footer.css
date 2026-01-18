@@ -59,10 +59,49 @@ main {
     color: #64748b;
 }
 
-/* Responsive */
+/* ===============================
+   FOOTER – MOBILE RESPONSIVE
+================================ */
+
 @media (max-width: 768px) {
+
+    .footer {
+        padding: 16px 12px;
+    }
+
     .footer-content {
+        display: flex;
         flex-direction: column;
+        align-items: center;
+        gap: 12px;
         text-align: center;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-center {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+}
+@media (max-width: 480px) {
+
+    .footer {
+        font-size: 0.85rem;
+    }
+
+    .footer-link {
+        padding: 4px 6px;
+    }
+
+    .footer-version {
+        opacity: 0.8;
     }
 }

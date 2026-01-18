@@ -76,3 +76,18 @@ img[src=""], img:not([src]) {
     width: 80px;
     height: 80px;
 }
+/* ===============================
+   SIDEBAR OVERLAY
+================================ */
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+    display: none;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
