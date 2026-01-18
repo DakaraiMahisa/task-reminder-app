@@ -234,3 +234,19 @@ nav-welcome strong {
         opacity: 0.9;
     }
 }
+@media (max-width: 768px) {
+
+    .nav-profile-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .nav-welcome-text {
+        display: none;
+    }
+
+    .nav-avatar-sm {
+        width: 36px;
+        height: 36px;
+    }
+}

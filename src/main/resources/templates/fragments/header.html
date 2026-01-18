@@ -47,17 +47,24 @@
              sec:authorize="isAuthenticated()"
              th:if="${context == 'home'}">
 
-           <span class="nav-welcome d-flex align-items-center">
-            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
-                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
-                 class="rounded-circle me-2"
-                 style="width: 32px; height: 32px; object-fit: cover;">
-             <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
-                  class="letter-avatar nav-avatar-sm me-2">
-                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
-             </div>
-             Welcome, <strong sec:authentication="principal.user.name"></strong>!
-            </span>
+            <a th:href="@{/api/profile}" class="nav-profile-link d-flex align-items-center">
+
+                <img th:if="${#authentication.principal.user.profilePicturePath != null}"
+                     th:src="${#authentication.principal.user.profilePicturePath}"
+                     class="rounded-circle me-2 nav-avatar-sm"
+                     alt="Profile"
+                     style="width: 32px; height: 32px; object-fit: cover;">
+
+                <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                     class="letter-avatar nav-avatar-sm me-2">
+                    <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+                </div>
+
+                <span class="nav-welcome-text">
+        Welcome, <strong sec:authentication="principal.user.name"></strong>!
+    </span>
+            </a>
+
             <form th:action="@{/logout}" method="post">
                 <button class="nav-link logout">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -86,17 +93,24 @@
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 
-            <span class="nav-welcome d-flex align-items-center">
-            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
-                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
-                 class="rounded-circle me-2"
-                 style="width: 32px; height: 32px; object-fit: cover;">
-             <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
-                  class="letter-avatar nav-avatar-sm me-2">
-                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
-             </div>
-             Welcome, <strong sec:authentication="principal.user.name"></strong>!
-            </span>
+            <a th:href="@{/api/profile}" class="nav-profile-link d-flex align-items-center">
+
+                <img th:if="${#authentication.principal.user.profilePicturePath != null}"
+                     th:src="${#authentication.principal.user.profilePicturePath}"
+                     class="rounded-circle me-2 nav-avatar-sm"
+                     alt="Profile"
+                     style="width: 32px; height: 32px; object-fit: cover;">
+
+                <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                     class="letter-avatar nav-avatar-sm me-2">
+                    <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+                </div>
+
+                <span class="nav-welcome-text">
+        Welcome, <strong sec:authentication="principal.user.name"></strong>!
+    </span>
+            </a>
+
 
             <form th:action="@{/logout}" method="post">
                 <button class="nav-link logout">
@@ -126,17 +140,24 @@
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 
-            <span class="nav-welcome d-flex align-items-center">
-            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
-                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
-             class="rounded-circle me-2"
-             style="width: 32px; height: 32px; object-fit: cover;">
-             <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
-                  class="letter-avatar nav-avatar-sm me-2">
-                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
-             </div>
-             Welcome, <strong sec:authentication="principal.user.name"></strong>!
-            </span>
+            <a th:href="@{/api/profile}" class="nav-profile-link d-flex align-items-center">
+
+                <img th:if="${#authentication.principal.user.profilePicturePath != null}"
+                     th:src="${#authentication.principal.user.profilePicturePath}"
+                     class="rounded-circle me-2 nav-avatar-sm"
+                     alt="Profile"
+                     style="width: 32px; height: 32px; object-fit: cover;">
+
+                <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
+                     class="letter-avatar nav-avatar-sm me-2">
+                    <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+                </div>
+
+                <span class="nav-welcome-text">
+        Welcome, <strong sec:authentication="principal.user.name"></strong>!
+    </span>
+            </a>
+
 
             <form th:action="@{/logout}" method="post">
                 <button class="nav-link logout">
@@ -166,17 +187,24 @@
                 <i class="fa-solid fa-plus"></i> Add Task
             </a>
 
-            <span class="nav-welcome d-flex align-items-center">
-            <img th:src="${#authentication.principal.user.profilePicturePath != null ?
-                 #authentication.principal.user.profilePicturePath : '/images/default-avatar.png'}"
-                 class="rounded-circle me-2"
-                 style="width: 32px; height: 32px; object-fit: cover;">
+            <a th:href="@{/api/profile}" class="nav-profile-link d-flex align-items-center">
+
+                <img th:if="${#authentication.principal.user.profilePicturePath != null}"
+                     th:src="${#authentication.principal.user.profilePicturePath}"
+                     class="rounded-circle me-2 nav-avatar-sm"
+                     alt="Profile"
+                     style="width: 32px; height: 32px; object-fit: cover;">
+
                 <div th:unless="${#authentication.principal.user.profilePicturePath != null}"
                      class="letter-avatar nav-avatar-sm me-2">
-                      <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
+                    <span th:text="${#strings.substring(#authentication.principal.user.name, 0, 1).toUpperCase()}">U</span>
                 </div>
-             Welcome, <strong sec:authentication="principal.user.name">User</strong>!
-            </span>
+
+                <span class="nav-welcome-text">
+        Welcome, <strong sec:authentication="principal.user.name"></strong>!
+    </span>
+            </a>
+
 
             <form th:action="@{/logout}" method="post">
                 <button class="nav-link logout">
