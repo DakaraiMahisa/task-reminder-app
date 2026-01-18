@@ -129,6 +129,41 @@ nav-welcome strong {
     align-items: center;
     gap: 15px;
 }
+/* =========================
+   THEME TOGGLE BUTTON
+========================= */
+
+.theme-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #e5e7eb; /* header text color */
+    font-size: 16px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
 /* FORM RESET */
 .logout-form {
     margin: 0;

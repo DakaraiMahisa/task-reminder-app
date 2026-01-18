@@ -23,6 +23,14 @@
             <i class="fa-solid fa-clock"></i>
             <span id="liveTime">--:--:--</span>
         </div>
+        <!-- GLOBAL DARK MODE TOGGLE -->
+        <button id="themeToggle"
+                class="theme-toggle"
+                type="button"
+                title="Toggle dark mode"
+                aria-label="Toggle dark mode">
+            <i class="fa-solid fa-moon"></i>
+        </button>
 
         <!-- NOT AUTHENTICATED -->
         <div class="nav-group" sec:authorize="isAnonymous()">
@@ -212,9 +220,8 @@
                 </button>
             </form>
         </div>
-
     </div>
-    <button class="nav-toggle" aria-label="Toggle menu">
+        <button class="nav-toggle" aria-label="Toggle menu">
         <i class="fa-solid fa-bars"></i>
     </button>
     </div>

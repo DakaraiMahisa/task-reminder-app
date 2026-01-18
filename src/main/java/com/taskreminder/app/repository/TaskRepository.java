@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Integer> {
@@ -36,7 +37,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     Page<Task> findByUserAndPriority(User user,TaskPriority priority, Pageable pageable);
 
-    List<Task> findByUserAndStatusNotAndDueDate(User user,TaskStatus status,LocalDateTime dueDate);
+    List<Task> findByUserAndStatusNotAndDueDateBetween(User user,TaskStatus status,LocalDateTime start,LocalDateTime end);
 
     Page<Task> findByUserAndTitleContainingIgnoreCase(User user,String keyword,Pageable pageable);
 
@@ -100,4 +101,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     long countCompletedByDate(@Param("user") User user, @Param("date") LocalDate date);
 
     List<Task> findFirst5ByUserOrderByDueDateDesc(User user);
+
+    Optional<Task> findByIdAndUser(Integer taskId, User user);
 }

@@ -1,0 +1,71 @@
+/* =========================
+   GLOBAL BACKGROUND FIX
+========================= */
+html.dark {
+    background-color: #020617;
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] body {
+    background-color: #0f172a;
+    color: #e5e7eb;
+}
+[data-theme="dark"] .header {
+    background-color: #020617;
+    color: #e5e7eb;
+}
+[data-theme="dark"] .sidebar {
+    background-color: #020617;
+    border-right: 1px solid #1e293b;
+}
+[data-theme="dark"] .task-card {
+    background-color: #020617;
+    box-shadow: none;
+}
+[data-theme="dark"] table {
+    background-color: #020617;
+}
+
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+    color: #e5e7eb;
+    border-color: #1e293b;
+}
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background-color: #020617;
+    color: #e5e7eb;
+    border-color: #334155;
+}
+/* =========================
+   HOME PAGE CONTAINER
+========================= */
+html.dark .hero,
+html.dark .how-it-works,
+html.dark .features,
+html.dark .testimonials {
+    background-color: #020617;
+}
+html.dark .step-card,
+html.dark .feature-card,
+html.dark .testimonial-card {
+    background-color: #020617;
+    border-color: #1e293b;
+    color: #e5e7eb;
+}
+html.dark .hero-content h1,
+html.dark .section-title {
+    color: #e5e7eb;
+}
+
+html.dark .hero-content p,
+html.dark .section-subtitle {
+    color: #cbd5e1;
+}
+
+
+/* Swap icon when dark mode is active */
+[data-theme="dark"] .theme-toggle i::before {
+    content: "\f185"; /* Font Awesome sun icon */
+}
