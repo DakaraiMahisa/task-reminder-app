@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 
@@ -169,17 +170,20 @@ public Page<Task> getPagedTasks(
                 .build();
     }
 
-    public Map<String, Long> getDailyStats(User user) {
+    public Map<String, Long> getDailyStats(User user, int days) {
         Map<String, Long> data = new LinkedHashMap<>();
         LocalDate today = LocalDate.now();
 
-        // Loop to get the last 7 days
-        for (int i = 6; i >= 0; i--) {
+        for (int i = days - 1; i >= 0; i--) {
             LocalDate date = today.minusDays(i);
             long count = taskRepository.countCompletedByDate(user, date);
 
-            // Format: "Mon", "Tue", etc. for a clean professional look
-            String label = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+            // If range is large (like 30 days), "Mon" repeats too much.
+            // Use "Jan 19" for longer ranges, "Mon" for shorter ranges.
+            String label = (days > 7)
+                    ? date.format(DateTimeFormatter.ofPattern("MMM dd"))
+                    : date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+
             data.put(label, count);
         }
         return data;

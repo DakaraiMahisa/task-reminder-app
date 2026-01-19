@@ -96,7 +96,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.dueDate < CURRENT_DATE AND t.status != 'DONE'")
     long countOverdueByUser(@Param("user") User user);
     @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user " +
-            "AND t.status = 'COMPLETED' " +
+            "AND t.status = 'DONE' " +
             "AND CAST(t.dueDate AS date) = :date")
     long countCompletedByDate(@Param("user") User user, @Param("date") LocalDate date);
 

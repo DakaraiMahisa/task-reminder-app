@@ -12,6 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header('dashboard')}"></div>
@@ -95,9 +96,28 @@
                             <small class="text-muted">Visual representation of tasks completed daily</small>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
-                                Last 7 Days
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-calendar-day me-1"></i>
+                                <span id="selectedRangeText" th:text="${currentDays == 30 ? 'Last 30 Days' : 'Last 7 Days'}">Last 7 Days</span>
                             </button>
+                            <ul class="dropdown-menu shadow">
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="updateChartRange(7, 'Last 7 Days')">
+                                        <i class="fa-solid fa-clock-rotate-left me-2"></i>Last 7 Days
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="updateChartRange(30, 'Last 30 Days')">
+                                        <i class="fa-solid fa-calendar-check me-2"></i>Last 30 Days
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="refreshCurrentChart()">
+                                        <i class="fa-solid fa-rotate me-2 text-primary"></i>Refresh Current
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
@@ -164,6 +184,7 @@
 </div>
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/dashboard-charts.js}"></script>
 <script src="/js/live-time.js"></script>
 <script src="/js/header.js"></script>

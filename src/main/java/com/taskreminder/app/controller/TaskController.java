@@ -2,13 +2,20 @@ package com.taskreminder.app.controller;
 import com.taskreminder.app.entity.Task;
 import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
+import com.taskreminder.app.service.EmailService;
+import com.taskreminder.app.service.ExportService;
+import com.taskreminder.app.security.CustomUserDetails;
+import com.taskreminder.app.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.taskreminder.app.service.TaskService;
@@ -20,6 +27,7 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
@@ -28,6 +36,15 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private ExportService exportService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/tasks")
     public String listTasks(
@@ -285,5 +302,24 @@ public class TaskController {
         taskService.updateDueDateForCurrentUser(id, dueDate);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/export-csv")
+    public ResponseEntity<byte[]> exportTasks(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(defaultValue = "download") String action) throws Exception {
+        List<Task> tasks = taskService.findAllForCurrentUser();
+        byte[] csvBytes = exportService.generateTasksCsv(tasks);
+        String fileName = "tasks_report.csv";
 
+        if ("email".equalsIgnoreCase(action)) {
+            String body = "<h3>Your Task Report</h3><p>Please find your exported tasks attached as a CSV file.</p>";
+            emailService.sendEmailWithAttachment(userDetails.getUsername(), "Your Task Report", body, csvBytes, fileName);
+
+            return ResponseEntity.ok().body("Email Sent".getBytes());
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(csvBytes);
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import tools.jackson.databind.ObjectMapper;
 import java.security.Principal;
 import java.util.List;
@@ -28,7 +29,7 @@ public class DashboardController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model, Principal principal) {
+    public String showDashboard(Model model, Principal principal,@RequestParam(name = "days", defaultValue = "7") int days) {
 
         User user = userService.findByEmail(principal.getName());
 
@@ -36,7 +37,7 @@ public class DashboardController {
 
         List<Task> recentTasks = taskRepository.findFirst5ByUserOrderByDueDateDesc(user);
 
-        Map<String, Long> trendData = taskService.getDailyStats(user);
+        Map<String, Long> trendData = taskService.getDailyStats(user,days);
         ObjectMapper mapper = new ObjectMapper();
 
         try {
