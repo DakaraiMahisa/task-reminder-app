@@ -494,6 +494,38 @@ background: #020617
 [data-theme="dark"] .custom-toast.error {
     border-left: 4px solid #ef4444;
 }
+
+/* dark mode css for export-tasks */
+[data-theme="dark"] .dropdown .btn-outline-secondary {
+    background-color: #1e293b;
+    color: #94a3b8;
+    border-color: #334155;
+}
+
+[data-theme="dark"] .dropdown .btn-outline-secondary:hover {
+    background-color: #334155;
+    color: #f1f5f9;
+    border-color: #475569;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: #334155;
+    color: #3b82f6; /* Modern Blue accent */
+}
+
+[data-theme="dark"] .dropdown-divider {
+    border-top: 1px solid #334155;
+}
 /* =========================
    ICON SWAP
 ========================= */
