@@ -1,7 +1,9 @@
 package com.taskreminder.app.controller;
+import com.taskreminder.app.dto.BulkTaskActionRequest;
 import com.taskreminder.app.entity.Task;
 import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
+import com.taskreminder.app.repository.TaskRepository;
 import com.taskreminder.app.service.EmailService;
 import com.taskreminder.app.service.ExportService;
 import com.taskreminder.app.security.CustomUserDetails;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,6 +48,9 @@ public class TaskController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @GetMapping("/tasks")
     public String listTasks(
@@ -302,7 +308,7 @@ public class TaskController {
         taskService.updateDueDateForCurrentUser(id, dueDate);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/export-csv")
+    @GetMapping("tasks/export-csv")
     public ResponseEntity<byte[]> exportTasks(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(defaultValue = "download") String action) throws Exception {
@@ -322,4 +328,57 @@ public class TaskController {
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(csvBytes);
     }
+    @PostMapping("/tasks/{id}/undo-complete")
+    public ResponseEntity<?> undoTaskCompletion(@PathVariable Integer id) {
+        boolean success = taskService.undoTaskCompletion(id);
+        return success
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.status(HttpStatus.GONE).build();
+    }
+
+    @GetMapping("/tasks/bin")
+    public String viewBin(Model model) {
+
+        List<Task> deletedTasks = taskService.getDeletedTasksForCurrentUser();
+
+        model.addAttribute("deletedTasks", deletedTasks);
+        return "bin";
+    }
+
+    @PostMapping("/tasks/bin/restore/{id}")
+    @ResponseBody
+    public ResponseEntity<Void> restoreTask(@PathVariable Integer id) {
+        taskService.restoreTask(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/tasks/bin/restore")
+    @ResponseBody
+    public ResponseEntity<Void> restoreTasks(@PathVariable Integer id) {
+        taskService.restoreTask(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/tasks/bin/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<Void> permanentlyDeleteTask(@PathVariable Integer id) {
+        taskService.permanentlyDeleteTask(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/tasks/bin/delete")
+    @ResponseBody
+    public ResponseEntity<Void> permanentlyDeleteTasks(
+            @RequestBody List<Integer> taskIds) {
+
+        taskService.permanentlyDeleteTasks(taskIds);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/tasks/bulk-delete")
+    public ResponseEntity<?> bulkDelete(@RequestBody BulkTaskActionRequest request) {
+        taskService.softDeleteTasks(request.getTaskIds());
+        return ResponseEntity.ok().build();
+    }
+
 }

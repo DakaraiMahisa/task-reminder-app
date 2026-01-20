@@ -67,7 +67,6 @@
              class="error-message"
              th:text="${errorMessage}">
         </div>
-
     </section>
 
     <!-- =========================================================
@@ -292,7 +291,7 @@
                     <th>Priority</th>
                     <th>Created At</th>
                     <th>Completed At</th>
-                    <th>Actions</th>
+                    <th>Actions <input type="checkbox" id="selectAllTasks"></th>
                 </tr>
                 </thead>
 
@@ -374,6 +373,9 @@
                               th:if="${task.status == T(com.taskreminder.app.enums.TaskStatus).DONE}">
                               <i class="fa-solid fa-circle-check"></i> Done
                         </span>
+                        <input type="checkbox"
+                               class="task-select"
+                               th:value="${task.id}">
                     </td>
                 </tr>
                 </tbody>
@@ -485,6 +487,11 @@
             <div id="taskCalendar"></div>
 
         </section>
+        <section id="bulkActions" class="bulk-actions hidden">
+            <button class="btn btn-danger" id="bulkDeleteBtn">
+                <i class="fa-solid fa-trash"></i> Delete Selected
+            </button>
+        </section>
 
         <!-- ===============================================
              PAGINATION
@@ -555,5 +562,7 @@
 <script th:src="@{/js/dashboard-charts.js}"></script>
 <script src="/js/task-status.js"></script>
 <script src="/js/theme.js"></script>
+<script src="/js/undo-toast.js"></script>
+<script src="/js/task-bulk-delete.js"></script>
 </body>
 </html>

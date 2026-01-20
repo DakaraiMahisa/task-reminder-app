@@ -93,14 +93,12 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Fix the User Icon color and size */
 .sidebar-header i {
     color: #3b82f6 !important;
     margin-bottom: 0.75rem !important;
     display: inline-block;
 }
 
-/* Fix the User Name font and color */
 .sidebar-header h6 {
     font-size: 1rem !important;
     font-weight: 600 !important;
@@ -138,14 +136,20 @@
 
 .sidebar .nav-link.active {
     color: white;
-    background-color: rgba(0, 123, 255, 0.15); /* Subtle Blue */
-    border-left: 4px solid #007bff; /* Bright Blue Accent */
+    background-color: rgba(0, 123, 255, 0.15);
+    border-left: 4px solid #007bff;
 }
 
-/* HIDE TEXT ON COLLAPSE */
+/* HIDING TEXT ON COLLAPSE */
 .sidebar.collapsed span,
 .sidebar.collapsed .sidebar-header h6 {
     display: none;
+}
+.bin-count {
+    margin-left: 6px;
+    font-size: 12px;
+    color: #f87171;
+    font-weight: 600;
 }
 
 /* TOGGLE BUTTON AT BOTTOM */
@@ -165,7 +169,6 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* 1. Remove all dots/bullets from the sidebar area */
  .sidebar ul,
  .sidebar li {
      list-style: none !important;
@@ -174,7 +177,7 @@
      padding: 0 !important;
  }
 
- /* 2. Fix the layout of the nav links */
+ /* 2. Fixing the layout of the nav links */
  .sidebar .nav-link {
      display: flex !important;
      align-items: center !important;
@@ -185,7 +188,7 @@
      text-decoration: none !important;
  }
 
- /* 3. Ensure icons have a fixed width so text aligns vertically */
+
  .sidebar .nav-link i {
      width: 24px !important;
      text-align: center;

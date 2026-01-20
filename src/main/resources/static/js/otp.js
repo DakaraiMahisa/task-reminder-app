@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('.otp-inputs input');
     const hiddenInput = document.getElementById('otpHidden');
 
-    // 1. Global Expiry Timer
     const countdown = setInterval(() => {
         let minutes = Math.floor(time / 60);
         let seconds = time % 60;
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         time--;
     }, 1000);
 
-    // 2. Resend Cooldown Timer Logic
     function startResendCooldown() {
         resendCooldown = 60;
         resendBtn.disabled = true;
@@ -37,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // 3. OTP Input & Hidden Field Logic
     inputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
             if (e.target.value.length === 1 && index < inputs.length - 1) {
@@ -59,18 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
         hiddenInput.value = otp;
     }
 
-    // 4. Handle Verify Button Loading
     otpForm.addEventListener('submit', () => {
         verifyBtn.innerHTML = '<span class="spinner"></span> Verifying...';
         verifyBtn.classList.add('loading');
     });
 
-    // 5. Handle Resend Button with Loading & Cooldown
+
     resendBtn.addEventListener('click', async () => {
         const email = document.querySelector('input[name="email"]').value;
         const originalText = resendBtn.innerText;
 
-        // UI Loading State
         resendBtn.innerHTML = '<span class="spinner"></span> Sending...';
         resendBtn.disabled = true;
 

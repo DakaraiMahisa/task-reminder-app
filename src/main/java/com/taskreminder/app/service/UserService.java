@@ -66,7 +66,7 @@ public class UserService {
             throw new RuntimeException("OTP expired");
         }
 
-        // SUCCESS
+
         user.setEnabled(Boolean.TRUE);
         user.setVerified(Boolean.TRUE);
         user.setOtp(null);

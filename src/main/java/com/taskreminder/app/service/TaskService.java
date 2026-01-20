@@ -5,12 +5,14 @@ import com.taskreminder.app.entity.User;
 import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
 import com.taskreminder.app.repository.TaskRepository;
+import com.taskreminder.app.security.UndoConfig;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -78,7 +80,6 @@ public class TaskService {
     }
 
 
-//Filters with pagination + sorting
 public Page<Task> getPagedTasks(
         Pageable pageable,
         TaskStatus status,
@@ -178,8 +179,6 @@ public Page<Task> getPagedTasks(
             LocalDate date = today.minusDays(i);
             long count = taskRepository.countCompletedByDate(user, date);
 
-            // If range is large (like 30 days), "Mon" repeats too much.
-            // Use "Jan 19" for longer ranges, "Mon" for shorter ranges.
             String label = (days > 7)
                     ? date.format(DateTimeFormatter.ofPattern("MMM dd"))
                     : date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
@@ -235,5 +234,117 @@ public Page<Task> getPagedTasks(
         taskRepository.save(task);
     }
 
+    public void markTaskDone(Integer taskId) {
+        Task task = getTaskForCurrentUser(taskId);
+
+        task.setStatus(TaskStatus.DONE);
+        task.setCompletedAt(LocalDateTime.now());
+
+        taskRepository.save(task);
+    }
+    public boolean undoTaskCompletion(Integer taskId) {
+        Task task = getTaskForCurrentUser(taskId);
+
+        if (task.getCompletedAt() == null) return false;
+
+        Duration elapsed = Duration.between(
+                task.getCompletedAt(),
+                LocalDateTime.now()
+        );
+
+        if (elapsed.compareTo(UndoConfig.COMPLETION_UNDO_WINDOW) > 0) {
+            return false;
+        }
+
+        task.setStatus(TaskStatus.PENDING);
+        task.setCompletedAt(null);
+
+        taskRepository.save(task);
+        return true;
+    }
+    public void softDeleteTask(Integer taskId) {
+        Task task = getTaskForCurrentUser(taskId);
+
+        task.setDeleted(true);
+        task.setDeletedAt(LocalDateTime.now());
+
+        taskRepository.save(task);
+    }
+    public void softDeleteTasks(List<Integer> taskIds) {
+        List<Task> tasks = taskRepository
+                .findAllById(taskIds)
+                .stream()
+                .filter(t -> t.getUser().equals(userService.getCurrentUser()))
+                .toList();
+
+        tasks.forEach(t -> {
+            t.setDeleted(true);
+            t.setDeletedAt(LocalDateTime.now());
+        });
+
+        taskRepository.saveAll(tasks);
+    }
+
+    public List<Task> getDeletedTasksForCurrentUser() {
+        return taskRepository.findByUserAndDeletedTrue(
+                userService.getCurrentUser()
+        );
+    }
+
+    public void restoreTask(Integer taskId) {
+        Task task = taskRepository
+                .findByIdAndUser(taskId, userService.getCurrentUser())
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (!task.isDeleted()) {
+            return;
+        }
+
+        task.setDeleted(false);
+        task.setDeletedAt(null);
+
+        taskRepository.save(task);
+    }
+
+    public void restoreTasks(List<Integer> taskIds) {
+        User user = userService.getCurrentUser();
+
+        List<Task> tasks = taskRepository.findAllById(taskIds);
+
+        tasks.stream()
+                .filter(task ->
+                        task.isDeleted()
+                                && task.getUser().equals(user))
+                .forEach(task -> {
+                    task.setDeleted(false);
+                    task.setDeletedAt(null);
+                });
+
+        taskRepository.saveAll(tasks);
+    }
+
+    public void permanentlyDeleteTask(Integer taskId) {
+        Task task = taskRepository
+                .findByIdAndUser(taskId, userService.getCurrentUser())
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (!task.isDeleted()) {
+            throw new IllegalStateException("Task must be deleted first");
+        }
+
+        taskRepository.delete(task);
+    }
+
+    public void permanentlyDeleteTasks(List<Integer> taskIds) {
+        User user = userService.getCurrentUser();
+
+        List<Task> tasks = taskRepository.findAllById(taskIds);
+
+        tasks.stream()
+                .filter(task ->
+                        task.isDeleted()
+                                && task.getUser().equals(user))
+                .forEach(taskRepository::delete);
+    }
 
 }

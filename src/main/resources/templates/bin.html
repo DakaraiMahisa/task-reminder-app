@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>Recycle Bin</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/bin.css}">
+</head>
+<body>
+<a href="/api/tasks" class="bin-back-btn" title="Back to Tasks">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+<header class="page-header">
+    <h2>Bin</h2>
+    <p>Deleted tasks will be permanently removed after 30 days.</p>
+</header>
+<!-- Bulk Actions -->
+<section id="binBulkActions" class="bulk-actions hidden">
+    <button class="btn btn-success" id="bulkRestoreBtn">
+        <i class="fa-solid fa-rotate-left"></i> Restore
+    </button>
+
+    <button class="btn btn-danger" id="bulkPermanentDeleteBtn">
+        <i class="fa-solid fa-trash"></i> Delete Permanently
+    </button>
+</section>
+
+<!-- Bin Table -->
+<table class="task-table">
+    <thead>
+    <tr>
+        <th>
+            <input type="checkbox" id="selectAllBin">
+        </th>
+        <th>Title</th>
+        <th>Deleted At</th>
+        <th>Expires In</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:if="${deletedTasks.isEmpty()}">
+        <td colspan="5" class="empty-state">
+            <i class="fa-solid fa-trash-can"></i>
+            <p>Bin is empty</p>
+        </td>
+    </tr>
+
+    <tr th:each="task : ${deletedTasks}">
+        <td>
+            <input type="checkbox"
+                   class="bin-select"
+                   th:value="${task.id}">
+        </td>
+
+        <td th:text="${task.title}"></td>
+
+        <td th:text="${#temporals.format(task.deletedAt, 'dd MMM yyyy')}"></td>
+
+        <td>
+                <span class="expiry-badge"
+                      th:text="${task.daysRemaining + ' days'}"
+                      th:classappend="${task.daysRemaining <= 5 ? ' danger' : ''}">
+                </span>
+        </td>
+
+        <td>
+            <button class="btn btn-success btn-sm restore-btn"
+                    th:data-id="${task.id}">
+                Restore
+            </button>
+
+            <button class="btn btn-danger btn-sm permanent-delete-btn"
+                    th:data-id="${task.id}">
+                Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script src="/js/bin.js"></script>
+</body>
+</html>
