@@ -9,21 +9,29 @@
 
 <nav class="navbar top-nav" th:fragment="header(context)">
     <div class="navbar-content">
-    <!-- LEFT: APP BRAND -->
+
     <div class="nav-left">
+        <div>
         <i class="fa-solid fa-list-check app-icon"></i>
         <span class="app-name">Task Reminder App</span>
+        </div>
+        <div id="undoBar" class="undo-bar">
+            <button id="undoBtn" disabled>
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+        </div>
+
     </div>
 
-    <!-- RIGHT -->
+
     <div class="nav-right">
 
-        <!-- LIVE TIME -->
+
         <div class="nav-clock">
             <i class="fa-solid fa-clock"></i>
             <span id="liveTime">--:--:--</span>
         </div>
-        <!-- GLOBAL DARK MODE TOGGLE -->
+
         <button id="themeToggle"
                 class="theme-toggle"
                 type="button"

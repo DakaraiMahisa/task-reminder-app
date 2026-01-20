@@ -46,7 +46,21 @@
                 <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> <span>Settings</span></a>
             </li>
         </ul>
+        <li class="nav-item">
+            <a th:href="@{/api/tasks/bin}"
+               class="nav-link"
+               th:classappend="${context == 'bin'} ? 'active' : ''">
 
+                <i class="fa-solid fa-trash"></i>
+                <span>
+            Bin
+            <span class="bin-count"
+                  th:if="${binCount > 0}"
+                  th:text="'(' + ${binCount} + ')'">
+            </span>
+        </span>
+            </a>
+        </li>
         <button id="sidebarCollapse" class="btn-toggle-sidebar mt-auto">
             <i class="fa-solid fa-angles-left"></i>
         </button>

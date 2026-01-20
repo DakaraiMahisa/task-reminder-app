@@ -5,13 +5,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Entity
 @Table(name="tasks")
+@Data
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +41,11 @@ public class Task {
     private TaskPriority priority;
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
+    @Column
+    private LocalDateTime deletedAt;
     private LocalDateTime completedAt;
 
     @Column(name = "reminder_sent",nullable = false)
@@ -47,95 +55,7 @@ public class Task {
     private User user;
     public Task(){}
 
-   public Task(Integer id,String title,String description,LocalDateTime dueDate,TaskStatus status,TaskPriority priority,LocalDateTime createdAt,LocalDateTime completedAt){
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.status =  status;
-        this.priority = priority;
-        this.createdAt = createdAt;
-        this.completedAt = completedAt;
-   }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
-    public TaskPriority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(TaskPriority priority) {
-        this.priority = priority;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-    public LocalDateTime getCompletedAt() {
-        return completedAt;
-    }
-
-    public void setCompletedAt(LocalDateTime completedAt) {
-        this.completedAt = completedAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public boolean isReminderSent() {
-        return reminderSent;
-    }
-
-    public void setReminderSent(boolean reminderSent) {
-        this.reminderSent = reminderSent;
-    }
     @Transient
     public boolean isOverdue() {
         return dueDate != null
@@ -143,4 +63,13 @@ public class Task {
                 && LocalDateTime.now().isAfter(dueDate);
     }
 
+    @Transient
+    public long getDaysRemaining() {
+        if (deletedAt == null) return 0;
+
+        return ChronoUnit.DAYS.between(
+                LocalDateTime.now(),
+                deletedAt.plusDays(30)
+        );
+    }
 }

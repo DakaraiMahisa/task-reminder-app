@@ -103,4 +103,8 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findFirst5ByUserOrderByDueDateDesc(User user);
 
     Optional<Task> findByIdAndUser(Integer taskId, User user);
+    List<Task> findByUserAndDeletedFalse(User user);
+    List<Task> findByUserAndDeletedTrue(User user);
+
+    void deleteByDeletedTrueAndDeletedAtBefore(LocalDateTime cutoff);
 }

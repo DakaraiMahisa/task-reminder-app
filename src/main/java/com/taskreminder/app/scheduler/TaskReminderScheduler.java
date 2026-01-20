@@ -20,16 +20,11 @@ public class TaskReminderScheduler {
     @Autowired
     private EmailService emailService;
 
-    /**
-     * This method runs every 15 minutes.
-     * It looks for PENDING tasks due in the next 30 minutes that haven't been notified.
-     */
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0/15 * * * *")
     public void sendUpcomingTaskReminders() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime halfHourFromNow = now.plusMinutes(30);
 
-        // Fetch tasks due soon
         List<Task> upcomingTasks = taskRepository
                 .findByStatusAndReminderSentFalseAndDueDateBetween(
                         TaskStatus.PENDING,
@@ -42,14 +37,10 @@ public class TaskReminderScheduler {
         }
     }
 
-    /**
-     * This method runs once an hour to catch tasks that became overdue.
-     */
     @Scheduled(cron = "0 0 * * * *")
     public void sendOverdueTaskReminders() {
         LocalDateTime now = LocalDateTime.now();
 
-        // Fetch overdue tasks that haven't had a reminder sent
         List<Task> overdueTasks = taskRepository
                 .findByStatusAndReminderSentFalseAndDueDateBefore(
                         TaskStatus.PENDING,

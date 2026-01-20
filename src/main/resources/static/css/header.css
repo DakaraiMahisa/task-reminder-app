@@ -15,8 +15,8 @@
 }
 .navbar-content {
     width: 100%;
-    max-width: 1440px; /* Adjust this to match your page-container's max-width */
-    margin: 0 auto;    /* This does the centering magic */
+    max-width: 1440px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,6 +33,31 @@
 
 .app-icon {
     font-size: 1.3rem;
+}
+.undo-bar {
+    display: flex;
+    align-items: center;
+}
+.undo-bar button {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #16a34a;
+    background: #ecfdf5;
+    color: #166534;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.undo-bar button:hover:not(:disabled) {
+    background: #dcfce7;
+}
+
+.undo-bar button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 /* ===== RIGHT ===== */
@@ -72,7 +97,7 @@
     background: rgba(255,255,255,0.15);
 }
 .nav-right i {
-    color: rgba(255, 255, 255, 0.8); /* Softened white */
+    color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
     transition: color 0.2s ease;
 }
@@ -147,7 +172,7 @@ nav-welcome strong {
 
     border-radius: 50%;
 
-    color: #e5e7eb; /* header text color */
+    color: #e5e7eb;
     font-size: 16px;
 
     transition:
@@ -208,7 +233,7 @@ nav-welcome strong {
         padding: 16px;
         gap: 12px;
 
-        display: none; /* hidden by default */
+        display: none;
     }
 
     .nav-right.active {

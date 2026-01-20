@@ -28,7 +28,7 @@ html, body {
     max-width: 550px;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 51, 102, 0.08); /* Navy-tinted shadow */
+    box-shadow: 0 20px 40px rgba(0, 51, 102, 0.08);
     position: relative;
 }
 
@@ -82,7 +82,6 @@ h2 {
 }
 
 /* 5. Status & Priority Badges */
-/* Targets specific fields to make them look like buttons/badges */
 .field:nth-child(4) p, .field:nth-child(5) p {
     background: #eef2f7;
     padding: 4px 12px;
@@ -118,7 +117,7 @@ h2 {
 }
 
 .btn-secondary {
-    background: #003366; /* Match Navy Footer */
+    background: #003366;
     color: white;
 }
 
