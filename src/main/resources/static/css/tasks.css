@@ -43,21 +43,28 @@ body {
     background: var(--bg-page);
     font-family: "Inter", "Segoe UI", system-ui, sans-serif;
     color: var(--text-main);
-    padding-bottom: 80px;
+    /*padding-bottom: 80px;*/
 }
 
 .page-container {
-    margin-top: 70px;
+    position:absolute;
+    top:70px;
+    bottom: 50px;
     max-width: 1440px;
     margin-left: 260px;
-    padding: 32px 36px 120px;
-    min-height: calc(100vh - 70px);
+    padding: 32px 36px;
+    overflow-y: auto;
     width: calc(100% - 260px);
     transition: margin-left 0.3s ease, width 0.3s ease;
 }
 .sidebar.collapsed + .page-container {
     margin-left: 80px;
     width: calc(100% - 80px);
+}
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 24px;
 }
 /* =====================================================
    PAGE HEADER
@@ -1067,11 +1074,6 @@ body {
 .fc-event:hover {
     filter: brightness(0.95);
     transform: scale(1.01);
-}
-.content {
-    flex: 1;
-    overflow-y: auto;
-    padding-bottom: 24px;
 }
 .bulk-actions {
     position: sticky;

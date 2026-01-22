@@ -86,9 +86,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebarBtn = document.getElementById('sidebarCollapse');
     const sidebarIcon = sidebarBtn?.querySelector('i');
 
+    const root = document.documentElement;
+
     if (sidebar && sidebarBtn) {
+
+
         if (localStorage.getItem('sidebar-collapsed') === 'true') {
             sidebar.classList.add('collapsed');
+            root.classList.add('sidebar-collapsed');
             sidebarIcon?.classList.replace('fa-angles-left', 'fa-angles-right');
         }
 
@@ -96,14 +101,21 @@ document.addEventListener('DOMContentLoaded', function () {
             sidebar.classList.toggle('collapsed');
             const isCollapsed = sidebar.classList.contains('collapsed');
 
+            root.classList.toggle('sidebar-collapsed', isCollapsed);
+
             sidebarIcon?.classList.replace(
                 isCollapsed ? 'fa-angles-left' : 'fa-angles-right',
                 isCollapsed ? 'fa-angles-right' : 'fa-angles-left'
             );
+
             localStorage.setItem('sidebar-collapsed', isCollapsed);
-            setTimeout(() => { if(myChart) myChart.resize(); }, 300);
+
+            setTimeout(() => {
+                if (myChart) myChart.resize();
+            }, 300);
         });
     }
+
 
 
     window.updateChartRange = function(days, labelText) {

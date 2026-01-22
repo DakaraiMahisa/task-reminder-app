@@ -1,24 +1,17 @@
-html, body {
-    height: 100%;
-}
+/* ===============================
+   FOOTER (FRAGMENT-ONLY STYLES)
+================================ */
 
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
 .footer {
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
     height: 50px;
     z-index: 1001;
+
     background-color: var(--footer-bg, #0f172a);
     color: #cbd5e1;
-    margin-top: auto;
 }
 
 .footer-content {
@@ -60,19 +53,12 @@ main {
 }
 
 /* ===============================
-   FOOTER – MOBILE RESPONSIVE
+   MOBILE
 ================================ */
 
 @media (max-width: 768px) {
-
-    .footer {
-        padding: 16px 12px;
-    }
-
     .footer-content {
-        display: flex;
         flex-direction: column;
-        align-items: center;
         gap: 12px;
         text-align: center;
     }
@@ -80,28 +66,17 @@ main {
     .footer-left,
     .footer-center,
     .footer-right {
-        width: 100%;
-        display: flex;
         justify-content: center;
-        align-items: center;
+        width: 100%;
     }
 
     .footer-center {
-        gap: 16px;
         flex-wrap: wrap;
     }
 }
-@media (max-width: 480px) {
 
+@media (max-width: 480px) {
     .footer {
         font-size: 0.85rem;
-    }
-
-    .footer-link {
-        padding: 4px 6px;
-    }
-
-    .footer-version {
-        opacity: 0.8;
     }
 }

@@ -9,7 +9,6 @@
     justify-content: space-between;
     align-items: center;
 
-    padding: 0.75rem 1.5rem;
     background: linear-gradient(135deg, #2563eb, #1e40af);
     color: #fff;
 }
@@ -134,7 +133,7 @@
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     margin-left: 10px;
 }
-nav-welcome strong {
+.nav-welcome strong {
     color: #ffffff;
     font-weight: 600;
     text-transform: capitalize;
@@ -187,6 +186,31 @@ nav-welcome strong {
 
 .theme-toggle:active {
     transform: scale(0.95);
+}
+.nav-profile-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #ffffff;
+    text-decoration: none;
+}
+.nav-profile-link {
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.nav-profile-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.nav-profile-link {
+    cursor: pointer;
+}
+
+.nav-profile-link:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.6);
+    outline-offset: 2px;
 }
 
 /* FORM RESET */

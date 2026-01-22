@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Contact Us | Task Reminder App</title>
     <link rel="stylesheet" th:href="@{/css/contact.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
 
@@ -51,6 +52,6 @@
         <span th:text="${successMessage}"></span>
     </p>
 </div>
-
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
