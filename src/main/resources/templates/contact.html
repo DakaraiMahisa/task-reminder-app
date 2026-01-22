@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us | Task Reminder App</title>
+    <link rel="stylesheet" th:href="@{/css/contact.css}">
+</head>
+<body>
+
+<div class="contact-container">
+    <h1>Contact Us</h1>
+
+    <p class="intro-text">
+        The Task Reminder App is currently under development. If you notice any issues,
+        have suggestions, or would like to share feedback, please use the form below.
+        Your input is highly appreciated.
+    </p>
+
+    <form th:action="@{/contact}" th:object="${contactMessage}" method="post">
+
+        <label>Full Name</label>
+        <input type="text" th:field="*{name}" required>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" required>
+        <input type="text" name="company" style="display:none">
+
+        <label>Subject</label>
+        <select th:field="*{subject}" required>
+            <option value="">-- Select --</option>
+            <option value="Bug Report">Bug Report</option>
+            <option value="Feedback">Feedback</option>
+            <option value="Feature Request">Feature Request</option>
+            <option value="General Query">General Query</option>
+        </select>
+
+        <label>Message</label>
+        <textarea th:field="*{message}" rows="5" required></textarea>
+
+        <button type="submit">Send Message</button>
+    </form>
+
+    <p th:if="${successMessage}" class="success">
+        <span th:text="${successMessage}"></span>
+    </p>
+    <button type="button" class="btn-back" onclick="window.history.back();">
+        &larr; Back
+    </button>
+
+    <p th:if="${successMessage}" class="success">
+        <span th:text="${successMessage}"></span>
+    </p>
+</div>
+
+</body>
+</html>
