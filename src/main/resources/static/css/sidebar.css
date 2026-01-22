@@ -221,10 +221,7 @@
          overflow-y: auto;
      }
 
-     /* Push main content full width */
-     .page-container {
-         margin-left: 0 !important;
-     }
+
  }
 @media (max-width: 768px) {
 

@@ -6,6 +6,10 @@ html, body {
     height: 100%;
     margin: 0;
 }
+html:not(.layout-ready) .sidebar,
+html:not(.layout-ready) .page-container {
+    transition: none !important;
+}
 
 body {
     display: flex;
