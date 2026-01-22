@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .rememberMe(remember -> remember
                         .key("task-reminder-remember-key")
                         .tokenRepository(persistentTokenRepository())
-                        .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 days
+                        .tokenValiditySeconds(7 * 24 * 60 * 60)
                         .userDetailsService(customUserDetailsService)
                 )
                 .sessionManagement(session -> session

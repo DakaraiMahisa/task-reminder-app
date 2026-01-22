@@ -232,7 +232,7 @@ public class TaskController {
     @GetMapping("/tasks/delete/{id}")
     public String deleteTask(@PathVariable int id, RedirectAttributes redirectAttributes){
         try{
-        taskService.deleteTask(id);
+        taskService.softDeleteTask(id);
         redirectAttributes.addFlashAttribute(
                     "successMessage", "Task deleted successfully!");
         }catch(Exception e){
@@ -354,8 +354,8 @@ public class TaskController {
 
     @PostMapping("/tasks/bin/restore")
     @ResponseBody
-    public ResponseEntity<Void> restoreTasks(@PathVariable Integer id) {
-        taskService.restoreTask(id);
+    public ResponseEntity<Void> restoreTasks(@RequestBody List<Integer>ids) {
+        taskService.restoreTasks(ids);
         return ResponseEntity.ok().build();
     }
 
