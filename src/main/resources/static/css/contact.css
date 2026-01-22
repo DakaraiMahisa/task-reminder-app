@@ -1,0 +1,154 @@
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+/* Container */
+.contact-container {
+    max-width: 640px;
+    margin: 80px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+.contact-container h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* Intro Text */
+.intro-text {
+    font-size: 15px;
+    color: #4b5563;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    margin-top: 18px;
+    color: #374151;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Focus State */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Textarea */
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Submit Button */
+button {
+    margin-top: 30px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: #2563eb;
+    color: #ffffff;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Success Message */
+.success {
+    margin-top: 24px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    background-color: #ecfdf5;
+    color: #065f46;
+    font-size: 14px;
+    border: 1px solid #a7f3d0;
+    text-align: center;
+}
+
+/* Error Message (future-ready) */
+.error {
+    margin-top: 24px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    font-size: 14px;
+    text-align: center;
+}
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    color: #374151;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-container {
+        margin: 40px 16px;
+        padding: 28px;
+    }
+}
