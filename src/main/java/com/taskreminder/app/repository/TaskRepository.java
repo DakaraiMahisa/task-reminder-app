@@ -22,6 +22,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @Query("""
     SELECT t FROM Task t
     WHERE t.user = :user
+      AND t.deleted = false
       AND (:status IS NULL OR t.status = :status)
       AND (:priority IS NULL OR t.priority = :priority)
       AND (:title IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')))
@@ -58,6 +59,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @Query("""
     SELECT COUNT(t) FROM Task t
     WHERE t.user = :user
+      AND t.deleted = false
       AND (:status IS NULL OR t.status = :status)
       AND (:priority IS NULL OR t.priority = :priority)
       AND (:title IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')))
@@ -72,6 +74,7 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @Query("""
     SELECT COUNT(t) FROM Task t
     WHERE t.user = :user
+      AND t.deleted = false
       AND t.status = 'DONE'
       AND (:priority IS NULL OR t.priority = :priority)
       AND (:title IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%')))
@@ -85,19 +88,24 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findByStatusAndReminderSentFalseAndDueDateBefore(TaskStatus status, LocalDateTime now);
     List<Task> findByStatusAndReminderSentFalseAndDueDateBetween(TaskStatus status, LocalDateTime now, LocalDateTime halfHourFromNow);
 
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.deleted = false")
     long countByUser(User user);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.status = 'DONE'")
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.deleted = false AND t.status = 'DONE'")
     long countCompletedByUser(@Param("user") User user);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.status = 'PENDING'")
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.deleted = false AND t.status = 'PENDING'")
     long countPendingByUser(@Param("user") User user);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.dueDate < CURRENT_DATE AND t.status != 'DONE'")
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user AND t.deleted = false AND t.dueDate < CURRENT_DATE AND t.status != 'DONE'")
     long countOverdueByUser(@Param("user") User user);
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.user = :user " +
-            "AND t.status = 'DONE' " +
-            "AND CAST(t.dueDate AS date) = :date")
+
+    @Query(""" 
+    SELECT COUNT(t) FROM Task t WHERE t.user = :user 
+    AND t.deleted = false 
+    AND t.status = 'DONE' 
+    AND CAST(t.dueDate AS date) = :date
+""")
     long countCompletedByDate(@Param("user") User user, @Param("date") LocalDate date);
 
     List<Task> findFirst5ByUserOrderByDueDateDesc(User user);

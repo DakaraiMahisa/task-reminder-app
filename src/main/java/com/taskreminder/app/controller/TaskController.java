@@ -8,6 +8,7 @@ import com.taskreminder.app.service.EmailService;
 import com.taskreminder.app.service.ExportService;
 import com.taskreminder.app.security.CustomUserDetails;
 import com.taskreminder.app.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -175,8 +176,8 @@ public class TaskController {
             if (task.getDueDate().isBefore(today)) {
                 throw new IllegalArgumentException("The due date cannot be earlier than today (" + today + ").");
             }
-        task.setCreatedAt(LocalDateTime.now());
-        taskService.addTask(task);
+            task.setCreatedAt(LocalDateTime.now());
+            taskService.addTask(task);
             redirectAttributes.addFlashAttribute(
                     "successMessage", "Task added successfully!"
             );
@@ -229,18 +230,19 @@ public class TaskController {
         return "redirect:/api/tasks";
     }
 
-    @GetMapping("/tasks/delete/{id}")
-    public String deleteTask(@PathVariable int id, RedirectAttributes redirectAttributes){
-        try{
-        taskService.softDeleteTask(id);
-        redirectAttributes.addFlashAttribute(
-                    "successMessage", "Task deleted successfully!");
-        }catch(Exception e){
-            redirectAttributes.addFlashAttribute(
-                    "errorMessage", "Failed to delete task."
-            );
+    @DeleteMapping("/tasks/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteTask(@PathVariable Integer id, HttpSession session) {
+        try {
+            taskService.softDeleteTask(id);
+
+            session.setAttribute("successMessage", "Task moved to bin successfully!");
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
-        return "redirect:/api/tasks";
     }
 
     @GetMapping("/view/{id}")
@@ -308,7 +310,7 @@ public class TaskController {
         taskService.updateDueDateForCurrentUser(id, dueDate);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("tasks/export-csv")
+    @GetMapping("/tasks/export-csv")
     public ResponseEntity<byte[]> exportTasks(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(defaultValue = "download") String action) throws Exception {
