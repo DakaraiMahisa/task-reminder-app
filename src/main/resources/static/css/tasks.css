@@ -1132,6 +1132,189 @@ body {
     cursor: not-allowed;
 }
 
+
+/* Add/Edit Modal Styling */
+#addTaskModal .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+/* Consistent Blue Gradient Header */
+#addTaskModal .modal-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 1.25rem 1.5rem;
+    border: none;
+}
+
+#addTaskModal .modal-title {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+#addTaskModal .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* Body and Form Styling */
+#addTaskModal .modal-body {
+    padding: 2rem;
+    background-color: #ffffff;
+}
+
+#addTaskModal .form-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Custom Styled Inputs */
+#addTaskModal .form-control,
+#addTaskModal .form-select {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #1e293b;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background-color: #f8fafc;
+}
+
+#addTaskModal .form-control:focus,
+#addTaskModal .form-select:focus {
+    background-color: #fff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+/* Footer & Buttons */
+#addTaskModal .modal-footer {
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 1.25rem 2rem;
+}
+
+#addTaskModal .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+#addTaskModal .btn-primary {
+    background-color: #2563eb;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+#addTaskModal .btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+#addTaskModal .btn-secondary {
+    background-color: #fff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+#addTaskModal .btn-secondary:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+/* View Task Card */
+#viewTaskModal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Header with your Blue theme */
+#viewTaskModal .modal-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); /* Navy to Blue */
+    color: white;
+    padding: 1.25rem 1.5rem;
+    border: none;
+}
+
+#viewTaskModal .modal-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#viewTaskModal .btn-close {
+    filter: brightness(0) invert(1); /* Makes the X white */
+}
+
+/* Modal Body structure */
+#viewTaskModal .modal-body {
+    padding: 2rem;
+    background-color: #f8fafc;
+}
+
+/* Custom Field Styling */
+.info-group {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1.25rem;
+    transition: transform 0.2s ease;
+}
+
+.info-group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.info-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.info-value {
+    color: #1e293b;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Priority & Status Badges */
+.badge-custom {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Specific styling for the Description to make it readable */
+#viewDesc {
+    white-space: pre-wrap;
+    color: #475569;
+}
 /* =====================================================
    MOBILE RESPONSIVE STYLES
 ===================================================== */

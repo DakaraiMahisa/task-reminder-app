@@ -1,4 +1,5 @@
 package com.taskreminder.app.entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.taskreminder.app.enums.TaskPriority;
 import com.taskreminder.app.enums.TaskStatus;
 import jakarta.persistence.*;
@@ -28,6 +29,7 @@ public class Task {
     @NotBlank(message="Description is required")
     private String description;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "Due date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dueDate;
