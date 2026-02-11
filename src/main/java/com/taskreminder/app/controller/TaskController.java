@@ -31,7 +31,6 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
@@ -349,38 +348,67 @@ public class TaskController {
 
     @PostMapping("/tasks/bin/restore/{id}")
     @ResponseBody
-    public ResponseEntity<Void> restoreTask(@PathVariable Integer id) {
+    public ResponseEntity<String> restoreTask(@PathVariable Integer id, HttpSession session) {
+    try{
         taskService.restoreTask(id);
+        session.setAttribute("successMessage", "Task has been restored!");
         return ResponseEntity.ok().build();
+    }catch(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error: " + e.getMessage());
+    }
     }
 
     @PostMapping("/tasks/bin/restore")
     @ResponseBody
-    public ResponseEntity<Void> restoreTasks(@RequestBody List<Integer>ids) {
+    public ResponseEntity<String> restoreTasks(@RequestBody List<Integer>ids, HttpSession session) {
+      try{
         taskService.restoreTasks(ids);
+        session.setAttribute("successMessage", "Tasks have been restored!");
         return ResponseEntity.ok().build();
+      }catch(Exception e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .body("Error: " + e.getMessage());
+      }
     }
 
     @DeleteMapping("/tasks/bin/delete/{id}")
     @ResponseBody
-    public ResponseEntity<Void> permanentlyDeleteTask(@PathVariable Integer id) {
+    public ResponseEntity<String> permanentlyDeleteTask(@PathVariable Integer id, HttpSession session) {
+      try{
         taskService.permanentlyDeleteTask(id);
+        session.setAttribute("successMessage", "Task has been permanently deleted!");
         return ResponseEntity.ok().build();
+      } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .body("Error: " + e.getMessage());
+
+      }
     }
 
     @PostMapping("/tasks/bin/delete")
     @ResponseBody
-    public ResponseEntity<Void> permanentlyDeleteTasks(
-            @RequestBody List<Integer> taskIds) {
-
+    public ResponseEntity<String> permanentlyDeleteTasks(
+            @RequestBody List<Integer> taskIds,HttpSession session) {
+     try{
         taskService.permanentlyDeleteTasks(taskIds);
+        session.setAttribute("successMessage", "Tasks have been permanently deleted!");
         return ResponseEntity.ok().build();
+      }catch(Exception e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error: " + e.getMessage());
+            }
     }
 
     @PostMapping("/tasks/bulk-delete")
-    public ResponseEntity<?> bulkDelete(@RequestBody BulkTaskActionRequest request) {
+    public ResponseEntity<?> bulkDelete(@RequestBody BulkTaskActionRequest request,HttpSession session) {
+        try{
         taskService.softDeleteTasks(request.getTaskIds());
+        session.setAttribute("successMessage", "Tasks moved to bin successfully!");
         return ResponseEntity.ok().build();
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
+        }
     }
-
 }
