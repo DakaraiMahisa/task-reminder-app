@@ -23,14 +23,21 @@ Tech Stack
 Getting Started
 
  Prerequisites
+ 
  Java 17+
+ 
  Maven
+ 
  MySQL
+ 
  An SMTP email account (for contact form emails)
 
 Run the Application
+
  git clone https://github.com/DakaraiMahisa/task-reminder-app.git
+ 
  cd task-reminder-app
+ 
  mvn spring-boot:run
 
 The application will start at:
@@ -41,10 +48,13 @@ Configuration:
 Update application.properties with your database and email details:
 
  spring.datasource.url=jdbc:mysql://localhost:3306/task_reminder
+ 
  spring.datasource.username=your_db_user
+ 
  spring.datasource.password=your_db_password
 
  spring.mail.username=your-email@gmail.com
+ 
  spring.mail.password=your-app-password
 
 Contact & Feedback
@@ -55,11 +65,13 @@ The application includes a Contact page where users can:
  Suggest features
 
 Messages are:
+
  Stored in the database
  Sent to the admin via email
  Automatically acknowledged with a reply email
 
 Project Status:
+
 🚧 In Development
 
 Acknowledgement:
@@ -70,8 +82,8 @@ The guidance, resources, and structured learning environment offered through the
 This project was developed as part of an internship learning experience and is intended for educational and skill-building purposes.
 
 Author:
+
  Dakarai Mahisa
  Virtual Internship Project – Infosys Springboard.
-
 
 
